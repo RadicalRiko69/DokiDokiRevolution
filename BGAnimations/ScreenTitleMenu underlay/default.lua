@@ -48,13 +48,13 @@ LoadActor(THEME:GetPathG("","_BG/white"))..{ --lazy hack
 --front stuff
 Def.ActorFrame {
 	LoadActor("hub") .. {
-		InitCommand=cmd(zoom,0.68;x,SCREEN_LEFT-110;y,SCREEN_CENTER_Y;draworder,300);
+		InitCommand=cmd(zoom,0.45;x,SCREEN_LEFT-110;y,SCREEN_CENTER_Y;draworder,300);
 		OnCommand=cmd(sleep,4;decelerate,0.8;x,SCREEN_LEFT+110;);
 	};
 };
 Def.ActorFrame {
 	LoadActor("logo") .. {
-		InitCommand=cmd(zoom,0.5;x,SCREEN_LEFT+160;y,SCREEN_TOP-200);
+		InitCommand=cmd(zoom,0.2;x,SCREEN_LEFT+160;y,SCREEN_TOP-200);
 		OnCommand=cmd(sleep,4.5;linear,0.25;y,SCREEN_TOP+90;linear,0.5;addy,-50;sleep,0.25;accelerate,0.5;addy,50);
 		};
 	LoadActor("sparklies") .. {
