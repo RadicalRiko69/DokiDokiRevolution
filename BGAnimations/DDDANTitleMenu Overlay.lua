@@ -33,6 +33,83 @@ for i = 1,100 do
 	}
 end
 
+
+--lmao what?
+local selection = 1;
+local scrollerChoiceNames = {
+	{"New Game","DDDANStoryMode"},
+	{"Free Play","DDDANSelectMusic"},
+	{"Settings","ScreenOptionsService"},
+	{"Help","aa"},
+	{"Quit","ScreenQuitGame"}
+}
+--Jousway fix this for me -RL
+local custScrollerFrame = Def.ActorFrame{
+	CodeMessageCommand=function(self, param)
+		local inputLocked = false;
+		if not inputLocked then
+			
+			--Wow this is super fun and not at all extremely stupid
+			--ActorScrollers are so fucking dumb
+			self:playcommandonchildren("LoseFocus");
+			--SCREENMAN:SystemMessage(self:GetDestinationItem())
+			--self:GetChild("ScrollItem"..self:GetDestinationItem()):playcommand("GainFocus")
+			
+			if param.Name == "up" then
+				if selection > 1 then
+					self:GetChild("ScrollItem"..selection):playcommand("LoseFocus")
+					selection = selection - 1;
+					self:GetChild("ScrollItem"..selection):playcommand("GainFocus")
+					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
+				end;
+			elseif param.Name == "down" then
+				if selection < #scrollerChoiceNames then
+					self:GetChild("ScrollItem"..selection):playcommand("LoseFocus")
+					selection = selection + 1;
+					self:GetChild("ScrollItem"..selection):playcommand("GainFocus")
+					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
+				end;
+			elseif param.Name == "left" then
+				if selection > 1 then
+					self:GetChild("ScrollItem"..selection):playcommand("LoseFocus")
+					selection = selection - 1;
+					self:GetChild("ScrollItem"..selection):playcommand("GainFocus")
+					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
+				end;
+			elseif param.Name == "right" then
+				if selection < #scrollerChoiceNames then
+					self:GetChild("ScrollItem"..selection):playcommand("LoseFocus")
+					selection = selection + 1;
+					self:GetChild("ScrollItem"..selection):playcommand("GainFocus")
+					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
+				end;
+				--SCREENMAN:SystemMessage(_G.selectedDifficulty);
+			elseif param.Name == "start" then
+				SCREENMAN:GetTopScreen():SetNextScreenName(scrollerChoiceNames[selection][2]);
+				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
+			elseif param.Name == "back" then
+				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
+			end;
+
+		end
+	end;
+	-- Scroller commands
+	InitCommand=cmd(xy,30,SCREEN_CENTER_Y),
+};
+for i = 1,#scrollerChoiceNames do
+	custScrollerFrame[i] = Def.BitmapText{
+		Name="ScrollItem"..i,
+		Font="_riffic free medium 20px",
+		Text=scrollerChoiceNames[i][1],
+		InitCommand=cmd(diffuse,Color("White");playcommand,(i==selection and "GainFocus" or "LoseFocus");horizalign,left;y,30*i;addx,-200),
+		OnCommand=cmd(sleep,11+.1*i;decelerate,.3;addx,200);
+		GainFocusCommand=cmd(Stroke,color("#ff99ff"));
+		LoseFocusCommand=cmd(Stroke,color("#cc00cc"));
+		--GainFocusCommand=cmd(visible,true);
+		--LoseFocusCommand=cmd(visible,false);
+	}
+end;
+
 return Def.ActorFrame{
 	Def.Quad{
 		OnCommand=function(self)
@@ -223,4 +300,6 @@ return Def.ActorFrame{
 				:diffusealpha(0)
 		end
 	},
+	custScrollerFrame
 }
+
