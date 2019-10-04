@@ -1,5 +1,7 @@
 local Circles = Def.ActorFrame{}
 
+GAMESTATE:UnjoinPlayer(PLAYER_1)
+
 for i = 1,15 do
 	for i2 = 1,15 do
 		Circles[#Circles+1] = Def.Sprite{
@@ -33,82 +35,140 @@ for i = 1,100 do
 	}
 end
 
+local selection = 1
+local LockInput = false
+local DisableCharInput = true
+local NameString = ""
 
---lmao what?
-local selection = 1;
-local scrollerChoiceNames = {
-	{"New Game","DDDANStoryMode"},
-	{"Free Play","DDDANSelectMusic"},
-	{"Settings","ScreenOptionsService"},
-	{"Help","aa"},
-	{"Quit","ScreenQuitGame"}
-}
---Jousway fix this for me -RL
-local custScrollerFrame = Def.ActorFrame{
-	CodeMessageCommand=function(self, param)
-		local inputLocked = false;
-		if not inputLocked then
-			
-			--Wow this is super fun and not at all extremely stupid
-			--ActorScrollers are so fucking dumb
-			self:playcommandonchildren("LoseFocus");
-			--SCREENMAN:SystemMessage(self:GetDestinationItem())
-			--self:GetChild("ScrollItem"..self:GetDestinationItem()):playcommand("GainFocus")
-			
-			if param.Name == "up" then
-				if selection > 1 then
-					self:GetChild("ScrollItem"..selection):playcommand("LoseFocus")
-					selection = selection - 1;
-					self:GetChild("ScrollItem"..selection):playcommand("GainFocus")
-					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
-				end;
-			elseif param.Name == "down" then
-				if selection < #scrollerChoiceNames then
-					self:GetChild("ScrollItem"..selection):playcommand("LoseFocus")
-					selection = selection + 1;
-					self:GetChild("ScrollItem"..selection):playcommand("GainFocus")
-					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
-				end;
-			elseif param.Name == "left" then
-				if selection > 1 then
-					self:GetChild("ScrollItem"..selection):playcommand("LoseFocus")
-					selection = selection - 1;
-					self:GetChild("ScrollItem"..selection):playcommand("GainFocus")
-					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
-				end;
-			elseif param.Name == "right" then
-				if selection < #scrollerChoiceNames then
-					self:GetChild("ScrollItem"..selection):playcommand("LoseFocus")
-					selection = selection + 1;
-					self:GetChild("ScrollItem"..selection):playcommand("GainFocus")
-					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
-				end;
-				--SCREENMAN:SystemMessage(_G.selectedDifficulty);
-			elseif param.Name == "start" then
-				SCREENMAN:GetTopScreen():SetNextScreenName(scrollerChoiceNames[selection][2]);
-				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
-			elseif param.Name == "back" then
-				SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToPrevScreen");
-			end;
-
+function NameInput(self)
+	return function(event)		
+		if not DisableCharInput then
+			if ToEnumShortString(event.type) == "FirstPress" or ToEnumShortString(event.type) == "Repeat" then
+				let = ToEnumShortString(event.DeviceInput.button)
+				if let == "enter" then 
+					if NameString ~= "" and NameString then
+						local UserAlreadyExists = false
+						for _,v in pairs(PROFILEMAN:GetLocalProfileDisplayNames()) do
+							if string.lower(v) == string.lower(NameString) then UserAlreadyExists = true end
+						end
+						
+						if not UserAlreadyExists then
+							local count = 0
+							local CheckProfile = true
+							while CheckProfile do
+								CheckProfile = false
+								count = count + 1
+								for _,v in pairs(PROFILEMAN:GetLocalProfileIDs()) do
+									if v == string.format("%08d", count) then CheckProfile = true end
+									print(v.."-"..string.format("%08d", count))
+								end
+							end
+							
+							--[[local file = RageFileUtil.CreateRageFile()
+							
+							file:Open("Save/LocalProfiles/"..string.format("%08d", count).."/Editable.ini", 2)
+							file:Write("[Editable]\nBirthYear=0\nCharacterID=default\nDisplayName="..NameString.."\nIgnoreStepCountCalories=0\nIsMale=1\nLastUsedHighScoreName=\nVoomax=0.000000\nWeightPounds=0\n")
+							file:Close()
+							file:destroy()--]]
+							
+							GAMESTATE:LoadProfiles()
+							
+							GAMESTATE:JoinPlayer(PLAYER_1)
+						
+							DisableCharInput = true
+							self:GetParent():GetChild("Input"):diffusealpha(0)
+							self:GetParent():GetChild("Overlay"):linear(.5):diffusealpha(1)
+							SCREENMAN:GetTopScreen():SetNextScreenName("DDDANSelectMusic")
+							self:sleep(1):queuecommand("Transition")
+						else
+							self:GetParent():GetChild("Input"):GetChild("Info"):settext("Profile already exists\nPick a diffrent name")
+							NameString = ""
+						end
+					end
+				end
+				if let == "escape" then
+					DisableCharInput = true
+					self:GetParent():GetChild("Input"):diffusealpha(0)
+					LockInput = false
+					NameString = ""
+				end
+				if let == "backspace" then
+					if NameString then
+						NameString = string.match(NameString, "(.+).")
+					end
+				else
+					if string.len(let) > 1 then let = "" end
+					if string.len(NameString or "") < 16 and string.match(let, "%w") then
+						NameString = (NameString or "")..let
+					end
+				end
+				self:GetParent():GetChild("Input"):GetChild("Name"):settext(NameString or "")
+				self:GetParent():GetChild("Input"):GetChild("Cursor"):x(self:GetParent():GetChild("Input"):GetChild("Name"):GetWidth()*.4)
+			end
 		end
-	end;
-	-- Scroller commands
-	InitCommand=cmd(xy,30,SCREEN_CENTER_Y),
-};
+	end
+end
+
+local function InputNewUser(self)
+	if not LockInput then
+		LockInput = true
+		DisableCharInput = false
+		self:GetParent():GetChild("Input"):diffusealpha(1)
+		self:GetParent():GetChild("Input"):GetChild("Info"):settext("Please enter your name")
+	end
+end
+
+local function NextScreen(self,Screen)
+	SCREENMAN:GetTopScreen():SetNextScreenName(Screen)
+	self:queuecommand("Transition")
+end
+
+local scrollerChoiceNames = {
+	{"New Game",function(self) InputNewUser(self) end},
+	{"Load Game",""},
+	{"Settings",""},
+	{"Help",""},
+	{"Quit",function(self) NextScreen(self,'ScreenExit') end}
+}
+
+local function MoveSelection(self,offset)
+	if not LockInput then
+		self:GetChild("ScrollItem"..selection):strokecolor(color("#cc00cc"))
+		selection = selection + offset
+		if selection > #scrollerChoiceNames then selection = 1 end
+		if selection < 1 then selection = #scrollerChoiceNames end
+		self:GetChild("ScrollItem"..selection):strokecolor(color("#ff99ff"))
+		SOUND:PlayOnce(THEME:GetPathS("Common", "Value"), true)
+	end
+end
+
+local custScrollerFrame = Def.ActorFrame{
+	OnCommand=function(self) self:xy(30,SCREEN_CENTER_Y):sleep(11):queuecommand("ActivateInput") end,
+	ActivateInputCommand=function(self) SCREENMAN:GetTopScreen():AddInputCallback(DDDAN.Input(self)):AddInputCallback(NameInput(self)) end,
+	MenuUpCommand=function(self) MoveSelection(self,-1) end,
+	MenuLeftCommand=function(self) MoveSelection(self,-1) end,
+	MenuDownCommand=function(self) MoveSelection(self,1) end,
+	MenuRightCommand=function(self) MoveSelection(self,1) end,
+	StartCommand=function(self)	scrollerChoiceNames[selection][2](self) end,
+	TransitionCommand=function(self) SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen") end
+}
+
 for i = 1,#scrollerChoiceNames do
 	custScrollerFrame[i] = Def.BitmapText{
 		Name="ScrollItem"..i,
 		Font="_riffic free medium 20px",
 		Text=scrollerChoiceNames[i][1],
-		InitCommand=cmd(diffuse,Color("White");playcommand,(i==selection and "GainFocus" or "LoseFocus");horizalign,left;y,30*i;addx,-200),
-		OnCommand=cmd(sleep,11+.1*i;decelerate,.3;addx,200);
-		GainFocusCommand=cmd(Stroke,color("#ff99ff"));
-		LoseFocusCommand=cmd(Stroke,color("#cc00cc"));
-		--GainFocusCommand=cmd(visible,true);
-		--LoseFocusCommand=cmd(visible,false);
+		OnCommand=function(self)
+				self:halign(0)
+					:y(30*i)
+				if i == selection then 
+					self:strokecolor(color("#ff99ff")) 
+				else
+					self:strokecolor(color("#cc00cc"))
+				end
+		end
 	}
-end;
+end
 
 return Def.ActorFrame{
 	Def.Quad{
@@ -257,8 +317,52 @@ return Def.ActorFrame{
 		end
 	},
 
+	custScrollerFrame,
+	
+	Def.ActorFrame{
+		Name="Input",
+		OnCommand=function(self)
+			self:Center()
+				:diffusealpha(0)
+		end,
+		Def.Quad{
+			OnCommand=function(self)
+				self:zoomto(220,160)
+					:diffuse(1,.8,.9,1)
+			end
+		},
+		Def.Quad{
+			OnCommand=function(self)
+				self:zoomto(212,152)
+					:diffuse(1,.9,.95,1)
+			end
+		},
+		Def.BitmapText{
+			Name="Info",
+			Font="_aller thin 20px",
+			Text="Please enter your name",
+			OnCommand=function(self) self:diffuse(0,0,0,1):zoom(.8):y(-40) end
+		},
+		Def.BitmapText{
+			Font="_riffic free medium 20px",
+			Text="OK",
+			OnCommand=function(self) self:zoom(.8):y(40):strokecolor(color("#ff99ff")) end
+		},
+		Def.BitmapText{
+			Name="Name",
+			Font="_riffic free medium 20px",
+			OnCommand=function(self) self:zoom(.8):strokecolor(0,0,0,1) end
+		},
+		Def.BitmapText{
+			Name="Cursor",
+			Font="_aller thin 20px",
+			Text="|",
+			OnCommand=function(self) self:zoom(.8):diffuseshift():effectcolor1(1,1,1,0):effectcolor2(.5,.3,.4,1) end
+		}
+	},
 
 	Def.Quad{
+		Name="Overlay",
 		OnCommand=function(self)
 			self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
 				:diffuse(1,1,1,1)
@@ -299,7 +403,6 @@ return Def.ActorFrame{
 				:linear(.5)
 				:diffusealpha(0)
 		end
-	},
-	custScrollerFrame
+	}
 }
 
