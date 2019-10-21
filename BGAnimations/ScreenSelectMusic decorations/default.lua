@@ -26,7 +26,7 @@ t[#t+1] = Def.ActorFrame{
 
 		-- CURRENT SONG ARTIST
 		LoadFont("_halogen 20px")..{	
-			InitCommand=cmd(x,SCREEN_CENTER_X+12;y,SCREEN_CENTER_Y+18;zoom,0.5;maxwidth,500;horizalign,left);
+			InitCommand=cmd(x,SCREEN_CENTER_X+48;y,SCREEN_CENTER_Y+18;zoom,0.5;maxwidth,500;horizalign,left);
 			OffCommand=cmd(decelerate,0.05;diffusealpha,0);
 			CurrentSongChangedMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
@@ -42,14 +42,14 @@ t[#t+1] = Def.ActorFrame{
 
 		-- HELP TEXT
 		LoadFont("_halogen 20px")..{	
-			InitCommand=cmd(x,SCREEN_CENTER_X+5;y,SCREEN_BOTTOM-50;zoom,0.5;horizalign,left);
+			InitCommand=cmd(x,SCREEN_CENTER_X+32;y,SCREEN_BOTTOM-50;zoom,0.5;horizalign,left);
 			OffCommand=cmd(decelerate,0.05;diffusealpha,0);
 			Text="LEFT/RIGHT = Select Song     UP/DOWN = Choose Difficulty\nPress ENTER to choose a song.",
 		};
 
 		-- HEADER TEXT
 		LoadFont("_halogen 20px")..{	
-			InitCommand=cmd(x,SCREEN_CENTER_X+10;y,SCREEN_TOP+60;zoom,1;horizalign,left);
+			InitCommand=cmd(x,SCREEN_CENTER_X+40;y,SCREEN_TOP+60;zoom,1;horizalign,left);
 			OffCommand=cmd(decelerate,0.05;diffusealpha,0);
 			Text="Select Music",
 		};
@@ -61,12 +61,12 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = Def.ActorFrame {
 
 	LoadActor("banner frame.png")..{
-		InitCommand=cmd(zoom,0.4;x,SCREEN_CENTER_X-200;y,SCREEN_TOP+110);
+		InitCommand=cmd(zoom,0.4;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+110);
 	};
 
 	Def.Sprite{
 		Name= "Sayori",
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-310;y,SCREEN_BOTTOM-72;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-72;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
 		ResetAnimCommand=cmd(setstate,0);
@@ -75,7 +75,7 @@ t[#t+1] = Def.ActorFrame {
 
 	Def.Sprite{
 		Name= "Natsuki",
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-240;y,SCREEN_BOTTOM-70;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-215;y,SCREEN_BOTTOM-70;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
 		ResetAnimCommand=cmd(setstate,0);
@@ -84,7 +84,7 @@ t[#t+1] = Def.ActorFrame {
 
 	Def.Sprite{
 		Name= "Yuri",
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-172;y,SCREEN_BOTTOM-70;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-147;y,SCREEN_BOTTOM-70;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
 		ResetAnimCommand=cmd(setstate,0);
@@ -93,7 +93,7 @@ t[#t+1] = Def.ActorFrame {
 
 	Def.Sprite{
 		Name= "Monika",
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-95;y,SCREEN_BOTTOM-72;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_BOTTOM-72;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
 		ResetAnimCommand=cmd(setstate,0);
