@@ -63,27 +63,41 @@ t[#t+1] = Def.ActorFrame {
 	LoadActor("banner frame.png")..{
 		InitCommand=cmd(zoom,0.4;x,SCREEN_CENTER_X-200;y,SCREEN_TOP+110);
 	};
-			
-	--Sayori
-	LoadActor("meatloaf.png")..{
-		InitCommand=cmd(zoom,0.5;x,SCREEN_CENTER_X-310;y,SCREEN_BOTTOM-70);
-	};
 
-	--Natsuki
-	LoadActor("meatloaf.png")..{
-		InitCommand=cmd(zoom,0.5;x,SCREEN_CENTER_X-238;y,SCREEN_BOTTOM-70);
-		OffCommand=cmd(decelerate,0.1;addy,-20;accelerate,0.2;addy,20;decelerate,0.1;addy,-20;accelerate,0.2;addy,20);
-	};
+	Def.Sprite{
+		Name= "Sayori",
+		Frames= {
+		  {Frame= 0, Delay= 9999.425},
+	  },
+		OnCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-310;y,SCREEN_BOTTOM-72),
+		Texture= "sayori 2x1.png",
+	  },
 
-	--Yuri
-	LoadActor("meatloaf.png")..{
-		InitCommand=cmd(zoom,0.5;x,SCREEN_CENTER_X-165;y,SCREEN_BOTTOM-70);
-	};
+	Def.Sprite{
+		Name= "Natsuki",
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-240;y,SCREEN_BOTTOM-70;animate,false),
+		OnCommand=cmd(stoptweening),
+		CurrentSongChangedMessageCommand=cmd(setstate,1;decelerate,.05;addy,-20;decelerate,.05;addy,20;setstate,0),
+		Texture= "natsuki 2x1.png",
+	  },
 
-	--Monika
-	LoadActor("meatloaf.png")..{
-		InitCommand=cmd(zoom,0.5;x,SCREEN_CENTER_X-95;y,SCREEN_BOTTOM-70);
-	};
+	Def.Sprite{
+		Name= "Yuri",
+		Frames= {
+		  {Frame= 0, Delay= 9999.425},
+	  },
+		OnCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-172;y,SCREEN_BOTTOM-70),
+		Texture= "yuri 2x1.png",
+	  },
+
+	Def.Sprite{
+		Name= "Monika",
+		Frames= {
+		  {Frame= 0, Delay= 9999.425},
+	  },
+		OnCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-95;y,SCREEN_BOTTOM-72),
+		Texture= "monika 2x1.png",
+	  },
 		
 };
 
