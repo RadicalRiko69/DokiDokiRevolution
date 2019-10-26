@@ -102,5 +102,12 @@ t[#t+1] = Def.ActorFrame {
 		
 };
 
+t[#t+1] = Def.ActorFrame {
+	LoadActor(THEME:GetPathS("Common","Page Flip")) .. {
+		CurrentSongChangedMessageCommand=cmd(stop;play);
+	};
+		
+};
+
 
 return t
