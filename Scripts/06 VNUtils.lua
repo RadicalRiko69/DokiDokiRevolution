@@ -16,11 +16,11 @@ function genTextBackground(TEXTBOX_HEIGHT)
 
 		--Textbox & lines
 		Def.Quad{ --BG
-			InitCommand=cmd(setsize,SCREEN_WIDTH,TEXTBOX_HEIGHT;diffuse,color("0,0,0,.8");fadeleft,.1;faderight,.1;zoomy,0);
+			InitCommand=cmd(setsize,640,TEXTBOX_HEIGHT;diffuse,color("#ff00bf77");fadeleft,.1;faderight,.1;zoomy,0);
 			OnCommand=cmd(decelerate,.8;zoomy,1);
 		};
 		Def.Quad{ --Top
-			InitCommand=cmd(setsize,SCREEN_WIDTH,2;diffuse,Color("White");fadeleft,.1;faderight,.1;addy,-(TEXTBOX_HEIGHT/2 - 10));
+			InitCommand=cmd(setsize,640,2;diffuse,Color("White");fadeleft,.1;faderight,.1;addy,-(TEXTBOX_HEIGHT/2 - 10));
 		};
 		--[[Def.Quad{ --Bottom
 			InitCommand=cmd(setsize,SCREEN_WIDTH*.25,2;diffuse,Color("White");fadeleft,.1;horizalign,left;addx,-(SCREEN_WIDTH*.50);addy,TEXTBOX_HEIGHT/2 - 10);
@@ -29,7 +29,7 @@ function genTextBackground(TEXTBOX_HEIGHT)
 			InitCommand=cmd(setsize,2,100;diffuse,Color("White");horizalign,left;vertalign,top;x,SCREEN_WIDTH*.25;addx,-(SCREEN_WIDTH*.50)-2;addy,TEXTBOX_HEIGHT/2 - 10)
 		};]]
 		Def.Quad{ --Bottom
-			InitCommand=cmd(setsize,SCREEN_WIDTH,2;diffuse,Color("White");fadeleft,.1;faderight,.1;addy,TEXTBOX_HEIGHT/2 - 10);
+			InitCommand=cmd(setsize,640,2;diffuse,Color("White");fadeleft,.1;faderight,.1;addy,TEXTBOX_HEIGHT/2 - 10);
 		};
 		
 		--For debugging, left and right

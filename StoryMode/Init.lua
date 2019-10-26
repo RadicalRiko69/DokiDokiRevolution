@@ -1,20 +1,5 @@
---[[
-Melty Blood script commands
-AC = Character animation, ignore this
-CD = Character Display, ignore this
-CM = Camera
-TS = ???
-SW = ??? comment says "Wait until all of the battle screen comes out"
-BP = BGM Play
-WD = ??? Comment says Display while enlarging in window Y direction
-WI = ???
-MX = ???
-FC = Face, ex FC 0 01 0 means FC(side, character, face), so P1 side, Arcueid, face 0
-MD = _ Dim, probably. Seems to dim the character who is not speaking.
-]]
-
 local texttable2 = {
-	"/mc[LeftSide,0]/mc[SE,Arc_S0AA000]Ahh, the moon sure is beautiful tonight.\nFlower viewing at midnight sure has its own beauty.\nIf only Shiki were here with some sake~",
+	"It’s a beautiful day outside, birds are singing, flowers are blooming. On days like these, I just want to listen to some good music with my best friend Sayori.",
 	"/mc[LeftSide,4]/mc[SE,Arc_S0AA001]Although, cherry blossoms during the summer is too much. Wouldn't you agree, Mister?",
 	"/mc[RightSide,0]/mc[SE,Arc_S0AA002]/mc[Appear]/dim[0]Yes...... monsters and cherry blossoms.\nBut tell me, who is the real monster here?",
 	"/mc[SE,Arc_S0AA003]You, or I? The devil in the form of a beautiful woman,\nor the human with the looks of an unrelenting monster?",
@@ -116,14 +101,14 @@ local t = Def.ActorFrame{
 		end;
 		
 	};
-	Def.Quad{
+	--[[Def.Quad{
 		InitCommand=cmd(setsize,400,3;fadeleft,.5;faderight,.5;xy,SCREEN_CENTER_X/2+50,SCREEN_HEIGHT*.95+5;diffuse,Color("White"));
 	};
 	Def.Quad{
 		InitCommand=cmd(zoomx,0;setsize,400,3;fadeleft,.5;faderight,.5;xy,SCREEN_WIDTH*.75-50,SCREEN_HEIGHT*.95+5;diffuse,Color("White"));
 		AppearMessageCommand=cmd(decelerate,.6;zoomx,1);
-	};
-	LoadFont("Dialogue Character Names")..{
+	};]]
+	--[[LoadFont("Dialogue Character Names")..{
 		Name="LeftName";
 		Text="NoName (Left)";
 		InitCommand=cmd(xy,SCREEN_CENTER_X/2+50,SCREEN_BOTTOM-100-150/2;addx,100;halign,0.2;vertalign,bottom;shadowcolor,Color("Black");diffusebottomedge,Color("Red");shadowlength,1;diffusealpha,0);
@@ -135,18 +120,18 @@ local t = Def.ActorFrame{
 		Text="NoName (Right)";
 		InitCommand=cmd(xy,SCREEN_WIDTH*.75-50,SCREEN_HEIGHT*.95;addx,-100;halign,0.8;vertalign,bottom;shadowcolor,Color("Black");diffusebottomedge,Color("Red");shadowlength,1;diffusealpha,0);
 		AppearMessageCommand=cmd(decelerate,.6;addx,120;diffusealpha,1);
-	};
+	};]]
 };
 
 t[#t+1] = Def.ActorFrame{
 
-	genTextBackground(150)..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-100;vertalign,top;)
+	genTextBackground(130)..{
+		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-95;vertalign,top;)
 	};
 	--Make vntext here
 	--function(font, text, maxwidth, spd, clr)
-	vntext:make_actor("Dialogue Text", texttable2, 900, 15, Color("White"))..{
-		InitCommand=cmd(xy,150,SCREEN_BOTTOM-150);
+	vntext:make_actor("Dialogue Text", texttable2, 640*.8, 15, Color("White"))..{
+		InitCommand=cmd(xy,150,SCREEN_BOTTOM-140);
 	};
 	
 	--[[LoadActor(THEME:GetPathS("","73 (loop)"))..{
