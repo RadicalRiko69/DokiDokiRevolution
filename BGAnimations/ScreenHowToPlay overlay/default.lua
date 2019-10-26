@@ -1,94 +1,63 @@
 return Def.ActorFrame {
-	Def.ActorFrame {
-		OnCommand=cmd(x,SCREEN_CENTER_X-20);
 
-		-- Initial glow around receptors
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,85;y,95;zoom,0.7;rotationz,90;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,6;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,275;y,95;zoom,0.7;rotationz,270;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,6;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,212;y,95;zoom,0.7;rotationz,180;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,6;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,148;y,95;zoom,0.7;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,6;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
+	Def.Sprite{
+      Name= "monika",
+      Frames= {
+        {Frame= 0, Delay= 0.150},
+        {Frame= 1, Delay= 0.150},
+		    {Frame= 2, Delay= 0.150},
+        {Frame= 3, Delay= 0.150},
+        {Frame= 2, Delay= 0.150},
+		    {Frame= 1, Delay= 0.150},
+    },
+      OnCommand= cmd(x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+50;zoomy,1;zoomx,0;bob;effectmagnitude,0,0.3,0;sleep,2.5;bounceend,0.5;zoomx,0.5;zoomy,0.5;sleep,30;linear,1.05;zoomx,0;zoomy,0),
+      Texture= "monika 4x1.png",
+    },
 
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,148;y,95;zoom,0.7;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,9.7;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
+    Def.Sprite{
+        Name= "logo",
+        OnCommand= cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0;zoom,0.45;sleep,0.0;linear,0.3;diffusealpha,1;zoom,0.45;sleep,1.8;linear,0.3;zoom,0.25;x,SCREEN_CENTER_X-145;y,SCREEN_CENTER_Y-165),
+        Texture= "howtoplay.png",
+      },
+    Def.Sprite{
+        Name= "box",
+        OnCommand= cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+180;diffusealpha,0;zoom,0.7;sleep,2.5;linear,0.3;diffusealpha,1),
+        Texture= "background.png",
+      },
+    Def.BitmapText{
+        Name= "company",
+        Font= "_aller 20px",
+        InitCommand= cmd(draworder,301;horizalign,left;zoom,0.8;x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+160;cropright,1),
+        OnCommand= cmd(sleep,5;linear,2;cropright,0;sleep,2;linear,1;diffusealpha,0),
+        Text= "This is called a crossover. Not many people can do it\nbecause it's a hard pattern, but all you have\nto do is twist your body and not bitch about it.",
+      },
+    Def.BitmapText{
+        Name= "company",
+        Font= "_aller 20px",
+        InitCommand= cmd(draworder,301;horizalign,left;zoom,0.8;x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+160;cropright,1),
+        OnCommand= cmd(sleep,11.5;linear,2;cropright,0;sleep,2;linear,1;diffusealpha,0),
+        Text= "This is a hold note, you have to\nhold this down in order to keep you lifebar\nup so that you can pass songs.",
+      },
+    Def.BitmapText{
+        Name= "company",
+        Font= "_aller 20px",
+        InitCommand= cmd(draworder,301;horizalign,left;zoom,0.8;x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+160;cropright,1),
+        OnCommand= cmd(sleep,16.5;linear,2;cropright,0;sleep,2;linear,1;diffusealpha,0),
+        Text= "This is a roll, you have to excessively\ntap until the note is completely gone. Otherwise you will\nend up dropping it and will deplete your lifebar.",
+      },
+    Def.BitmapText{
+        Name= "company",
+        Font= "_aller 20px",
+        InitCommand= cmd(draworder,301;horizalign,left;zoom,0.8;x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+160;cropright,1),
+        OnCommand= cmd(sleep,22;linear,2;cropright,0;sleep,2;linear,1;diffusealpha,0),
+        Text= "This is quad note.\nMake sure to smash it using your two feet, absolutely\ndo not use your hands.",
+      },
+    Def.BitmapText{
+        Name= "company",
+        Font= "_aller 20px",
+        InitCommand= cmd(draworder,301;horizalign,left;zoom,0.8;x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+160;cropright,1),
+        OnCommand= cmd(sleep,28;linear,2;cropright,0;sleep,2;linear,1;diffusealpha,0),
+        Text= "Be careful what you play, some difficulties can be too hard\nand will lead to a game over!\nWill you dance your way into her heart?",
+      },
 
-		-- 2nd step UP
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,212;y,95;zoom,0.7;rotationz,180;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,12.7;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
-
-		-- 3rd step UP
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,84;y,95;zoom,0.7;rotationz,90;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,15.7;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
-
-		-- 4th step jump
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,85;y,95;zoom,0.7;rotationz,90;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,18.7;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
-		LoadActor("tapglow") .. {
-			OnCommand=cmd(x,275;y,95;zoom,0.7;rotationz,270;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,18.7;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
-
-		-- miss step
-		LoadActor("healthhilight") .. {
-			OnCommand=cmd(x,180;y,40;diffuseshift;effectcolor1,1,0.93333,0.266666,0.4;effectcolor2,1,1,1,1;effectperiod,0.25;effectmagnitude,0,1,0;diffusealpha,0;sleep,22.7;linear,0;diffusealpha,1;sleep,1.7;linear,0;diffusealpha,0);
-		};
-	};
-
-	-- messages
-	LoadFont("Common Bold") .. {
-		Text=ScreenString("How To Play StepMania"),
-		InitCommand=cmd(zbuffer,1;z,20;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;shadowlength,1;strokecolor,Color("Outline"));
-		BeginCommand=function(self)
-			self:AddAttribute(12, {Length=9, Diffuse=Color.White});
-		end;
-		OnCommand=cmd(skewx,-0.125;diffuse,color("#ffd400");shadowlength,2;shadowcolor,BoostColor(color("#ffd40077"),0.25);diffusealpha,0;zoom,4;sleep,0.0;linear,0.3;diffusealpha,1;zoom,1;sleep,1.8;linear,0.3;zoom,0.75;x,170;y,60);
-	};
-	LoadActor("_howtoplay feet") .. {
-			InitCommand=cmd(shadowlength,1;strokecolor,Color.Outline);
-			OnCommand=cmd(z,20;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;addx,-SCREEN_WIDTH;sleep,2.4;decelerate,0.3;addx,SCREEN_WIDTH;sleep,2;linear,0.3;zoomy,0);
-	};
-	Def.ActorFrame {
-		InitCommand=cmd(x,SCREEN_CENTER_X+120;y,SCREEN_CENTER_Y+40);
-		
-		LoadActor("_howtoplay tap")..{
-			InitCommand=cmd(diffusealpha,0);
-			ShowCommand=cmd(linear,0;diffusealpha,1;sleep,2;linear,0;diffusealpha,0);
-			OnCommand=cmd(sleep,6;queuecommand,"Show");
-		};
-		LoadActor("_howtoplay tap")..{
-			InitCommand=cmd(diffusealpha,0);
-			ShowCommand=cmd(linear,0;diffusealpha,1;sleep,2;linear,0;diffusealpha,0);
-			OnCommand=cmd(sleep,9.7;queuecommand,"Show");
-		};
-		LoadActor("_howtoplay tap")..{
-			InitCommand=cmd(diffusealpha,0);
-			ShowCommand=cmd(linear,0;diffusealpha,1;sleep,2;linear,0;diffusealpha,0);
-			OnCommand=cmd(sleep,12.7;queuecommand,"Show");
-		};
-		LoadActor("_howtoplay tap")..{
-			InitCommand=cmd(diffusealpha,0);
-			ShowCommand=cmd(linear,0;diffusealpha,1;sleep,2;linear,0;diffusealpha,0);
-			OnCommand=cmd(sleep,15.7;queuecommand,"Show");
-		};
-		LoadActor("_howtoplay jump")..{
-			InitCommand=cmd(diffusealpha,0);
-			ShowCommand=cmd(linear,0;diffusealpha,1;sleep,2;linear,0;diffusealpha,0);
-			OnCommand=cmd(sleep,18.7;queuecommand,"Show");
-		};
-		LoadActor("_howtoplay miss")..{
-			InitCommand=cmd(diffusealpha,0);
-			ShowCommand=cmd(linear,0;diffusealpha,1;sleep,2;linear,0;diffusealpha,0);
-			OnCommand=cmd(sleep,22.7;queuecommand,"Show");
-		};
-	};
 };
