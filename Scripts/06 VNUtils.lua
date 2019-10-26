@@ -173,7 +173,8 @@ __index= {
                     self.text_actor= subself
                     subself:horizalign(left):vertalign(top):wrapwidthpixels(maxwidth)
                         :diffuse(clr)
-					subself:vertspacing(10);
+                    subself:shadowcolor(color("0,0,0,1")):shadowlengthx(1):shadowlengthy(1);
+					--subself:vertspacing(10);
 					--subself:queuecommand("Init2");
                 end,
                 OnCommand= function(subself)

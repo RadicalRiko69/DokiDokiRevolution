@@ -1,3 +1,12 @@
+--[[
+This is where you put in your text.
+Commands are applied at the beginning of the text because I can't write a scripting langauge for shit
+Supported commands:
+/c[color] - Sets color of the text
+/mc[name,arg] - play a message command. Ex: /mc[LeftSide,4] will broadcast "LeftSide" with a parameter of 4
+/dim[command] - Broadcasts VNDim with an argument of command. Mostly used for dimming the portraits.
+
+]]
 local texttable2 = {
 	"It’s a beautiful day outside, birds are singing, flowers are blooming. On days like these, I just want to listen to some good music with my best friend Sayori.",
 	"/mc[LeftSide,4]/mc[SE,Arc_S0AA001]Although, cherry blossoms during the summer is too much. Wouldn't you agree, Mister?",
@@ -11,13 +20,13 @@ local texttable2 = {
 	"/mc[SE,Arc_S0AA009]/dim[0]I'd like nothing less. If my body can't awaken from this battle, it'd be best if I disappeared entirely from this world.",
 	"/mc[SE,Arc_S0AA010]Against a foe like you, I may experience not the feeling of life, but of death."
 }
-	
+
 local pos = 1;
 
 local vntext = LoadVNText2();
 local f;
 
-local function inputs(event)
+local function VN_input_handler(event)
 	--Check if player clicked screen, then skip to next screen if they did.
 	local pn= event.PlayerNumber
 	local button = event.button
@@ -42,15 +51,27 @@ local function inputs(event)
 				vntext:advance()
 			end;
 		end;
+	elseif button == "Back" or button == "right mouse button" then
+		SCREENMAN:AddNewScreenToTop("ScreenStoryOptions");
+		MESSAGEMAN:Broadcast("OptionsScreenOn");
+	elseif button == "Select" then
+		pos = pos + 1;
+		--vntext:skip();
+		vntext:advance();
 	else
 		--tostring(vntext:no_more_text())
-		--SCREENMAN:SystemMessage(button);
+		SCREENMAN:SystemMessage(button);
 	end;
 end;
 
 
 local TEXTBOX_HEIGHT = 150;
 local t = Def.ActorFrame{
+
+	--[[VNQuitMessageCommand=function(self)
+		SCREENMAN:SetNewScreen("ScreenInit");
+		SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
+	end;]]
 
 	InitCommand=function(self)
 		--Set the enemy character for the next song.
@@ -61,13 +82,14 @@ local t = Def.ActorFrame{
 
 	OnCommand=function(self)
 		--Add input handler
-		SCREENMAN:GetTopScreen():AddInputCallback(inputs);
+		SCREENMAN:GetTopScreen():AddInputCallback(VN_input_handler);
 		--Make this ActorFrame accessible throughout the file
 		f = self;
 	end;
 
 	LoadActor("night path2")..{
-		InitCommand=cmd(Cover;diffusealpha,.6)
+		Name="Background";
+		InitCommand=cmd(Cover;diffusealpha,1);
 	};
 	
 	Def.Sprite{
@@ -125,13 +147,26 @@ local t = Def.ActorFrame{
 
 t[#t+1] = Def.ActorFrame{
 
-	genTextBackground(130)..{
+	--[[genTextBackground(130)..{
 		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-95;vertalign,top;)
+	};]]
+	Def.Sprite{
+		Texture=THEME:GetPathG("","TextBox/Background");
+		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-100;diffuse,color("#ff9ef2ff");zoom,.9);
+	};
+	Def.Sprite{
+		Texture=THEME:GetPathG("","TextBox/Frame");
+		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-100;zoom,.9);
+	};
+	Def.BitmapText{
+		Font="_aller thin";
+		Text=THEME:GetString("ScreenStory","HelpText");
+		InitCommand=cmd(diffuse,color("#63445fff");xy,SCREEN_CENTER_X,SCREEN_BOTTOM-42;zoom,.75);
 	};
 	--Make vntext here
 	--function(font, text, maxwidth, spd, clr)
-	vntext:make_actor("Dialogue Text", texttable2, 640*.8, 15, Color("White"))..{
-		InitCommand=cmd(xy,150,SCREEN_BOTTOM-140);
+	vntext:make_actor("_aller 20px", texttable2, 640*.85, 50, Color("White"))..{
+		InitCommand=cmd(xy,SCREEN_CENTER_X-(640*.85)/2,SCREEN_BOTTOM-140);
 	};
 	
 	--[[LoadActor(THEME:GetPathS("","73 (loop)"))..{
