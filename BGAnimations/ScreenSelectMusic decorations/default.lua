@@ -94,7 +94,7 @@ function drawDiffListItem(difficulty)
 		Def.BitmapText{
 			Name="DifficultyAndMeter";
 			Font="_halogen outline 20px";
-			InitCommand=cmd(y,-10;zoom,.7;horizalign,left;diffuse,Color("Black"));
+			InitCommand=cmd(y,-10;zoom,.7;horizalign,left;diffuse,Color("Black");maxwidth,370);
 			Text="DIFFICULTY HERE (Lv.??)";
 		};
 		Def.BitmapText{
@@ -171,6 +171,14 @@ t[#t+1] = Def.ActorFrame{
 		SongUnchosenMessageCommand=cmd(visible,false);
 		OffCommand=cmd(diffusealpha,0);
 		Text="LEFT/RIGHT = Select Level     UP/DOWN = Cancel\nPress ENTER to confirm.",
+	};
+
+	LoadFont("_halogen 20px")..{	
+		InitCommand=cmd(x,SCREEN_CENTER_X+40;y,SCREEN_TOP+60;visible,false;zoom,1;horizalign,left);
+		SongChosenMessageCommand=cmd(visible,true);
+		SongUnchosenMessageCommand=cmd(visible,false);
+		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
+		Text="Select Difficulty",
 	};
 	
 	--The page that gets turned.
@@ -270,13 +278,6 @@ t[#t+1] = Def.ActorFrame{
 		Text="Select Music",
 	};
 
-	LoadFont("_halogen 20px")..{	
-		InitCommand=cmd(x,SCREEN_CENTER_X+40;y,SCREEN_TOP+60;visible,false;zoom,1;horizalign,left);
-		SongChosenMessageCommand=cmd(visible,true);
-		SongUnchosenMessageCommand=cmd(visible,false);
-		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
-		Text="Select Difficulty",
-	};
 };
 
 t[#t+1] = Def.ActorFrame {
