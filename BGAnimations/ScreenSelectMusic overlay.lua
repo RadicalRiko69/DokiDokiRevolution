@@ -6,15 +6,15 @@ end
 
 
 local t = Def.ActorFrame {
-	FOV=90;
+	--FOV=90;
 	--
-	Def.Quad {
+	--[[Def.Quad {
 		InitCommand=cmd(zoomto,SCREEN_CENTER_X+80,SCREEN_HEIGHT);
 		OnCommand=cmd(diffuse,Color.Black;diffusealpha,0.75;fadeleft,32/SCREEN_CENTER_X;faderight,32/SCREEN_CENTER_X);
-	};
+	};]]
 };
 --
-for i=1,#num_players do
+--[[for i=1,#num_players do
 	local f = Def.ActorFrame {
 		InitCommand=cmd(x,-128+PositionItem(i,#num_players));
 		UnchosenCommand=cmd(finishtweening;bounceend,0.25;zoom,1);
@@ -55,16 +55,16 @@ for i=1,#num_players do
 		}
 	end
 	t[#t+1] = f;
-end
+end]]
 -- Lock input for half a second so that players don't accidentally start a song
 t[#t+1] = Def.Actor { 
 	StartSelectingStepsMessageCommand=function() SCREENMAN:GetTopScreen():lockinput(0.5); end;
 };
 
 --
-t.InitCommand=cmd(Center;x,SCREEN_CENTER_X*1.5;diffusealpha,0);
-t.StartSelectingStepsMessageCommand=cmd(linear,0.2;diffusealpha,1);
-t.SongUnchosenMessageCommand=cmd(linear,0.2;diffusealpha,0);
+--t.InitCommand=cmd(Center;x,SCREEN_CENTER_X*1.5;diffusealpha,0);
+--t.StartSelectingStepsMessageCommand=cmd(linear,0.2;diffusealpha,1);
+--t.SongUnchosenMessageCommand=cmd(linear,0.2;diffusealpha,0);
 
 
 return t;
