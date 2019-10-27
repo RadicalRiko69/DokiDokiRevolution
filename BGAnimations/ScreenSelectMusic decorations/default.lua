@@ -56,6 +56,36 @@ t[#t+1] = Def.ActorFrame{
 };
 
 
+--Difficulties, I guess
+for i,diff in ipairs(Difficulty) do
+	t[#t+1] = Def.ActorFrame{
+		InitCommand=cmd(xy,SCREEN_CENTER_X-310,SCREEN_BOTTOM-235+15*i);
+		LoadFont("_halogen 20px")..{
+			Text=THEME:GetString("CustomDifficulty",ToEnumShortString(diff));
+			InitCommand=cmd(horizalign,left);
+		};
+		LoadFont("_halogen 20px")..{
+			Text="??";
+			InitCommand=cmd(horizalign,right;addx,275);
+			OnCommand=function(self)
+				local song = GAMESTATE:GetCurrentSong();
+				if song then
+					local steps = song:GetOneSteps("StepsType_Dance_Single",diff);
+					if steps then
+						self:visible(true);
+						self:settext(steps:GetMeter())
+					else
+						self:visible(false);
+					end;
+				else
+					self:visible(false);
+				end;
+			end;
+			CurrentSongChangedMessageCommand=cmd(playcommand,"On");
+		
+		};
+	}
+end;
 
 -- Stuff on the left
 t[#t+1] = Def.ActorFrame {
@@ -102,36 +132,6 @@ t[#t+1] = Def.ActorFrame {
 		
 };
 
---Difficulties, I guess
-for i,diff in ipairs(Difficulty) do
-	t[#t+1] = Def.ActorFrame{
-		InitCommand=cmd(xy,SCREEN_CENTER_X-310,SCREEN_BOTTOM-235+15*i);
-		LoadFont("_halogen 20px")..{
-			Text=THEME:GetString("CustomDifficulty",ToEnumShortString(diff));
-			InitCommand=cmd(horizalign,left;);
-		};
-		LoadFont("_halogen 20px")..{
-			Text="Lv.??";
-			InitCommand=cmd(horizalign,right;addx,275);
-			OnCommand=function(self)
-				local song = GAMESTATE:GetCurrentSong();
-				if song then
-					local steps = song:GetOneSteps("StepsType_Dance_Single",diff);
-					if steps then
-						self:visible(true);
-						self:settext("Lv. "..steps:GetMeter())
-					else
-						self:visible(false);
-					end;
-				else
-					self:visible(false);
-				end;
-			end;
-			CurrentSongChangedMessageCommand=cmd(playcommand,"On");
-		
-		};
-	}
-end;
 
 t[#t+1] = Def.ActorFrame {
 	LoadActor(THEME:GetPathS("Common","Page Flip")) .. {
