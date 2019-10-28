@@ -131,7 +131,7 @@ t[#t+1] = Def.ActorFrame{
 	
 	Def.Sprite{
 		Texture=THEME:GetPathG("","Book/page1");
-		InitCommand=cmd(zoom,.4475;horizalign,left;vertalign,bottom;xy,SCREEN_CENTER_X,SCREEN_BOTTOM;);
+		InitCommand=cmd(zoom,.4495;horizalign,left;vertalign,bottom;xy,SCREEN_CENTER_X+0.5,SCREEN_BOTTOM+2.25;);
 	
 	};
 	Def.Sprite{
@@ -192,9 +192,9 @@ t[#t+1] = Def.ActorFrame{
 	--The page that gets turned.
 	Def.Sprite{
 		Texture=THEME:GetPathG("","Book/page1");
-		InitCommand=cmd(zoom,.4475;horizalign,left;vertalign,bottom;xy,SCREEN_CENTER_X,SCREEN_BOTTOM;);
+		InitCommand=cmd(zoom,.4495;horizalign,left;vertalign,bottom;xy,SCREEN_CENTER_X-0.25,SCREEN_BOTTOM+2.25;);
 		SongChosenMessageCommand=function(self)
-			self:zoomx(.4475):accelerate(.25):zoomx(0):queuecommand("page"):decelerate(.25):zoomx(-.4475)
+			self:zoomx(.4495):accelerate(.25):zoomx(0):queuecommand("page"):decelerate(.25):zoomx(-.4495)
 		end;
 		pageCommand=function(self)
 			self:Load(THEME:GetPathG("","Book/page2"));
