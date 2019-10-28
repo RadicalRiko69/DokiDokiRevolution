@@ -241,7 +241,7 @@ t[#t+1] = Def.ActorFrame {
 --Stuff on the right
 t[#t+1] = Def.ActorFrame{
 
-	-- CURRENT SONG ARTIST
+	--[[ CURRENT SONG ARTIST
 	LoadFont("_halogen 20px")..{	
 		InitCommand=cmd(x,SCREEN_CENTER_X+48;y,SCREEN_CENTER_Y+18;zoom,0.5;maxwidth,500;horizalign,left);
 		SongChosenMessageCommand=cmd(visible,false);
@@ -257,7 +257,7 @@ t[#t+1] = Def.ActorFrame{
 				self:stoptweening();self:linear(0.05);self:diffusealpha(0);
 			end;
 		end;
-	};
+	};--]]
 
 	-- HELP TEXT
 	LoadFont("_halogen 20px")..{	
