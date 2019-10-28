@@ -171,15 +171,6 @@ t[#t+1] = Def.ActorFrame{
 			--SCREENMAN:SystemMessage(CUR_STEPS_TYPE..", "..GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()..", "..diff);
 		end;
 	};
-	
-	
-	LoadFont("_halogen 20px")..{	
-		InitCommand=cmd(x,SCREEN_CENTER_X+32;y,SCREEN_BOTTOM-22;visible,false;zoom,0.5;horizalign,left);
-		SongChosenMessageCommand=cmd(visible,true);
-		SongUnchosenMessageCommand=cmd(visible,false);
-		OffCommand=cmd(diffusealpha,0);
-		Text="LEFT/RIGHT = Select Level     UP/DOWN = Cancel\nPress ENTER to confirm.",
-	};
 
 	LoadFont("_halogen 20px")..{	
 		InitCommand=cmd(x,SCREEN_CENTER_X+40;y,SCREEN_TOP+60;visible,false;zoom,1;horizalign,left);
@@ -275,6 +266,14 @@ t[#t+1] = Def.ActorFrame{
 		SongUnchosenMessageCommand=cmd(visible,true);
 		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
 		Text="LEFT/RIGHT = Select Song     UP/DOWN = Choose Difficulty\nPress ENTER to choose a song.",
+	};
+	
+	LoadFont("_halogen 20px")..{	
+		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_BOTTOM-140;diffusealpha,0;zoom,0.5;horizalign,left);
+		SongChosenMessageCommand=cmd(sleep,0.5;diffusealpha,1);
+		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+		OffCommand=cmd(diffusealpha,0);
+		Text="LEFT/RIGHT = Select Level     UP/DOWN = Cancel\nPress ENTER to confirm.",
 	};
 
 	-- HEADER TEXT
