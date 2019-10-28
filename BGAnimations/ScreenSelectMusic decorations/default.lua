@@ -241,23 +241,65 @@ t[#t+1] = Def.ActorFrame {
 --Stuff on the right
 t[#t+1] = Def.ActorFrame{
 
-	--[[ CURRENT SONG ARTIST
-	LoadFont("_halogen 20px")..{	
-		InitCommand=cmd(x,SCREEN_CENTER_X+48;y,SCREEN_CENTER_Y+18;zoom,0.5;maxwidth,500;horizalign,left);
-		SongChosenMessageCommand=cmd(visible,false);
-		SongUnchosenMessageCommand=cmd(visible,true);
-		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
+	--Genre display
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(uppercase,true;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y-40;zoom,0.6);
+		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
-		local song = GAMESTATE:GetCurrentSong();
+			self:settext("GENRE:");
+			(cmd(finishtweening;zoom,0.7)) (self)
+		end;
+	};
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(uppercase,true;horizalign,right;x,SCREEN_CENTER_X-35;y,SCREEN_CENTER_Y-40;zoom,0.7);
+		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=function(self)
+			local genre = GAMESTATE:GetCurrentSong():GetGenre()
+			if genre == "" then
+				genre = "N/A"
+			end
+			self:settext(genre);
+			(cmd(finishtweening;zoomx,0.8;maxwidth,140)) (self)
+		end;
+	};	
+
+	--BPM DISPLAY
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(uppercase,true;x,SCREEN_CENTER_X-300;y,SCREEN_CENTER_Y-40;zoom,0.4);
+		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=function(self)
+			self:settext("BPM:");
+			(cmd(finishtweening;zoom,0.7)) (self)
+		end;
+	};
+	
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-280;y,SCREEN_CENTER_Y-40;zoom,0.4);
+		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=function(self)
+
+			local song = GAMESTATE:GetCurrentSong();
+			-- ROAD24: more checks,
+			-- TODO: decide what to do if no song is chosen, ignore or hide ??
 			if song then
-				self:settext(song:GetDisplayArtist());
-				self:finishtweening();self:diffusealpha(0);
-				self:sleep(0.2);self:decelerate(0.05);self:diffusealpha(1);
-			else
-				self:stoptweening();self:linear(0.05);self:diffusealpha(0);
+				local speedvalue;
+				if song:IsDisplayBpmRandom() then
+					speedvalue = "unknown";
+				else
+					local rawbpm = GAMESTATE:GetCurrentSong():GetDisplayBpms();
+					local lobpm = math.ceil(rawbpm[1]);
+					local hibpm = math.ceil(rawbpm[2]);
+					if lobpm == hibpm then
+						speedvalue = hibpm
+					else
+						speedvalue = lobpm.."~"..hibpm
+					end;
+				end;
+				self:settext(speedvalue);
+				(cmd(finishtweening;zoom,0.7;maxwidth,100)) (self)
 			end;
 		end;
-	};--]]
+	};
 
 	-- HELP TEXT
 	LoadFont("_halogen 20px")..{	
@@ -270,7 +312,7 @@ t[#t+1] = Def.ActorFrame{
 	
 	LoadFont("_halogen 20px")..{	
 		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_BOTTOM-140;diffusealpha,0;zoom,0.5;horizalign,left);
-		SongChosenMessageCommand=cmd(sleep,0.5;diffusealpha,1);
+		SongChosenMessageCommand=cmd(sleep,0.435;diffusealpha,1);
 		SongUnchosenMessageCommand=cmd(diffusealpha,0);
 		OffCommand=cmd(diffusealpha,0);
 		Text="LEFT/RIGHT = Select Level     UP/DOWN = Cancel\nPress ENTER to confirm.",
