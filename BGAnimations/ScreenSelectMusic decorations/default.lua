@@ -1,3 +1,5 @@
+local CUR_STEPS_TYPE = GAMESTATE:GetCurrentStyle():GetStepsType();
+
 local t = LoadFallbackB();
 
 -- Legacy StepMania 4 Function
@@ -24,6 +26,7 @@ end
 
 
 --Difficulties, I guess
+--This is up here so it gets covered by the two part select.
 for i,diff in ipairs(Difficulty) do
 	t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(xy,SCREEN_CENTER_X-310,SCREEN_BOTTOM-235+15*i);
@@ -37,7 +40,7 @@ for i,diff in ipairs(Difficulty) do
 			OnCommand=function(self)
 				local song = GAMESTATE:GetCurrentSong();
 				if song then
-					local steps = song:GetOneSteps("StepsType_Dance_Single",diff);
+					local steps = song:GetOneSteps(CUR_STEPS_TYPE,diff);
 					if steps then
 						self:visible(true);
 						self:settext(steps:GetMeter())
@@ -55,7 +58,6 @@ for i,diff in ipairs(Difficulty) do
 end;
 
 --The function that... Draws the items in the two part select list.
-local CUR_STEPS_TYPE = GAMESTATE:GetCurrentStyle():GetStepsType();
 function drawDiffListItem(difficulty)
 	return Def.ActorFrame{
 		SongChosenMessageCommand=function(self)
@@ -71,7 +73,13 @@ function drawDiffListItem(difficulty)
 					self:GetChild("DifficultyAndMeter"):settext(THEME:GetString("CustomDifficulty",ToEnumShortString(difficulty)).." (Lv."..steps:GetMeter()..")");
 				end;
 				--self:GetChild("NoteCount"):settext("
-				self:GetChild("StepsBy"):settext("Steps By "..steps:GetAuthorCredit());
+				if steps:GetAuthorCredit() ~= "" then
+					self:GetChild("StepsBy"):settext("Steps By "..steps:GetAuthorCredit()):visible(true);
+				else
+					self:GetChild("StepsBy"):visible(false);
+				end
+				
+				self:GetChild("NoteCount"):settext(steps:GetRadarValues(PLAYER_1):GetValue('RadarCategory_TapsAndHolds').." notes")
 			else
 				self:visible(false);
 			end;
