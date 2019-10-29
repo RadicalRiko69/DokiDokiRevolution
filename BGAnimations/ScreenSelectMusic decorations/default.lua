@@ -307,7 +307,7 @@ t[#t+1] = Def.ActorFrame{
 		SongChosenMessageCommand=cmd(visible,false);
 		SongUnchosenMessageCommand=cmd(visible,true);
 		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
-		Text="LEFT/RIGHT = Select Song     UP/DOWN = Choose Difficulty\nPress ENTER to choose a song.",
+		Text="LEFT/RIGHT = Select Song     SHIFT+ENTER = Change Sort\nPress ENTER to choose a song.",
 	};
 	
 	LoadFont("_halogen 20px")..{	
