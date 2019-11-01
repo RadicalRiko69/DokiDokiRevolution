@@ -141,28 +141,31 @@ t[#t+1] = Def.ActorFrame{
 	};
 	--The difficulty list items...
 	drawDiffListItem('Difficulty_Beginner')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+35,SCREEN_CENTER_Y-120);
+		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y-120);
 	};
 	drawDiffListItem('Difficulty_Easy')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+35,SCREEN_CENTER_Y-60);
+		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y-60);
 	};
 	drawDiffListItem('Difficulty_Medium')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+35,SCREEN_CENTER_Y);
+		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y);
 	};
 	drawDiffListItem('Difficulty_Hard')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+35,SCREEN_CENTER_Y+60);
+		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y+60);
 	};
 	drawDiffListItem('Difficulty_Challenge')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+35,SCREEN_CENTER_Y+120);
+		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y+120);
 	};
 	drawDiffListItem('Difficulty_Edit')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+35,SCREEN_CENTER_Y+180);
+		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y+180);
 	};
 	
 	--The pen.
 	Def.Sprite{
 		Texture=THEME:GetPathG("","Book/Selector");
-		InitCommand=cmd(zoom,.5;xy,SCREEN_CENTER_X+450,SCREEN_CENTER_Y);
+		InitCommand=cmd(zoom,.5;xy,SCREEN_CENTER_X+800,SCREEN_CENTER_Y);
+		SongChosenMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+450);
+		SongUnchosenMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+800);
+		TwoPartConfirmCanceledMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+800);
 		CurrentStepsP1ChangedMessageCommand=function(self)
 			self:stoptweening();
 			if not GAMESTATE:GetCurrentSteps(PLAYER_1) then return end;
@@ -243,7 +246,7 @@ t[#t+1] = Def.ActorFrame{
 
 	--Genre display
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y-40;zoom,0.6);
+		InitCommand=cmd(uppercase,true;x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y-40;zoom,0.6);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 			self:settext("GENRE:");
@@ -259,7 +262,7 @@ t[#t+1] = Def.ActorFrame{
 				genre = "N/A"
 			end
 			self:settext(genre);
-			(cmd(finishtweening;zoomx,0.8;maxwidth,140)) (self)
+			(cmd(finishtweening;zoom,0.7;maxwidth,130)) (self)
 		end;
 	};	
 
@@ -332,6 +335,12 @@ t[#t+1] = Def.ActorFrame{
 t[#t+1] = Def.ActorFrame {
 	LoadActor(THEME:GetPathS("Common","Page Flip")) .. {
 		CurrentSongChangedMessageCommand=cmd(stop;play);
+	};
+
+	--Lazy hack because I don't know how to make the bookmark stay behind the music wheel and the page when a song isn't picked...
+	LoadActor("lazy")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X-0.45;y,SCREEN_CENTER_Y);
+		OnCommand=cmd(zoom,0.45);
 	};
 		
 };
