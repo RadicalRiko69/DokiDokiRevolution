@@ -244,17 +244,16 @@ t[#t+1] = Def.ActorFrame {
 --Stuff on the right
 t[#t+1] = Def.ActorFrame{
 
-	--Genre display
+	--GENRE DISPLAY
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y-40;zoom,0.6);
+		InitCommand=cmd(x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y-40;zoom,0.7);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 			self:settext("GENRE:");
-			(cmd(finishtweening;zoom,0.7)) (self)
 		end;
 	};
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,right;x,SCREEN_CENTER_X-35;y,SCREEN_CENTER_Y-40;zoom,0.7);
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-125;y,SCREEN_CENTER_Y-40;zoom,0.7;maxwidth,130);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
@@ -262,22 +261,57 @@ t[#t+1] = Def.ActorFrame{
 				genre = "N/A"
 			end
 			self:settext(genre);
-			(cmd(finishtweening;zoom,0.7;maxwidth,130)) (self)
+		end;
+	};	
+	
+	--SORT DISPLAY
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X-152;y,SCREEN_CENTER_Y-26;zoom,0.7);
+		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=function(self)
+			self:settext("SORT:");
+		end;
+	};
+
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-126;y,SCREEN_CENTER_Y-26;zoom,0.7;maxwidth,120);
+		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=function(self)
+			local sort = GAMESTATE:GetSortOrder()
+			self:settext(ToEnumShortString(sort));
+		end;
+	};	
+
+	--LENGTH DISPLAY
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_CENTER_Y-26;zoom,0.7);
+		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=function(self)
+			self:settext("LENGTH:");
+			(cmd(finishtweening;zoom,0.7)) (self)
+		end;
+	};
+
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(horizalign,left;x,SCREEN_CENTER_X-260;y,SCREEN_CENTER_Y-26;zoom,0.7;maxwidth,120);
+		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=function(self)
+			local length = GAMESTATE:GetCurrentSong():MusicLengthSeconds()
+			self:settext(SecondsToMMSS(length));
 		end;
 	};	
 
 	--BPM DISPLAY
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;x,SCREEN_CENTER_X-300;y,SCREEN_CENTER_Y-40;zoom,0.4);
+		InitCommand=cmd(x,SCREEN_CENTER_X-300;y,SCREEN_CENTER_Y-40;zoom,0.7);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 			self:settext("BPM:");
-			(cmd(finishtweening;zoom,0.7)) (self)
 		end;
 	};
 	
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-280;y,SCREEN_CENTER_Y-40;zoom,0.4);
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-280;y,SCREEN_CENTER_Y-40;zoom,0.7;maxwidth,100);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 
@@ -299,7 +333,6 @@ t[#t+1] = Def.ActorFrame{
 					end;
 				end;
 				self:settext(speedvalue);
-				(cmd(finishtweening;zoom,0.7;maxwidth,100)) (self)
 			end;
 		end;
 	};
