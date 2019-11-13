@@ -1,8 +1,7 @@
 local x = Def.ActorFrame{
 	LoadFont("Common Normal")..{
 		Text=ScreenString("Saving Profiles");
-		InitCommand=cmd(Center;diffuse,color("1,1,1,1");x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+170);
-		OffCommand=cmd(linear,0.15;diffusealpha,0);
+		InitCommand=cmd(Center;diffuse,color("1,1,1,1");x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+130;zoom,0.8;skewx,-0.3;horizalign,left;maxwidth,520);
 	};
 };
 

@@ -329,7 +329,7 @@ t[#t+1] = Def.ActorFrame{
 					if lobpm == hibpm then
 						speedvalue = hibpm
 					else
-						speedvalue = lobpm.."~"..hibpm
+						speedvalue = lobpm.."-"..hibpm
 					end;
 				end;
 				self:settext(speedvalue);

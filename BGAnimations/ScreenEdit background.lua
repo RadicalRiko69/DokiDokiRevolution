@@ -3,11 +3,8 @@ local t = Def.ActorFrame {
 };
 t[#t+1] = Def.ActorFrame {
   InitCommand=cmd(Center);
-	LoadActor( THEME:GetPathB("ScreenWithMenuElements","background/_bg top") ) .. {
-		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT);
-	};
 	Def.Quad{
-		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,color("0.2,0.2,0.2,0"));
+		InitCommand=cmd(scaletoclipped,SCREEN_WIDTH,SCREEN_HEIGHT;diffuse,color("0,0,0,0"));
 		OnCommand=function(self)
 			local topScreen = SCREENMAN:GetTopScreen()
 			if topScreen then

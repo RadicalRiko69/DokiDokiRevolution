@@ -21,8 +21,29 @@ return Def.ActorFrame {
       },
     Def.Sprite{
         Name= "box",
+        OnCommand= cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+180;diffuse,color("#fe80e0");diffusealpha,0;zoom,0.7;sleep,2.5;linear,0.3;diffusealpha,1),
+        Texture= "Background.png",
+      },
+    Def.Sprite{
+        Name= "box",
         OnCommand= cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+180;diffusealpha,0;zoom,0.7;sleep,2.5;linear,0.3;diffusealpha,1),
-        Texture= "background.png",
+        Texture= "Frame.png",
+      },
+    Def.Sprite{
+        Name= "box",
+        OnCommand= cmd(x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+112;diffuse,color("#fe80e0");diffusealpha,0;zoom,0.7;sleep,2.5;linear,0.3;diffusealpha,1),
+        Texture= "Name.png",
+      },
+    Def.Sprite{
+        Name= "box",
+        OnCommand= cmd(x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+112;diffusealpha,0;zoom,0.7;sleep,2.5;linear,0.3;diffusealpha,1),
+        Texture= "Front.png",
+      },
+    Def.BitmapText{
+        Name= "nametag",
+        Font= "_riffic free medium 20px",
+        InitCommand= cmd(x,SCREEN_CENTER_X-152;y,SCREEN_CENTER_Y+115;diffusealpha,0;zoom,0.9;sleep,2.5;linear,0.3;diffusealpha,1),
+        Text= "Monika",
       },
     Def.BitmapText{
         Name= "company",
@@ -57,7 +78,7 @@ return Def.ActorFrame {
         Font= "_aller 20px",
         InitCommand= cmd(draworder,301;horizalign,left;zoom,0.8;x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+160;cropright,1),
         OnCommand= cmd(sleep,28;linear,2;cropright,0;sleep,2;linear,1;diffusealpha,0),
-        Text= "Be careful what you play, some difficulties can be too hard\nand will lead to a game over!\nWill you dance your way into her heart?",
+        Text= "Be careful what you play, some difficulties can be too hard\nand will lead to a game over!\nWill you dance your way into my heart?",
       },
 
 };

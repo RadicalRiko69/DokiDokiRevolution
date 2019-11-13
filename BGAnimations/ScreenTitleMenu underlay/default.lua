@@ -10,7 +10,7 @@ LoadActor(THEME:GetPathG("","_BG/white"))..{
 };
 
 LoadFont("_aller thin 20px") .. {
-	Text="This theme is not finished, this is purely for testing purposes.\nDo not sell this theme or use it in arcades.";
+	Text="Welcome to the Dance Game Girls Club!";
 	InitCommand=cmd(zoom,0.8;diffuse,Color("Black");x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
 	OnCommand=cmd(sleep,3;accelerate,0.5;diffusealpha,0);
 };
@@ -19,7 +19,7 @@ LoadFont("_aller thin 20px") .. {
 --characters
 Def.ActorFrame {
 	LoadActor(THEME:GetPathG("","_character_title/yuri")) .. {
-		InitCommand=cmd(zoom,0.46;x,SCREEN_RIGHT+310;y,SCREEN_BOTTOM-250;draworder,300);
+		InitCommand=cmd(zoom,0.44;x,SCREEN_RIGHT+310;y,SCREEN_BOTTOM-220;draworder,300);
 		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-286);
 	};
 };
