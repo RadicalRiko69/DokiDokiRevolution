@@ -9,13 +9,6 @@ LoadActor(THEME:GetPathG("","_BG/white"))..{
 	OnCommand=cmd(zoom,0.68;sleep,3;accelerate,0.5;diffusealpha,0);
 };
 
-LoadFont("_aller thin 20px") .. {
-	Text="Welcome to the Dance Game Girls Club!";
-	InitCommand=cmd(zoom,0.8;diffuse,Color("Black");x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
-	OnCommand=cmd(sleep,3;accelerate,0.5;diffusealpha,0);
-};
-
-
 --characters
 Def.ActorFrame {
 	LoadActor(THEME:GetPathG("","_character_title/yuri")) .. {

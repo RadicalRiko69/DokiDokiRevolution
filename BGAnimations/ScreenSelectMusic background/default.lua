@@ -1,8 +1,13 @@
 return Def.ActorFrame{
-
-	LoadActor(THEME:GetPathG("","_BG/notebook"))..{
-		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
-		OnCommand=cmd(zoom,0.45);
-	};
-
-};
+    Def.Sprite{
+        InitCommand=function(self)
+            if GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
+                self:Load(THEME:GetPathG("","_BG/extra"));
+            else
+                self:Load(THEME:GetPathG("","_BG/notebook"));
+            end;
+            self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y);
+            self:zoom(.45);
+        end;
+    }
+}

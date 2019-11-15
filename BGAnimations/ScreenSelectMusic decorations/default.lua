@@ -206,6 +206,7 @@ t[#t+1] = Def.ActorFrame {
 
 	Def.Sprite{
 		Name= "Sayori",
+		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-72;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
@@ -215,6 +216,7 @@ t[#t+1] = Def.ActorFrame {
 
 	Def.Sprite{
 		Name= "Natsuki",
+		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-215;y,SCREEN_BOTTOM-70;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
@@ -224,6 +226,7 @@ t[#t+1] = Def.ActorFrame {
 
 	Def.Sprite{
 		Name= "Yuri",
+		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-147;y,SCREEN_BOTTOM-70;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
@@ -241,7 +244,7 @@ t[#t+1] = Def.ActorFrame {
 	},
 };
 
---Stuff on the right
+--Song Info Stuff
 t[#t+1] = Def.ActorFrame{
 
 	--GENRE DISPLAY
@@ -256,32 +259,40 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-125;y,SCREEN_CENTER_Y-40;zoom,0.7;maxwidth,130);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
+			if GAMESTATE:GetCurrentSong() then
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "" then
 				genre = "N/A"
 			end
 			self:settext(genre);
+		else
+			self:settext("N/A");
 		end;
+	end;
 	};	
-	
-	--SORT DISPLAY
+
+	--STAGE DISPLAY
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-152;y,SCREEN_CENTER_Y-26;zoom,0.7);
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-170;y,SCREEN_CENTER_Y-26;zoom,0.7);
 		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			self:settext("SORT:");
+		OnCommand=function(self)
+			local stage = GAMESTATE:GetCurrentStage()
+			self:settext(THEME:GetString("Stage",ToEnumShortString(stage)).." Poem");
 		end;
 	};
 
-	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-126;y,SCREEN_CENTER_Y-26;zoom,0.7;maxwidth,120);
+	--SORT DISPLAY
+	LoadFont("_aller thin 20px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+140;y,SCREEN_BOTTOM-25;zoom,0.5;horizalign,left;diffuse,color("#552222"));
+		SongChosenMessageCommand=cmd(visible,false);
+		SongUnchosenMessageCommand=cmd(visible,true);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 			local sort = GAMESTATE:GetSortOrder()
-			self:settext(ToEnumShortString(sort));
+			self:settext("Sort: "..ToEnumShortString(sort));
 		end;
-	};	
-
+	};
+	
 	--LENGTH DISPLAY
 	LoadFont("_halogen 20px")..{
 		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_CENTER_Y-26;zoom,0.7);
@@ -296,9 +307,13 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(horizalign,left;x,SCREEN_CENTER_X-260;y,SCREEN_CENTER_Y-26;zoom,0.7;maxwidth,120);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
+		if GAMESTATE:GetCurrentSong() then
 			local length = GAMESTATE:GetCurrentSong():MusicLengthSeconds()
 			self:settext(SecondsToMMSS(length));
+		else
+			self:settext("N/A");
 		end;
+	end;
 	};	
 
 	--BPM DISPLAY
@@ -333,6 +348,8 @@ t[#t+1] = Def.ActorFrame{
 					end;
 				end;
 				self:settext(speedvalue);
+			else
+				self:settext("N/A");
 			end;
 		end;
 	};
@@ -362,6 +379,8 @@ t[#t+1] = Def.ActorFrame{
 		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
 		Text="Select Music",
 	};
+
+		
 
 };
 
