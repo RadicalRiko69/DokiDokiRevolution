@@ -206,7 +206,7 @@ t[#t+1] = Def.ActorFrame {
 
 	Def.Sprite{
 		Name= "Sayori",
-		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
+		Condition=(not GAMESTATE:IsExtraStage()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-72;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
@@ -236,6 +236,7 @@ t[#t+1] = Def.ActorFrame {
 
 	Def.Sprite{
 		Name= "Monika",
+		Condition=(not GAMESTATE:IsExtraStage2()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_BOTTOM-72;animate,false),
 		OnCommand=cmd(stoptweening;setstate,0),
 		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
