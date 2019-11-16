@@ -58,8 +58,21 @@ for i,diff in ipairs(Difficulty) do
 end;
 
 --The function that... Draws the items in the two part select list.
-function drawDiffListItem(difficulty)
+--There are two of these drawn at once since both p1 and p2 need to be colored. Yes it's hacky, but it makes gradients work.
+
+local function oppositePlayer(pn)
+	return (pn == PLAYER_1) and PLAYER_2 or PLAYER_1
+end;
+
+local function drawDiffListItem(difficulty, pn)
+
+	local pnColors = {
+		[PLAYER_1] = color("#ff9ef2"),
+		[PLAYER_2] = Color("HoloBlue")
+	}
+
 	return Def.ActorFrame{
+		--OnCommand=cmd(cropright,1);
 		SongChosenMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			if song:HasStepsTypeAndDifficulty(CUR_STEPS_TYPE,difficulty) then
@@ -84,21 +97,42 @@ function drawDiffListItem(difficulty)
 				self:visible(false);
 			end;
 		end;
-		CurrentStepsP1ChangedMessageCommand=function(self)
+		["CurrentSteps"..pname(pn).."ChangedMessageCommand"]=function(self)
+			--self:cropright(1);
 			--local song = GAMESTATE:GetCurrentSong();
 			--GAMESTATE:GetCurrentSong():GetOneSteps(CUR_STEPS_TYPE,difficulty) == GAMESTATE:GetCurrentSteps(PLAYER_1)
 			--SCREENMAN:SystemMessage(GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty());
-			if GAMESTATE:GetCurrentSong():GetOneSteps(CUR_STEPS_TYPE,difficulty) == GAMESTATE:GetCurrentSteps(PLAYER_1) then
-				self:GetChild("DifficultyAndMeter"):strokecolor(color("#ff9ef2"));
-				self:GetChild("NoteCount"):strokecolor(color("#ff9ef2"));
-				self:GetChild("StepsBy"):strokecolor(color("#ff9ef2"));
+			if GAMESTATE:GetCurrentSong():GetOneSteps(CUR_STEPS_TYPE,difficulty) == GAMESTATE:GetCurrentSteps(pn) then
+				self:GetChild("DifficultyAndMeter"):strokecolor(pnColors[pn]);
+				self:GetChild("NoteCount"):strokecolor(pnColors[pn]);
+				self:GetChild("StepsBy"):strokecolor(pnColors[pn]);
+				if GAMESTATE:GetCurrentSteps(pn) == GAMESTATE:GetCurrentSteps(oppositePlayer(pn)) then
+					if pn == PLAYER_1 then
+						self:GetChild("DifficultyAndMeter"):faderight(1);
+					else
+						self:GetChild("DifficultyAndMeter"):fadeleft(1);
+					end;
+				else
+					self:GetChild("DifficultyAndMeter"):faderight(0):fadeleft(0);
+				end;
 			else
 				self:GetChild("DifficultyAndMeter"):NoStroke();
 				self:GetChild("NoteCount"):NoStroke();
 				self:GetChild("StepsBy"):NoStroke();
 			end
-			
 		end;
+		["CurrentSteps"..pname(oppositePlayer(pn)).."ChangedMessageCommand"]=function(self)
+			if GAMESTATE:GetCurrentSteps(pn) == GAMESTATE:GetCurrentSteps(oppositePlayer(pn)) and GAMESTATE:GetCurrentSong():GetOneSteps(CUR_STEPS_TYPE,difficulty) == GAMESTATE:GetCurrentSteps(pn) then
+				if pn == PLAYER_1 then
+					self:GetChild("DifficultyAndMeter"):faderight(1);
+				else
+					self:GetChild("DifficultyAndMeter"):fadeleft(1);
+				end;
+			else
+				self:GetChild("DifficultyAndMeter"):faderight(0):fadeleft(0);
+			end;
+		end;
+		
 		Def.BitmapText{
 			Name="DifficultyAndMeter";
 			Font="_halogen outline 20px";
@@ -122,7 +156,7 @@ function drawDiffListItem(difficulty)
 end;
 
 --The two part select...
-t[#t+1] = Def.ActorFrame{
+local tps = Def.ActorFrame{
 	InitCommand=cmd(visible,false);
 	SongChosenMessageCommand=cmd(visible,true);
 	TwoPartConfirmCanceledMessageCommand=cmd(visible,false);
@@ -139,43 +173,21 @@ t[#t+1] = Def.ActorFrame{
 		InitCommand=cmd(zoom,.4475;vertalign,bottom;xy,SCREEN_CENTER_X+10,SCREEN_BOTTOM-93;);
 		
 	};
-	--The difficulty list items...
-	drawDiffListItem('Difficulty_Beginner')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y-120);
-	};
-	drawDiffListItem('Difficulty_Easy')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y-60);
-	};
-	drawDiffListItem('Difficulty_Medium')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y);
-	};
-	drawDiffListItem('Difficulty_Hard')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y+60);
-	};
-	drawDiffListItem('Difficulty_Challenge')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y+120);
-	};
-	drawDiffListItem('Difficulty_Edit')..{
-		InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y+180);
-	};
-	
-	--The pen.
-	Def.Sprite{
-		Texture=THEME:GetPathG("","Book/Selector");
-		InitCommand=cmd(zoom,.5;xy,SCREEN_CENTER_X+800,SCREEN_CENTER_Y);
-		SongChosenMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+450);
-		SongUnchosenMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+800);
-		TwoPartConfirmCanceledMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+800);
-		CurrentStepsP1ChangedMessageCommand=function(self)
-			self:stoptweening();
-			if not GAMESTATE:GetCurrentSteps(PLAYER_1) then return end;
-			local diff = Difficulty:Reverse()[GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()];
-			self:decelerate(.3):y(-95+diff*60);
-			--SCREENMAN:SystemMessage(CUR_STEPS_TYPE..", "..GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()..", "..diff);
-		end;
-	};
+};
 
-	LoadFont("_halogen 20px")..{	
+--[[
+The difficulty list items...
+Since I'm drawing 6 difficulty items each for num joined players, we have to add up to 12 items to the tps frame..
+]]
+for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+	for i,diff in ipairs(Difficulty) do
+		tps[#tps+1] = drawDiffListItem(diff,pn)..{
+			InitCommand=cmd(xy,SCREEN_CENTER_X+32,SCREEN_CENTER_Y-180+i*60);
+		};
+	end;
+end;
+
+tps[#tps+1] = LoadFont("_halogen 20px")..{	
 		InitCommand=cmd(x,SCREEN_CENTER_X+40;y,SCREEN_TOP+60;visible,false;zoom,1;horizalign,left);
 		SongChosenMessageCommand=cmd(visible,true);
 		SongUnchosenMessageCommand=cmd(visible,false);
@@ -183,19 +195,37 @@ t[#t+1] = Def.ActorFrame{
 		Text="Select Difficulty",
 	};
 	
-	--The page that gets turned.
-	Def.Sprite{
-		Texture=THEME:GetPathG("","Book/page1");
-		InitCommand=cmd(zoom,.4495;horizalign,left;vertalign,bottom;xy,SCREEN_CENTER_X-0.25,SCREEN_BOTTOM+2.25;);
-		SongChosenMessageCommand=function(self)
-			self:zoomx(.4495):accelerate(.25):zoomx(0):queuecommand("page"):decelerate(.25):zoomx(-.4495)
-		end;
-		pageCommand=function(self)
-			self:Load(THEME:GetPathG("","Book/page2"));
+--The page that gets turned.
+tps[#tps+1] = Def.Sprite{
+	Texture=THEME:GetPathG("","Book/page1");
+	InitCommand=cmd(zoom,.4495;horizalign,left;vertalign,bottom;xy,SCREEN_CENTER_X-0.25,SCREEN_BOTTOM+2.25;);
+	SongChosenMessageCommand=function(self)
+		self:zoomx(.4495):accelerate(.25):zoomx(0):queuecommand("page"):decelerate(.25):zoomx(-.4495)
+	end;
+	pageCommand=function(self)
+		self:Load(THEME:GetPathG("","Book/page2"));
+	end;
+};
+
+t[#t+1] = tps;
+
+for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
+	--The pen.
+	t[#t+1] = Def.Sprite{
+		Texture=THEME:GetPathG("","Book/Selector_"..pname(pn));
+		InitCommand=cmd(zoom,.5;xy,SCREEN_CENTER_X+800,SCREEN_CENTER_Y);
+		SongChosenMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+450);
+		SongUnchosenMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+800);
+		TwoPartConfirmCanceledMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+800);
+		["CurrentSteps"..pname(pn).."ChangedMessageCommand"]=function(self)
+			self:stoptweening();
+			if not GAMESTATE:GetCurrentSteps(pn) then return end;
+			local diff = Difficulty:Reverse()[GAMESTATE:GetCurrentSteps(pn):GetDifficulty()];
+			self:decelerate(.3):y(-95+diff*60);
+			--SCREENMAN:SystemMessage(CUR_STEPS_TYPE..", "..GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()..", "..diff);
 		end;
 	};
-
-}; 
+end;
 
 -- Stuff on the left
 t[#t+1] = Def.ActorFrame {
