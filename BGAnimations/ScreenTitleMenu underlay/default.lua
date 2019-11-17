@@ -11,15 +11,15 @@ LoadActor(THEME:GetPathG("","_BG/white"))..{
 
 --characters
 Def.ActorFrame {
-	LoadActor(THEME:GetPathG("","_character_title/yuri")) .. {
-		InitCommand=cmd(zoom,0.44;x,SCREEN_RIGHT+310;y,SCREEN_BOTTOM-220;draworder,300);
-		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-286);
+	LoadActor(THEME:GetPathG("","_character_title/natsuki")) .. {
+		InitCommand=cmd(zoom,0.48;x,SCREEN_RIGHT+310;y,SCREEN_BOTTOM-180;draworder,300);
+		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-206);
 	};
 };
 Def.ActorFrame {
-	LoadActor(THEME:GetPathG("","_character_title/natsuki")) .. {
-		InitCommand=cmd(zoom,0.4;x,SCREEN_RIGHT+310;y,SCREEN_BOTTOM-220;draworder,300);
-		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-206);
+	LoadActor(THEME:GetPathG("","_character_title/yuri")) .. {
+		InitCommand=cmd(zoom,0.44;x,SCREEN_RIGHT+300;y,SCREEN_BOTTOM-220;draworder,300);
+		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-286);
 	};
 };
 Def.ActorFrame {
@@ -30,7 +30,7 @@ Def.ActorFrame {
 };
 Def.ActorFrame {
 	LoadActor(THEME:GetPathG("","_character_title/sayori")) .. {
-		InitCommand=cmd(zoom,0.5;x,SCREEN_RIGHT+310;y,SCREEN_BOTTOM-140;draworder,300);
+		InitCommand=cmd(zoom,0.5;x,SCREEN_RIGHT+310;y,SCREEN_BOTTOM-100;draworder,300);
 		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-330;);
 	};
 };
