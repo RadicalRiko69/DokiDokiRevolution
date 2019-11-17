@@ -12,14 +12,14 @@ LoadActor(THEME:GetPathG("","_BG/white"))..{
 --characters
 Def.ActorFrame {
 	LoadActor(THEME:GetPathG("","_character_title/natsuki")) .. {
-		InitCommand=cmd(zoom,0.48;x,SCREEN_RIGHT+310;y,SCREEN_BOTTOM-180;draworder,300);
-		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-206);
+		InitCommand=cmd(zoom,0.48;x,SCREEN_RIGHT+300;y,SCREEN_BOTTOM-150;draworder,300);
+		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-196);
 	};
 };
 Def.ActorFrame {
 	LoadActor(THEME:GetPathG("","_character_title/yuri")) .. {
-		InitCommand=cmd(zoom,0.44;x,SCREEN_RIGHT+300;y,SCREEN_BOTTOM-220;draworder,300);
-		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-286);
+		InitCommand=cmd(zoom,0.44;x,SCREEN_RIGHT+300;y,SCREEN_BOTTOM-180;draworder,300);
+		OnCommand=cmd(sleep,4;decelerate,2;x,SCREEN_RIGHT-280);
 	};
 };
 Def.ActorFrame {
