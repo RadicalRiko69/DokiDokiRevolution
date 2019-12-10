@@ -9,7 +9,10 @@ Supported commands:
 ]]
 local texttable2 = {
 	"It’s a beautiful day outside, birds are singing, flowers are blooming. On days like these, I just want to listen to some good music with my best friend Sayori.",
-	"/mc[LeftSide,4]/mc[SE,Arc_S0AA001]Although, cherry blossoms during the summer is too much. Wouldn't you agree, Mister?",
+	"/mc[Appear]/mc[LeftSide]/mc[Name,Sayori]Hah...hah...I MADE IT!! I MADE IT!! ARE YOU PROUD OF ME?!",
+	"/mc[Name,You]Don't yell so loud, I can hear you just fine!",
+	"/mc[Name,Sayori]/mc[LeftSide,emi_basic_confused]WHAT?!"
+	--[["/mc[LeftSide,4]/mc[SE,Arc_S0AA001]Although, cherry blossoms during the summer is too much. Wouldn't you agree, Mister?",
 	"/mc[RightSide,0]/mc[SE,Arc_S0AA002]/mc[Appear]/dim[0]Yes...... monsters and cherry blossoms.\nBut tell me, who is the real monster here?",
 	"/mc[SE,Arc_S0AA003]You, or I? The devil in the form of a beautiful woman,\nor the human with the looks of an unrelenting monster?",
 	"/mc[SE,Arc_S0AA004]Then again, to everyone else, well―――\nI suppose one could call me a demon after all.",
@@ -18,7 +21,7 @@ local texttable2 = {
 	"/mc[SE,Arc_S0AA007]Meeting you must be the work of fate. Could you help me feel alive again?",
 	"/mc[LeftSide,4]/mc[SE,Arc_S0AA008]/dim[1]Sure thing. But since you inturrupted my flower viewing, don't expect me to go easy on you.",
 	"/mc[SE,Arc_S0AA009]/dim[0]I'd like nothing less. If my body can't awaken from this battle, it'd be best if I disappeared entirely from this world.",
-	"/mc[SE,Arc_S0AA010]Against a foe like you, I may experience not the feeling of life, but of death."
+	"/mc[SE,Arc_S0AA010]Against a foe like you, I may experience not the feeling of life, but of death."]]
 }
 
 local pos = 1;
@@ -87,16 +90,30 @@ local t = Def.ActorFrame{
 		f = self;
 	end;
 
-	LoadActor("night path2")..{
+	Def.Sprite{
 		Name="Background";
+		Texture=GetPathVN("Backgrounds/suburb_roadcenter.jpg");
 		InitCommand=cmd(Cover;diffusealpha,1);
+	};
+	
+	Def.Sound{
+		Name="Audio";
+		File=GetPathVN("Music/1.mp3");
+		SupportPan=false;
+		IsAction=false;
+		OnCommand=cmd(play);
+		
 	};
 	
 	Def.Sprite{
 		Name="LeftSide";
-		InitCommand=cmd(vertalign,bottom;xy,SCREEN_CENTER_X/2,SCREEN_BOTTOM;zoom,1.5);
+		InitCommand=cmd(vertalign,bottom;xy,SCREEN_CENTER_X/2,SCREEN_BOTTOM;zoom,1);
 		LeftSideMessageCommand=function(self,param)
-			self:Load(GetPathVN("notexture (doubleres).png"));
+			if param then
+				self:Load(GetPathVN("Portrait/"..param[1]..".png"));
+			else
+				self:Load(GetPathVN("Portrait/emi_basic_closedsweat.png"));
+			end;
 		end;
 		VNDimMessageCommand=function(self,param)
 			if param[1] == '0' then
@@ -130,19 +147,7 @@ local t = Def.ActorFrame{
 		InitCommand=cmd(zoomx,0;setsize,400,3;fadeleft,.5;faderight,.5;xy,SCREEN_WIDTH*.75-50,SCREEN_HEIGHT*.95+5;diffuse,Color("White"));
 		AppearMessageCommand=cmd(decelerate,.6;zoomx,1);
 	};]]
-	--[[LoadFont("Dialogue Character Names")..{
-		Name="LeftName";
-		Text="NoName (Left)";
-		InitCommand=cmd(xy,SCREEN_CENTER_X/2+50,SCREEN_BOTTOM-100-150/2;addx,100;halign,0.2;vertalign,bottom;shadowcolor,Color("Black");diffusebottomedge,Color("Red");shadowlength,1;diffusealpha,0);
-		OnCommand=cmd(decelerate,.6;addx,-120;diffusealpha,1);
-	};
-	
-	LoadFont("Dialogue Character Names")..{
-		Name="RightName";
-		Text="NoName (Right)";
-		InitCommand=cmd(xy,SCREEN_WIDTH*.75-50,SCREEN_HEIGHT*.95;addx,-100;halign,0.8;vertalign,bottom;shadowcolor,Color("Black");diffusebottomedge,Color("Red");shadowlength,1;diffusealpha,0);
-		AppearMessageCommand=cmd(decelerate,.6;addx,120;diffusealpha,1);
-	};]]
+
 };
 
 t[#t+1] = Def.ActorFrame{
@@ -150,6 +155,26 @@ t[#t+1] = Def.ActorFrame{
 	--[[genTextBackground(130)..{
 		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-95;vertalign,top;)
 	};]]
+	
+	Def.Sprite{
+		Texture=THEME:GetPathG("","TextBox/Name");
+		InitCommand=cmd(xy,SCREEN_CENTER_X-200,SCREEN_BOTTOM-180;diffuse,color("#ff9ef2aa");zoom,.9);
+	};
+	
+	Def.Sprite{
+		Texture=THEME:GetPathG("","TextBox/Front");
+		InitCommand=cmd(xy,SCREEN_CENTER_X-200,SCREEN_BOTTOM-180;zoom,.9);
+	};
+	LoadFont("_aller 20px")..{
+		Name="Name";
+		--Text="You";
+		InitCommand=cmd(xy,SCREEN_CENTER_X/2-30,SCREEN_BOTTOM-100-150/2;addx,100;halign,0;vertalign,bottom;diffusebottomedge,color("#ff9ef2ff");diffusealpha,0);
+		OnCommand=cmd(decelerate,.6;addx,-120;diffusealpha,1);
+		NameMessageCommand=function(self,param)
+			self:settext(param[1]);
+		end;
+	};
+	
 	Def.Sprite{
 		Texture=THEME:GetPathG("","TextBox/Background");
 		InitCommand=cmd(xy,SCREEN_CENTER_X,SCREEN_BOTTOM-100;diffuse,color("#ff9ef2ff");zoom,.9);
