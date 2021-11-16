@@ -13,4 +13,4 @@ Title Character Art by Giovanni Shawn
 Chibi Character Art by [UsagiSii](https://usagisii.carrd.co/)
 
 # 2021 Update
-This theme is discontinued, please go to our [website](teamsushipresentations.com) for our newest projects.
+This theme is discontinued, please go to our [website](www.teamsushipresentations.com) for our newest projects.
