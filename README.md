@@ -6,7 +6,7 @@ As of 8/2/19, this is only a visual theme rather than a game theme (no story mod
 *Disclaimer: This theme may have problems outside of dance mode. **This theme is not for use in arcades.***
 
 # Copyright Notices
-*Doki Doki Literature Club* is property of Team Salvato. This is merely a fan project made by Team Sushi, no money will be made off of this.
+*Doki Doki Literature Club* is property of Team Salvato. This is merely a fan project made by Team Sushi Presentations, no money will be made off of this.
 
 Title Character Art by Giovanni Shawn
 
