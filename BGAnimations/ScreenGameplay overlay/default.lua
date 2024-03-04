@@ -5,9 +5,6 @@ local function PlayerInfo(pn)
 	return t
 end;
 
-
-
-
 local function customlifemeterS(pn)
 	local t = Def.ActorFrame {
 		LoadActor("mask") .. {
@@ -30,8 +27,14 @@ local function customlifemeterS(pn)
 				else
 					self:diffuse(color("#FFFFFF"));
 				end
+				local death = 0
+				if params.Life == death then
+					self:decelerate(1):zoom(0):diffusealpha(0);
+				else
+					self:diffusealpha(1);
+				end
 			end;
-			["Kill"..pname(pn).."MessageCommand"]=cmd(linear,0.05;diffusealpha,1;bounce;effectmagnitude,0,5,0;effectperiod,0.05;sleep,0.25;queuecommand,"Slow");  
+			["Kill"..pname(pn).."MessageCommand"]=cmd(linear,0.05;rotationz,2;diffusealpha,1;bounce;effectmagnitude,0,5,0;effectperiod,0.05;sleep,0.25;queuecommand,"Slow");  
 			SlowCommand=cmd(bounce;effectmagnitude,0,3,0;effectperiod,0.05;sleep,0.25;queuecommand,"Slower");
 			SlowerCommand=cmd(bounce;effectmagnitude,0,1,0;effectperiod,0.05;sleep,0.25;queuecommand,"Stop");
 			StopCommand=cmd(bounce;effectmagnitude,0,0,0;effectperiod,0.05);
@@ -69,6 +72,12 @@ local function customlifemeterS(pn)
 					self:diffuse(color("#00FFFF"));
 				else
 					self:diffuse(color("#FF80FF"));
+				end
+				local death = 0
+				if params.Life == death then
+					self:decelerate(1):zoom(0):diffusealpha(0);
+				else
+					self:diffusealpha(1);
 				end
 				local xpos = params.Life*500;
 				if xpos <= 4 then
