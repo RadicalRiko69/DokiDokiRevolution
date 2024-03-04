@@ -3,8 +3,7 @@ ScreenStoryMode just loads everything from the StoryMode folder.
 Every single lua inside this folder is a self contained screen.
 The file that starts the story is named Init.lua.
 Anything else doesn't matter, because you set the next screen, or the song, or whatever inside init.lua.
-Set next screen using the VN_NEXT_SCENE variable.
 
 ## How to play a song after a cutscene?
 Set the next screen as ScreenStageInformation and do all your setting in a lua inside StoryMode.
-Set the global VN_NEXT_SCENE variable to the name of the story mode lua you want to be loaded after this.
+Set the global VN_RETURN_TO variable to the name of the story mode lua you want to be loaded after this.

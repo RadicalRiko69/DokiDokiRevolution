@@ -62,26 +62,26 @@ local as = Def.ActorScroller{
 		function(self, param)
 			if true then
 				local ch;
-				if param.Name == "Up" or param.Name == "MenuUp" then
+				if param.Name == "up" then
 					if self:GetDestinationItem() > 0 then
 						self:SetDestinationItem(self:GetDestinationItem()-1);
 					end;
 					updateFocus(self);
 					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
-				elseif param.Name == "Down" or param.Name == "MenuDown" then
+				elseif param.Name == "down" then
 					if self:GetDestinationItem() < self:GetNumItems()-1 then
 						self:SetDestinationItem(self:GetDestinationItem()+1);
 					end;
 					updateFocus(self);
 					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
-				elseif param.Name == "Left" or param.Name == "MenuLeft" then
+				elseif param.Name == "left" then
 					--SCREENMAN:SystemMessage(_G.selectedDifficulty);
 					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
-				elseif param.Name == "Right" or param.Name == "MenuRight" then
+				elseif param.Name == "right" then
 
 					--SCREENMAN:SystemMessage(_G.selectedDifficulty);
 					SOUND:PlayOnce(THEME:GetPathS("Common", "value"), true);
-				elseif param.Name == "Start" then
+				elseif param.Name == "start" then
 					if self:GetDestinationItem() == 0 then
 						SCREENMAN:GetTopScreen():StartTransitioningScreen("SM_GoToNextScreen");
 					elseif self:GetDestinationItem() == 4 then

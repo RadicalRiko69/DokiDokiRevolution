@@ -3,6 +3,9 @@ local x = Def.ActorFrame{
 		Text=ScreenString("Saving Profiles");
 		InitCommand=cmd(Center;diffuse,color("1,1,1,1");x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+130;zoom,0.8;skewx,-0.3;horizalign,left;maxwidth,520);
 	};
+	Def.Quad {
+		InitCommand=cmd(diffuse,color("#000000");diffusealpha,1;zoom,1000000;x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
+	};
 };
 
 x[#x+1] = Def.Actor {

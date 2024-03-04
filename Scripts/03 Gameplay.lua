@@ -6,7 +6,7 @@
 -- for example, not every theme wants to worry about custom receptor positions.
 local tNotePositions = {
 	-- StepMania 3.9/4.0
-	Normal = { -144, 144, },
+	Normal = { -170, 170, },
 	-- ITG
 	Lower = { -125, 145, }
 }

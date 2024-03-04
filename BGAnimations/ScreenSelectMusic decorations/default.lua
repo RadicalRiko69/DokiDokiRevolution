@@ -25,37 +25,6 @@ end
 
 
 
---Difficulties, I guess
---This is up here so it gets covered by the two part select.
-for i,diff in ipairs(Difficulty) do
-	t[#t+1] = Def.ActorFrame{
-		InitCommand=cmd(xy,SCREEN_CENTER_X-310,SCREEN_BOTTOM-235+15*i);
-		LoadFont("_halogen 20px")..{
-			Text=THEME:GetString("CustomDifficulty",ToEnumShortString(diff));
-			InitCommand=cmd(horizalign,left);
-		};
-		LoadFont("_halogen 20px")..{
-			Text="??";
-			InitCommand=cmd(horizalign,right;addx,275);
-			OnCommand=function(self)
-				local song = GAMESTATE:GetCurrentSong();
-				if song then
-					local steps = song:GetOneSteps(CUR_STEPS_TYPE,diff);
-					if steps then
-						self:visible(true);
-						self:settext(steps:GetMeter())
-					else
-						self:visible(false);
-					end;
-				else
-					self:visible(false);
-				end;
-			end;
-			CurrentSongChangedMessageCommand=cmd(playcommand,"On");
-		
-		};
-	}
-end;
 
 --The function that... Draws the items in the two part select list.
 --There are two of these drawn at once since both p1 and p2 need to be colored. Yes it's hacky, but it makes gradients work.
@@ -73,6 +42,7 @@ local function drawDiffListItem(difficulty, pn)
 
 	return Def.ActorFrame{
 		--OnCommand=cmd(cropright,1);
+		OffCommand=cmd(visible,false);
 		SongChosenMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			if song:HasStepsTypeAndDifficulty(CUR_STEPS_TYPE,difficulty) then
@@ -229,17 +199,29 @@ end;
 
 -- Stuff on the left
 t[#t+1] = Def.ActorFrame {
-
+	
 	LoadActor("banner frame.png")..{
-		InitCommand=cmd(zoom,0.4;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+110);
+		InitCommand=cmd(zoom,0.525;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
 	};
 
 	Def.Sprite{
 		Name= "Sayori",
 		Condition=(not GAMESTATE:IsExtraStage()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-72;animate,false),
-		OnCommand=cmd(stoptweening;setstate,0),
-		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
+		WalkAroundCommand=function(self)
+			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
+			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(0.5):queuecommand("WalkAround");
+		end,
+		OnCommand=cmd(stoptweening;setstate,0;queuecommand,"WalkAround"),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-72;),
+		SongUnchosenMessageCommand=cmd(queuecommand,"WalkAround"),
+		OffCommand=function(self)
+			local genre = GAMESTATE:GetCurrentSong():GetGenre()
+			if genre == "Pop" or genre == "Dance Pop" or genre == "Synthpop" or genre == "Pop Rock" or genre == "Pop-Rock" or genre == "Alternative Pop"
+			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop"  then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
+			end
+		end,
 		ResetAnimCommand=cmd(setstate,0);
 		Texture= "sayori 2x1.png",
 	},
@@ -248,8 +230,20 @@ t[#t+1] = Def.ActorFrame {
 		Name= "Natsuki",
 		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-215;y,SCREEN_BOTTOM-70;animate,false),
-		OnCommand=cmd(stoptweening;setstate,0),
-		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
+		WalkAroundCommand=function(self)
+			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(3):decelerate(0.1):
+			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(2):queuecommand("WalkAround");
+		end,
+		OnCommand=cmd(stoptweening;setstate,0;sleep,0.5;queuecommand,"WalkAround"),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-215;y,SCREEN_BOTTOM-70),
+		SongUnchosenMessageCommand=cmd(sleep,0.8;queuecommand,"WalkAround"),
+		OffCommand=function(self)
+			local genre = GAMESTATE:GetCurrentSong():GetGenre()
+			if genre == "Hip-Hop" or genre == "Hip Hop" or genre == "Trap" or genre == "R&B" or genre == "R'n'B" or genre == "Dancehall"
+			or genre == "Pop Rap" or genre == "Raggaeton" or genre == "Moombahton" or genre == "Hip House"  then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
+			end
+		end,
 		ResetAnimCommand=cmd(setstate,0);
 		Texture= "natsuki 2x1.png",
 	},
@@ -258,8 +252,20 @@ t[#t+1] = Def.ActorFrame {
 		Name= "Yuri",
 		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-147;y,SCREEN_BOTTOM-70;animate,false),
-		OnCommand=cmd(stoptweening;setstate,0),
-		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
+		WalkAroundCommand=function(self)
+			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(4):decelerate(0.1):
+			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(1):queuecommand("WalkAround");
+		end,
+		OnCommand=cmd(stoptweening;setstate,0;sleep,1;queuecommand,"WalkAround"),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-147;y,SCREEN_BOTTOM-70),
+		SongUnchosenMessageCommand=cmd(sleep,1;queuecommand,"WalkAround"),
+		OffCommand=function(self)
+			local genre = GAMESTATE:GetCurrentSong():GetGenre()
+			if genre == "Soul" or genre == "Heavy Metal" or genre == "Latin Pop" or genre == "Post-Grunge" or genre == "Bachata"
+			or genre == "Ballad" or genre == "Vallenato" or genre == "Tropical House"  then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
+			end
+		end,
 		ResetAnimCommand=cmd(setstate,0);
 		Texture= "yuri 2x1.png",
 	},
@@ -268,43 +274,92 @@ t[#t+1] = Def.ActorFrame {
 		Name= "Monika",
 		Condition=(not GAMESTATE:IsExtraStage2()),
 		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_BOTTOM-72;animate,false),
-		OnCommand=cmd(stoptweening;setstate,0),
-		OffCommand=cmd(setstate,1;decelerate,.145;addy,-30;accelerate,.145;addy,30;decelerate,.145;addy,-30;accelerate,.145;addy,30;queuecommand,"ResetAnim"),
+		WalkAroundCommand=function(self)
+			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
+			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(2):queuecommand("WalkAround");
+		end,
+		OnCommand=cmd(stoptweening;setstate,0;sleep,2.3;queuecommand,"WalkAround"),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-70;y,SCREEN_BOTTOM-72),
+		SongUnchosenMessageCommand=cmd(sleep,0.3;queuecommand,"WalkAround"),
+		OffCommand=function(self)
+			local genre = GAMESTATE:GetCurrentSong():GetGenre()
+			if genre == "EDM" or genre == "Dubstep" or genre == "Drum & Bass" or genre == "Funk" or genre == "Underground Rap"
+			or genre == "Country" or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
+			end
+		end,
 		ResetAnimCommand=cmd(setstate,0);
 		Texture= "monika 2x1.png",
 	},
 };
 
+if not GAMESTATE:IsCourseMode() then
+	local function CDTitleUpdate(self)
+		local song = GAMESTATE:GetCurrentSong();
+		local banner = self:GetChild("Banner");
+		
+		if song then
+			if song:HasBackground() then
+				banner:visible(true);
+				banner:Load(song:GetBackgroundPath());
+				banner:zoom(1);
+			elseif song:HasJacket() then
+				banner:visible(true);
+				banner:Load(song:GetJacketPath());
+				banner:zoom(1);
+			elseif song:HasBanner() then
+				banner:visible(true);
+				banner:Load(song:GetBannerPath());
+				banner:zoom(1);
+			else
+				banner:visible(false);
+			end;
+		else
+			banner:visible(false);
+		end;
+		
+		self:zoom(1)
+	end;
+	t[#t+1] = Def.ActorFrame {
+		OnCommand=cmd(x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122;rotationz,-6;SetUpdateFunction,CDTitleUpdate);
+		Def.Sprite {
+			Name="Frame";
+			InitCommand=cmd(zoom,0.525;MaskSource);
+			Texture="banner glass.png"
+		};	
+		Def.Sprite {
+			Name="Banner";
+			CurrentSongChangedMessageCommand=function(self)
+				(cmd(finishtweening;Load,nil;zoom,1.1;rotationz,0;decelerate,0.1;))(self);
+				if GAMESTATE:GetCurrentSong():HasBackground() then
+					self:scaletoclipped(265,145):MaskDest():Load(GAMESTATE:GetCurrentSong():GetBackgroundPath());
+				elseif GAMESTATE:GetCurrentSong():HasJacket() then
+					self:scaletoclipped(145,145):MaskDest():Load(GAMESTATE:GetCurrentSong():GetJacketPath());
+				elseif GAMESTATE:GetCurrentSong():HasBanner() then
+					self:scaletoclipped(265,145):MaskDest():Load(GAMESTATE:GetCurrentSong():GetBannerPath());
+				end;
+			end;
+		};	
+	};
+	t[#t+1] = Def.Quad {
+		InitCommand=cmd(glowshift;effectcolor1,color("#525252");effectcolor2,color("#000000");MaskDest;diffusealpha,0.2;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
+		CurrentSongChangedMessageCommand=function(self)
+					self:scaletoclipped(265,145);
+		end;
+	};
+	
+end;
+
 --Song Info Stuff
 t[#t+1] = Def.ActorFrame{
 
-	--GENRE DISPLAY
-	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y-40;zoom,0.7);
-		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			self:settext("GENRE:");
-		end;
+	LoadActor("banner shine.png")..{
+		InitCommand=cmd(zoom,0.525;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
 	};
-	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-125;y,SCREEN_CENTER_Y-40;zoom,0.7;maxwidth,130);
-		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			if GAMESTATE:GetCurrentSong() then
-			local genre = GAMESTATE:GetCurrentSong():GetGenre()
-			if genre == "" then
-				genre = "N/A"
-			end
-			self:settext(genre);
-		else
-			self:settext("N/A");
-		end;
-	end;
-	};	
 
 	--STAGE DISPLAY
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-170;y,SCREEN_CENTER_Y-26;zoom,0.7);
+		InitCommand=cmd(uppercase,true;horizalign,right;x,SCREEN_CENTER_X-36;y,SCREEN_CENTER_Y-4;zoom,0.8);
 		OffCommand=cmd(visible,false);
 		OnCommand=function(self)
 			local stage = GAMESTATE:GetCurrentStage()
@@ -323,41 +378,41 @@ t[#t+1] = Def.ActorFrame{
 			self:settext("Sort: "..ToEnumShortString(sort));
 		end;
 	};
-	
-	--LENGTH DISPLAY
-	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_CENTER_Y-26;zoom,0.7);
-		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			self:settext("LENGTH:");
-			(cmd(finishtweening;zoom,0.7)) (self)
-		end;
-	};
 
+	--SONG GENRE
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(horizalign,left;x,SCREEN_CENTER_X-260;y,SCREEN_CENTER_Y-26;zoom,0.7;maxwidth,120);
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-312;y,SCREEN_CENTER_Y+26;zoom,0.8;maxwidth,350);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
-		if GAMESTATE:GetCurrentSong() then
-			local length = GAMESTATE:GetCurrentSong():MusicLengthSeconds()
-			self:settext(SecondsToMMSS(length));
+			if GAMESTATE:GetCurrentSong() then
+			local genre = GAMESTATE:GetCurrentSong():GetGenre()
+			if genre == "" then
+				genre = "N/A"
+			end
+			self:settext("GENRE: "..genre);
 		else
-			self:settext("N/A");
+			self:settext("GENRE: N/A");
 		end;
 	end;
 	};	
 
-	--BPM DISPLAY
+	--SONG LENGTH
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-300;y,SCREEN_CENTER_Y-40;zoom,0.7);
+		InitCommand=cmd(horizalign,left;x,SCREEN_CENTER_X-312;y,SCREEN_CENTER_Y+56;zoom,0.8;maxwidth,620);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
-			self:settext("BPM:");
+		if GAMESTATE:GetCurrentSong() then
+			local length = GAMESTATE:GetCurrentSong():MusicLengthSeconds()
+			self:settext("LENGTH: "..SecondsToMMSS(length));
+		else
+			self:settext("LENGTH: N/A");
 		end;
-	};
-	
+	end;
+	};	
+
+	--SONG BPM
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-280;y,SCREEN_CENTER_Y-40;zoom,0.7;maxwidth,100);
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-312;y,SCREEN_CENTER_Y-4;zoom,0.8;maxwidth,2900);
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 
@@ -378,26 +433,26 @@ t[#t+1] = Def.ActorFrame{
 						speedvalue = lobpm.."-"..hibpm
 					end;
 				end;
-				self:settext(speedvalue);
+				self:settext("BPM: "..speedvalue);
 			else
-				self:settext("N/A");
+				self:settext("BPM: N/A");
 			end;
 		end;
 	};
 
 	-- HELP TEXT
 	LoadFont("_halogen 20px")..{	
-		InitCommand=cmd(x,SCREEN_CENTER_X+32;y,SCREEN_BOTTOM-50;zoom,0.5;horizalign,left);
-		SongChosenMessageCommand=cmd(visible,false);
-		SongUnchosenMessageCommand=cmd(visible,true);
+		InitCommand=cmd(faderight,1;x,SCREEN_CENTER_X+32;y,SCREEN_BOTTOM-50;zoom,0.5;horizalign,left;linear,0.5;faderight,0);
+		SongChosenMessageCommand=cmd(finishtweening;linear,0.1;faderight,1);
+		SongUnchosenMessageCommand=cmd(finishtweening;linear,0.5;faderight,0);
 		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
 		Text="LEFT/RIGHT = Select Song     SHIFT+ENTER = Change Sort\nPress ENTER to choose a song.",
 	};
 	
 	LoadFont("_halogen 20px")..{	
-		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_BOTTOM-140;diffusealpha,0;zoom,0.5;horizalign,left);
-		SongChosenMessageCommand=cmd(sleep,0.435;diffusealpha,1);
-		SongUnchosenMessageCommand=cmd(diffusealpha,0);
+		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_BOTTOM-140;zoom,0.5;horizalign,left;faderight,1);
+		SongChosenMessageCommand=cmd(finishtweening;sleep,0.45;linear,0.5;faderight,0);
+		SongUnchosenMessageCommand=cmd(finishtweening;linear,0.25;faderight,1);
 		OffCommand=cmd(diffusealpha,0);
 		Text="LEFT/RIGHT = Select Level     UP/DOWN = Cancel\nPress ENTER to confirm.",
 	};
