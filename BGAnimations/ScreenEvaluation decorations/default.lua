@@ -59,11 +59,17 @@ local song = GAMESTATE:GetCurrentSong();
 t[#t+1] = Def.ActorFrame{
 
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-176;y,SCREEN_CENTER_Y-120;maxwidth,250;zoom,1);
-		Text=song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle()
+		InitCommand=cmd(x,SCREEN_CENTER_X-176;y,SCREEN_CENTER_Y-120;maxwidth,250;zoom,1;diffuse,color("#000000"));
+		OnCommand=function(self)
+			if song:GetDisplaySubTitle() == "" then
+				self:settext(song:GetDisplayMainTitle());
+			else
+				self:settext(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle());
+			end
+		end
 	};
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-176;y,SCREEN_CENTER_Y-100;maxwidth,360;zoom,0.6);
+		InitCommand=cmd(x,SCREEN_CENTER_X-176;y,SCREEN_CENTER_Y-100;maxwidth,360;zoom,0.6;diffuse,color("#000000"));
 		Text=song:GetDisplayArtist()
 	};
 };

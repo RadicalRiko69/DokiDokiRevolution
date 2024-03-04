@@ -23,9 +23,6 @@ local function StepsDisplay(pn)
 	return t;
 end
 
-
-
-
 --The function that... Draws the items in the two part select list.
 --There are two of these drawn at once since both p1 and p2 need to be colored. Yes it's hacky, but it makes gradients work.
 

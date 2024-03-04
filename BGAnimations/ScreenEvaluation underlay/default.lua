@@ -253,7 +253,7 @@ for pn in ivalues(GAMESTATE:GetHumanPlayers()) do
 		InitCommand=cmd(draworder,100;zoom,1.25;x,SCREEN_CENTER_X+56;y,SCREEN_CENTER_Y+100;visible,GAMESTATE:IsSideJoined(PLAYER_1));
 	};
 	t[#t+1] = LoadActor(THEME:GetPathG("","PlayerSteps"), PLAYER_2)..{
-		InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X+290;y,SCREEN_CENTER_Y+100;zoom,1.25;visible,GAMESTATE:IsSideJoined(PLAYER_2));
+		InitCommand=cmd(draworder,100;x,SCREEN_CENTER_X+255;y,SCREEN_CENTER_Y+100;zoom,1.25;visible,GAMESTATE:IsSideJoined(PLAYER_2));
 	};
 	
 end
