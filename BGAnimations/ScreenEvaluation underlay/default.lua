@@ -99,7 +99,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "EDM" or genre == "Dubstep" or genre == "Drum & Bass" or genre == "Funk" or genre == "Underground Rap"
-			or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" then
+			or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" or genre == "Trance" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
 			end
 		end,

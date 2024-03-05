@@ -153,7 +153,7 @@ Branch = {
 		if SCREENMAN:GetTopScreen():GetGoToOptions() then
 			return SelectFirstOptionsScreen()
 		else
-			return "ScreenStageInformation"
+			return "ScreenGameplay"
 		end
 	end,
 	PlayerOptions = function()
@@ -168,14 +168,14 @@ Branch = {
 		if SCREENMAN:GetTopScreen():GetGoToOptions() then
 			return optionsScreen
 		else
-			return "ScreenStageInformation"
+			return "ScreenGameplay"
 		end
 	end,
 	SongOptions = function()
 		if SCREENMAN:GetTopScreen():GetGoToOptions() then
 			return "ScreenSongOptions"
 		else
-			return "ScreenStageInformation"
+			return "ScreenGameplay"
 		end
 	end,
 	GameplayScreen = function()

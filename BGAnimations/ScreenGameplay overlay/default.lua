@@ -498,6 +498,33 @@ end
 
 end
 
+
+t[#t+1] = Def.ActorFrame {
+	OnCommand=cmd(sleep,3;linear,0.5;diffusealpha,0);
+	LoadActor(THEME:GetPathG("","TextBox/background"))..{
+		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+170;diffuse,color("#fe80e0");zoom,0.7);
+	};
+	LoadActor(THEME:GetPathG("","TextBox/frame"))..{
+		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+170;zoom,0.7);
+	};
+	LoadFont("_aller thin 20px") .. {
+		Text="Now playing ''"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle().."''";
+		InitCommand=cmd(x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+130;zoom,0.8;strokecolor,Color("Black");faderight,1;linear,0.3;faderight,0;horizalign,left;maxwidth,520);
+	};
+	LoadFont("_aller thin 20px") .. {
+		Text="This song is composed by "..GAMESTATE:GetCurrentSong():GetDisplayArtist();
+		InitCommand=cmd(x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+130;zoom,0.8;addy,20;strokecolor,Color("Black");faderight,1;sleep,0.25;linear,0.3;faderight,0;horizalign,left;maxwidth,520);
+	};
+	LoadFont("_aller thin 20px") .. {
+		Text="History         Skip        Auto        Save        Load        Settings";
+		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+190;zoom,0.4;addy,20;diffuse,color("#1e1414"));
+	};
+	LoadActor(THEME:GetPathG("","_StepsDisplayListRow arrow"))..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+210;y,SCREEN_CENTER_Y+212);
+	};
+};
+
+
 return t;
 
 
