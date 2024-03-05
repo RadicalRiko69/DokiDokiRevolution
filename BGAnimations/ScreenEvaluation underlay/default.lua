@@ -32,7 +32,7 @@ t[#t+1] = Def.ActorFrame {
 		SongUnchosenMessageCommand=cmd(queuecommand,"WalkAround"),
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
-			if genre == "Pop" or genre == "Dance Pop" or genre == "Synthpop" or genre == "Pop Rock" or genre == "Pop-Rock" or genre == "Alternative Pop"
+			if genre == "Pop" or genre == "Dance Pop" or genre == "Synthpop" or genre == "Pop Rock" or genre == "Pop-Rock" or genre == "Alternative Pop" or genre == "Country"
 			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop"  then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
 			end
@@ -99,7 +99,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "EDM" or genre == "Dubstep" or genre == "Drum & Bass" or genre == "Funk" or genre == "Underground Rap"
-			or genre == "Country" or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" then
+			or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
 			end
 		end,
@@ -122,7 +122,7 @@ t[#t+1] = Def.ActorFrame {
 				if song:HasBackground() then
 					self:LoadBackground(song:GetBackgroundPath());
 				else
-					self:Load(THEME:GetPathG("","Common fallback background"))
+					self:Load(THEME:GetPathG("","Common fallback banner"))
 				end;
 				self:scaletoclipped(253,137)
 			else
