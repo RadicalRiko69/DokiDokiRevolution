@@ -86,15 +86,6 @@ local function customlifemeterS(pn)
 					xpos = 498 
 				end
 				self:x(xpos-250);
-				
-				--self:glow(1,1,1,1);
-				--[[
-				self:glow(0,0,0,1);
-				self:glowshift();
-				self:effectperiod(0.2);
-				self:effectcolor1(1,1,1,0);
-				self:effectcolor2(1,1,1,1);
-				]]
 			end;
 		};
 		LoadActor("tip danger") .. {
@@ -327,88 +318,6 @@ local t = Def.ActorFrame {
 		InitCommand=cmd(y,SCREEN_TOP+18;x,SCREEN_CENTER_X;zoomy,0.8*0.66;zoomx,(320/384)*0.85*0.71;); --playcommand,"On";
 	};
 
--------------------------------------P1 SCORE gato
- --[[LoadFont("_arial Bold 20px") .. {
-	InitCommand=cmd(horizalign,right;y,SCREEN_TOP+19;zoom,0.62;uppercase,true;shadowlength,1;visible,GAMESTATE:IsHumanPlayer(PLAYER_1);playcommand,"Set");
-	ComboChangedMessageCommand=function(self)
-		local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_1);
-		self:settext(scorecap(PSS:GetScore()));
-	end;
-	
-	SetCommand=function(self)
-		local style = GAMESTATE:GetCurrentStyle();
-		
-		
-		if GetUserPref("UserPrefScorePosition") == "On" then 
-				if style:GetStyleType() == "StyleType_OnePlayerTwoSides" then
-					self:x(SCREEN_RIGHT-83);
-				else
-					self:x(THEME:GetMetric("ScreenGameplay","PlayerP1OnePlayerOneSideX")+119);
-				end
-		end
-		
-		if GetUserPref("UserPrefScorePosition") == "Off" then 
-				self:y(SCREEN_BOTTOM+9999);
-		end
-		
-		if style:GetStyleType() == "StyleType_TwoPlayersSharedSides" then
-			if GetUserPref("UserPrefScorePosition") == "On" then
-				self:x(SCREEN_CENTER_X-25);
-				self:visible(GAMESTATE:GetMasterPlayerNumber() == "PlayerNumber_P1")
-				self:horizalign(right);
-			else
-				self:x(SCREEN_CENTER_X);
-				self:visible(GAMESTATE:GetMasterPlayerNumber() == "PlayerNumber_P1")
-				self:horizalign(center);
-			end
-		end
-		
-		
-	end
-};
-	
------------------------------------P2 SCORE perro
-LoadFont("_arial Bold 20px") .. {
-	InitCommand=cmd(horizalign,left;y,SCREEN_TOP+19;zoom,0.62;uppercase,true;shadowlength,1;visible,GAMESTATE:IsHumanPlayer(PLAYER_2);playcommand,"Set");	
-	ComboChangedMessageCommand=function(self)
-		
-		local PSS = STATSMAN:GetCurStageStats():GetPlayerStageStats(PLAYER_2);
-		self:settext(scorecap(PSS:GetScore()));
-	end;
-	
-	SetCommand=function(self)
-		local style = GAMESTATE:GetCurrentStyle();
-		
-		
-		if GetUserPref("UserPrefScorePosition") == "On" then 
-				if style:GetStyleType() == "StyleType_OnePlayerTwoSides" then
-					self:x(SCREEN_LEFT+83);
-				else
-					self:x(THEME:GetMetric("ScreenGameplay","PlayerP2OnePlayerOneSideX")-119);
-				end
-		end
-		
-		
-		if GetUserPref("UserPrefScorePosition") == "Off" then 
-				self:y(SCREEN_BOTTOM+9999);
-		end
-		
-		
-		if style:GetStyleType() == "StyleType_TwoPlayersSharedSides" then
-			if GetUserPref("UserPrefScorePosition") == "On" then
-				self:x(SCREEN_CENTER_X-25);
-				self:visible(GAMESTATE:GetMasterPlayerNumber() == "PlayerNumber_P2")
-				self:horizalign(right);
-			else
-				self:x(SCREEN_CENTER_X);
-				self:visible(GAMESTATE:GetMasterPlayerNumber() == "PlayerNumber_P2")
-				self:horizalign(center);
-			end
-		end
-					
-	end
-};--]]
-
 	PlayerInfo(PLAYER_1)..{
 		InitCommand=cmd(y,SCREEN_TOP+495;zoomy,0.8;draworder,9999;zoomx,0.95;playcommand,"On";);
 		OnCommand=function(self)
@@ -508,12 +417,29 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+170;zoom,0.7);
 	};
 	LoadFont("_aller thin 20px") .. {
-		Text="Now playing ''"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle().."''";
-		InitCommand=cmd(x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+130;zoom,0.8;strokecolor,Color("Black");faderight,1;linear,0.3;faderight,0;horizalign,left;maxwidth,520);
-	};
-	LoadFont("_aller thin 20px") .. {
-		Text="This song is composed by "..GAMESTATE:GetCurrentSong():GetDisplayArtist();
-		InitCommand=cmd(x,SCREEN_CENTER_X-210;y,SCREEN_CENTER_Y+130;zoom,0.8;addy,20;strokecolor,Color("Black");faderight,1;sleep,0.25;linear,0.3;faderight,0;horizalign,left;maxwidth,520);
+		OnCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong();
+			-- ROAD24: more checks,
+			-- TODO: decide what to do if no song is chosen, ignore or hide ??
+			if song then
+				local speedvalue;
+				if song:IsDisplayBpmRandom() then
+					self:settext("Now playing ''"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle().."'' by "..GAMESTATE:GetCurrentSong():GetDisplayArtist()..".\nThe BPM information is classified!");
+				else
+					local rawbpm = GAMESTATE:GetCurrentSong():GetDisplayBpms();
+					local lobpm = math.ceil(rawbpm[1]);
+					local hibpm = math.ceil(rawbpm[2]);
+					if lobpm == hibpm then
+						self:settext("Now playing ''"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle().."'' by "..GAMESTATE:GetCurrentSong():GetDisplayArtist()..".\nThe song plays at "..hibpm.." beats per minute.");
+					else
+						self:settext("Now playing ''"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle().."'' by "..GAMESTATE:GetCurrentSong():GetDisplayArtist()..".\nThe song plays from "..lobpm.." to "..hibpm.." beats per minute.");
+					end;
+				end;
+			else
+				self:settext("BPM: N/A");
+			end;
+		end;
+		InitCommand=cmd(x,SCREEN_CENTER_X-213;y,SCREEN_CENTER_Y+130;zoom,0.7;halign,0;valign,0;horizalign,left;wrapwidthpixels,620;strokecolor,Color("Black");faderight,1;linear,0.3;faderight,0);
 	};
 	LoadFont("_aller thin 20px") .. {
 		Text="History         Skip        Auto        Save        Load        Settings";

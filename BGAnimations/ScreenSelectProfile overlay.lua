@@ -10,10 +10,10 @@ function GetLocalProfiles()
 			}; --]]
 			LoadFont("Common Normal") .. {
 				Text=profile:GetDisplayName();
-				InitCommand=cmd(y,-10;zoom,1;ztest,true);
+				InitCommand=cmd(y,-10;zoom,1;ztest,true;diffuse,color("#000000"));
 			};
 			LoadFont("Common Normal") .. {
-				InitCommand=cmd(y,8;zoom,0.5;vertspacing,-8;ztest,true);
+				InitCommand=cmd(y,8;zoom,0.5;vertspacing,-8;ztest,true;diffuse,color("#000000"));
 				BeginCommand=function(self)
 					local numSongsPlayed = profile:GetNumTotalSongsPlayed();
 					local s = numSongsPlayed == 1 and "Song" or "Songs";
@@ -54,10 +54,10 @@ function LoadPlayerStuff(Player)
 			InitCommand=cmd(zoomto,200,230);
 			OnCommand=cmd(diffuse,Color('Orange');diffusealpha,0.5);
 		}; --]]
-		LoadFont("Common Normal") .. {
+		LoadFont("_as i lay dying 60px") .. {
 			Text="Press ENTER to join.";
 			InitCommand=cmd();
-			OnCommand=cmd(diffuseshift;effectcolor1,Color('White');effectcolor2,color("0.5,0.5,0.5"));
+			OnCommand=cmd(diffuseshift;zoom,0.6;effectcolor1,Color('White');effectcolor2,color("0.5,0.5,0.5"));
 		};
 	};
 	table.insert( ret, t );
@@ -130,7 +130,7 @@ function LoadPlayerStuff(Player)
 	t = LoadFont("Common Normal") .. {
 		Name = 'SelectedProfileText';
 		--InitCommand=cmd(y,160;shadowlength,1;diffuse,PlayerColor(Player));
-		InitCommand=cmd(y,160;shadowlength,1;);
+		InitCommand=cmd(y,160;strokecolor,color("#000000"););
 	};
 	table.insert( ret, t );
 

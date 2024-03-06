@@ -25,17 +25,19 @@ local phrases = {
 	"This game is not suitable for children\nor those who are easily disturbed.",
 	"This game is not suitable for children\nor those who are easily disturbed.",
 	"This game is not suitable for children\nor those who are easily disturbed.",
-	"Sushi Violation died for this.",
-	"All of the dokis are yummy.",
+	"Sushi Violation died for this once.",
+	"We're so back! LFG!!!!!!!!!!!!!!",
+	"It's been a while, huh?",
 	"Dan Salvato please notice me again!",
 	"owo it's a Mithost",
-	"This is not a mod, it doesn't use Ren'py...",
+	"Team Salvato is not associated with this project.\nStop asking for official assets in the theme!!!",
+	"This is not a mod, it doesn't use\nthe original DDLC or DDLC Plus engine.",
 	"Welcome to the Dance Game Gurlz Club!",
 	"Just Monika.",
-	"Yummy Natsuki.",
-	"Follow @UsagiSii on Twitter, her art is yummy!",
-	"Presenting the only DDLC fangame that has 4:3 support!",
-
+	"Shoutouts to r/DDLC!",
+	"Follow @UsagiSii on X, her art is amazing and cute!",
+	"Presenting the only DDLC fangame that has 4:3 support!\nYeah we still have it lmaooooooooooo",
+	"Swooshi moment!!!!!!",
 };
 
 return Def.ActorFrame{
@@ -52,9 +54,4 @@ return Def.ActorFrame{
         InitCommand=cmd(Center;diffusealpha,0;wrapwidthpixels,SCREEN_WIDTH;zoom,.75;diffuse,color("#000000"));
 		OnCommand=cmd(sleep,3;accelerate,0.5;diffusealpha,1);
     };
-	
-	--Don't do this, use PlayMusic metric setting!!
-	--[[LoadActor(THEME:GetPathS("ScreenTitleMenu", "music"))..{
-		OnCommand=cmd(play);
-	};]]
 };

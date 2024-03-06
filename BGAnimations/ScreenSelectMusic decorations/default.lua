@@ -39,6 +39,7 @@ local function drawDiffListItem(difficulty, pn)
 
 	return Def.ActorFrame{
 		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=cmd(playcommand,"SongChosen");
 		SongChosenMessageCommand=function(self)
 			local song = GAMESTATE:GetCurrentSong();
 			if song:HasStepsTypeAndDifficulty(CUR_STEPS_TYPE,difficulty) then
@@ -271,7 +272,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "EDM" or genre == "Dubstep" or genre == "Drum & Bass" or genre == "Funk" or genre == "Underground Rap"
-			or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" or genre == "Trance" then
+			or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" or genre == "Trance" or genre == "Eurobeat" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
@@ -287,12 +288,7 @@ if not GAMESTATE:IsCourseMode() then
 		local banner = self:GetChild("Banner");
 		
 		if song then
-			if song:HasBackground() then
-				banner:visible(true);
-				banner:Load(song:GetBackgroundPath());
-				banner:scaletoclipped(265,145);
-				banner:MaskDest();
-			elseif song:HasJacket() then
+			if song:HasJacket() then
 				banner:visible(true);
 				banner:Load(song:GetJacketPath());
 				banner:scaletoclipped(145,145);
@@ -301,6 +297,11 @@ if not GAMESTATE:IsCourseMode() then
 				banner:visible(true);
 				banner:Load(song:GetBannerPath());
 				banner:scaletoclipped(265,95);
+				banner:MaskDest();
+			elseif song:HasBackground() then
+				banner:visible(true);
+				banner:Load(song:GetBackgroundPath());
+				banner:scaletoclipped(265,145);
 				banner:MaskDest();
 			else
 				banner:visible(true);

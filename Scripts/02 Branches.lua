@@ -63,11 +63,7 @@ Branch = {
 		end
 	end,
 	AfterTitleMenu = function()
-		if PREFSMAN:GetPreference("ShowCaution") then
-			return "ScreenCaution"
-		else
 			return Branch.StartGame()
-		end
 	end,
 	StartGame = function()
 		-- Check to see if there are 0 songs installed. Also make sure to check
@@ -116,13 +112,13 @@ Branch = {
 	AfterSelectProfile = function()
 		if ( THEME:GetMetric("Common","AutoSetStyle") == true ) then
 			-- use SelectStyle in online...
-			return IsNetConnected() and "ScreenSelectStyle" or "ScreenSelectPlayMode"
+			return IsNetConnected() and "ScreenSelectStyle"
 		else
 			return "ScreenSelectStyle"
 		end
 	end,
 	AfterProfileLoad = function()
-		return "ScreenSelectPlayMode"
+		return "ScreenSelectMusic"
 	end,
 	AfterProfileSave = function()
 		-- Might be a little too broken? -- Midiman
