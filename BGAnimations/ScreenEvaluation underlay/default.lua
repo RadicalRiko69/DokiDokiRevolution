@@ -33,8 +33,8 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "Pop" or genre == "Dance Pop" or genre == "Synthpop" or genre == "Pop Rock" or genre == "Pop-Rock" or genre == "Alternative Pop" or genre == "Country"
-			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop"  then
-				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
+			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop" or genre == "K-POP" then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
@@ -55,8 +55,8 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "Hip-Hop" or genre == "Hip Hop" or genre == "Trap" or genre == "R&B" or genre == "R'n'B" or genre == "Dancehall"
-			or genre == "Pop Rap" or genre == "Reggaeton" or genre == "Moombahton" or genre == "Hip House"  then
-				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
+			or genre == "Pop Rap" or genre == "Reggaeton" or genre == "Moombahton" or genre == "Hip House"  or genre == "XROSS" then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
@@ -77,8 +77,8 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "Soul" or genre == "Heavy Metal" or genre == "Latin Pop" or genre == "Post-Grunge" or genre == "Bachata"
-			or genre == "Ballad" or genre == "Vallenato" or genre == "Tropical House"  then
-				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
+			or genre == "Ballad" or genre == "Vallenato" or genre == "Tropical House"  or genre == "WORLD MUSIC" then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
@@ -98,9 +98,9 @@ t[#t+1] = Def.ActorFrame {
 		SongUnchosenMessageCommand=cmd(sleep,0.3;queuecommand,"WalkAround"),
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
-			if genre == "EDM" or genre == "Dubstep" or genre == "Drum & Bass" or genre == "Funk" or genre == "Underground Rap"
+			if genre == "EDM" or genre == "Dubstep" or genre == "Drum & Bass" or genre == "Funk" or genre == "Underground Rap"  or genre == "ORIGINAL"
 			or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" or genre == "Trance" or genre == "Eurobeat" then
-				self:finishtweening():setstate(1):decelerate(.145):addy(-30):accelerate(.145):addy(30):decelerate(.145):addy(-30):accelerate(.145):addy(30):queuecommand("ResetAnim")
+				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
@@ -119,24 +119,37 @@ t[#t+1] = Def.ActorFrame {
 		OnCommand=function(self)
 			if GAMESTATE:GetCurrentSong() then
 				local song = GAMESTATE:GetCurrentSong();
-				if song:HasBackground() then
+				if song:HasJacket() then
+					self:LoadBackground(song:GetJacketPath());
+					self:scaletoclipped(137,137);
+				elseif song:HasBanner() then
+					self:LoadBackground(song:GetBannerPath());
+					self:scaletoclipped(253,88);
+					if IsGame("pump") then
+						self:visible(true);
+						self:Load(song:GetBannerPath());
+						self:scaletoclipped(189,137);
+					end
+				elseif song:HasBackground() then
 					self:LoadBackground(song:GetBackgroundPath());
+					self:scaletoclipped(253,137);
 				else
 					self:Load(THEME:GetPathG("","Common fallback banner"))
+					self:scaletoclipped(253,137);
 				end;
-				self:scaletoclipped(253,137)
 			else
 				self:visible(false);
 			end
 		end;
 	};
 	Def.Quad {
-		InitCommand=cmd(glowshift;effectcolor1,color("#525252");effectcolor2,color("#000000");MaskDest;diffusealpha,0.2;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y);
+		InitCommand=cmd(diffuseshift;effectcolor1,color("#808080");effectcolor2,color("#a8a8a8");MaskDest;blend,Blend.Multiply;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y);
 		OnCommand=function(self)
 				self:scaletoclipped(265,145);
 		end;
 	};
 };
+
 --Song Info Stuff
 t[#t+1] = Def.ActorFrame{
 

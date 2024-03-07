@@ -168,21 +168,73 @@ tps[#tps+1] = Def.Sprite{
 t[#t+1] = tps;
 
 for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
-	--The pen.
-	t[#t+1] = Def.Sprite{
-		Texture=THEME:GetPathG("","Book/Selector_"..pname(pn));
-		InitCommand=cmd(zoom,.35;rotationz,45;xy,SCREEN_CENTER_X+800,SCREEN_CENTER_Y);
-		SongChosenMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+400);
-		SongUnchosenMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+800);
-		TwoPartConfirmCanceledMessageCommand=cmd(decelerate,0.3;x,SCREEN_CENTER_X+800);
-		["CurrentSteps"..pname(pn).."ChangedMessageCommand"]=function(self)
-			self:stoptweening();
-			if not GAMESTATE:GetCurrentSteps(pn) then return end;
-			local diff = Difficulty:Reverse()[GAMESTATE:GetCurrentSteps(pn):GetDifficulty()];
-			self:decelerate(.12):y(50+diff*60);
-			--SCREENMAN:SystemMessage(CUR_STEPS_TYPE..", "..GAMESTATE:GetCurrentSteps(PLAYER_1):GetDifficulty()..", "..diff);
-		end;
-	};
+		--The pen.
+		t[#t+1] = Def.Sprite{
+			InitCommand=function(self)
+				if pn == PLAYER_1 then
+					self:zoom(0.35):rotationz(45):xy(SCREEN_CENTER_X,SCREEN_CENTER_Y);
+				else
+					self:zoom(0.35):rotationz(-135):rotationy(180):xy(SCREEN_CENTER_X,SCREEN_CENTER_Y);
+				end
+			end;
+			SongChosenMessageCommand=cmd(finishtweening;decelerate,0.3;x,SCREEN_CENTER_X+440);
+			SongUnchosenMessageCommand=cmd(finishtweening;decelerate,0.3;x,SCREEN_CENTER_X+800);
+			CurrentSongChangedMessageCommand=cmd(finishtweening;x,SCREEN_CENTER_X+800);
+			TwoPartConfirmCanceledMessageCommand=cmd(finishtweening;decelerate,0.3;x,SCREEN_CENTER_X+800);
+			Texture=THEME:GetPathG("","Book/Selector_"..pname(pn));
+			["CurrentSteps"..pname(pn).."ChangedMessageCommand"]=function(self)
+				if not GAMESTATE:GetCurrentSteps(pn) then return end;
+				local diff = Difficulty:Reverse()[GAMESTATE:GetCurrentSteps(pn):GetDifficulty()];
+				self:finishtweening():addx(-60):decelerate(.12):addx(60):y(50+diff*60);
+				if pn == PLAYER_2 then
+					self:finishtweening():addx(-60):addy(80):decelerate(.12):addx(60):addy(-80):y(126+diff*60);
+				end
+			end;
+		};
+		t[#t+1] = Def.BitmapText{
+			Font="_halogen 20px";
+			InitCommand=cmd(zoom,0.7;diffusealpha,0;horizalign,right;xy,SCREEN_CENTER_X+800,SCREEN_CENTER_Y);
+			SongChosenMessageCommand=cmd(finishtweening;diffusealpha,1;x,SCREEN_CENTER_X+256);
+			SongUnchosenMessageCommand=cmd(finishtweening;diffusealpha,0);
+			TwoPartConfirmCanceledMessageCommand=cmd(finishtweening;diffusealpha,0);
+			CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
+			['CurrentSteps'..ToEnumShortString(pn)..'ChangedMessageCommand']=cmd(playcommand,"Set");
+			PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
+			SetCommand=function(self)
+				self:stoptweening();
+				if not GAMESTATE:GetCurrentSteps(pn) then return end;
+				local diff = Difficulty:Reverse()[GAMESTATE:GetCurrentSteps(pn):GetDifficulty()];
+				self:decelerate(.12):y(80+diff*60);
+				if pn == PLAYER_2 then
+					self:finishtweening():decelerate(.12):y(93+diff*60);
+				end
+
+				local song = GAMESTATE:GetCurrentSong();
+				if song and GAMESTATE:GetCurrentSteps(pn) then
+					profile = PROFILEMAN:GetProfile(pn);
+					scorelist = profile:GetHighScoreList(song,GAMESTATE:GetCurrentSteps(pn));
+					assert(scorelist);
+					local scores = scorelist:GetHighScores();
+					local topscore = scores[1];
+	
+					if topscore then
+						text = string.format("%.2f%%", topscore:GetPercentDP()*100.0);
+						if text == "100.00%" then
+							text = "I love you";
+						end;
+					else
+						text = "Play me";
+					end;
+					self:faderight(1);
+					self:linear(0.01);
+					self:faderight(0);
+					self:settext(text);
+				else
+					self:settext("");
+				end;
+	
+			end;
+		};
 end;
 
 -- Stuff on the left
@@ -206,7 +258,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "Pop" or genre == "Dance Pop" or genre == "Synthpop" or genre == "Pop Rock" or genre == "Pop-Rock" or genre == "Alternative Pop" or genre == "Country"
-			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop"  then
+			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop" or genre == "K-POP" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
@@ -228,7 +280,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "Hip-Hop" or genre == "Hip Hop" or genre == "Trap" or genre == "R&B" or genre == "R'n'B" or genre == "Dancehall"
-			or genre == "Pop Rap" or genre == "Reggaeton" or genre == "Moombahton" or genre == "Hip House"  then
+			or genre == "Pop Rap" or genre == "Reggaeton" or genre == "Moombahton" or genre == "Hip House"  or genre == "XROSS" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
@@ -250,7 +302,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "Soul" or genre == "Heavy Metal" or genre == "Latin Pop" or genre == "Post-Grunge" or genre == "Bachata"
-			or genre == "Ballad" or genre == "Vallenato" or genre == "Tropical House" then
+			or genre == "Ballad" or genre == "Vallenato" or genre == "Tropical House"  or genre == "WORLD MUSIC" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
@@ -271,7 +323,7 @@ t[#t+1] = Def.ActorFrame {
 		SongUnchosenMessageCommand=cmd(sleep,0.3;queuecommand,"WalkAround"),
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
-			if genre == "EDM" or genre == "Dubstep" or genre == "Drum & Bass" or genre == "Funk" or genre == "Underground Rap"
+			if genre == "EDM" or genre == "Dubstep" or genre == "Drum & Bass" or genre == "Funk" or genre == "Underground Rap"  or genre == "ORIGINAL"
 			or genre == "Funk-Pop" or genre == "Electronic" or genre == "Progressive House" or genre == "Trance" or genre == "Eurobeat" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
@@ -298,6 +350,12 @@ if not GAMESTATE:IsCourseMode() then
 				banner:Load(song:GetBannerPath());
 				banner:scaletoclipped(265,95);
 				banner:MaskDest();
+				if IsGame("pump") then
+					banner:visible(true);
+					banner:Load(song:GetBannerPath());
+					banner:scaletoclipped(205,145);
+					banner:MaskDest();
+				end
 			elseif song:HasBackground() then
 				banner:visible(true);
 				banner:Load(song:GetBackgroundPath());
@@ -335,7 +393,7 @@ if not GAMESTATE:IsCourseMode() then
 	};
 	--PHONE BURN
 	t[#t+1] = Def.Quad {
-		InitCommand=cmd(glowshift;effectcolor1,color("#525252");effectcolor2,color("#000000");MaskDest;diffusealpha,0.2;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
+		InitCommand=cmd(diffuseshift;effectcolor1,color("#808080");effectcolor2,color("#a8a8a8");MaskDest;blend,Blend.Multiply;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
 		CurrentSongChangedMessageCommand=function(self)
 					self:scaletoclipped(265,145);
 		end;

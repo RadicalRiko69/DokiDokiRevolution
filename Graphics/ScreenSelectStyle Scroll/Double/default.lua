@@ -5,6 +5,8 @@ if game == "dance" then
   PAD = "dance"
 elseif game == "pump" then
   PAD = "pump"
+else
+  PAD = "dance"
 end;
 local t = Def.ActorFrame{
 	Def.ActorFrame{

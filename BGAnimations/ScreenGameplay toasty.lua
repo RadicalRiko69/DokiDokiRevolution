@@ -61,6 +61,7 @@ return Def.ActorFrame{
 	},
 	Def.Sprite{
 		Texture=THEME:GetPathG("","chibi/monika"),
+		Condition=(not GAMESTATE:IsExtraStage2()),
 		StartTransitioningCommand=function(self)
 			self:finishtweening()
 				:y(SCREEN_BOTTOM+150)

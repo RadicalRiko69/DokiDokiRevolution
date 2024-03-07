@@ -30,7 +30,7 @@ local phrases = {
 	"It's been a while, huh?",
 	"Dan Salvato please notice me again!",
 	"owo it's a Mithost",
-	"Team Salvato is not associated with this project.\nStop asking for official assets in the theme!!!",
+	"Team Salvato is not associated with this project.\nDO NOT add official assets in the theme!!!",
 	"This is not a mod, it doesn't use\nthe original DDLC or DDLC Plus engine.",
 	"Welcome to the Dance Game Gurlz Club!",
 	"Just Monika.",

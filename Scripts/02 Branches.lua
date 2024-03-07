@@ -17,10 +17,10 @@ function SMOnlineScreen()
 end
 
 function SelectMusicOrCourse()
-	if IsNetSMOnline() then
-		return "ScreenNetSelectMusic"
+	if GAMESTATE:GetCoinMode() == "CoinMode_Pay" then
+		return "ScreenNoPay"
 	elseif GAMESTATE:IsCourseMode() then
-		return "ScreenSelectCourse"
+			return "ScreenSelectCourse"
 	else
 		return "ScreenSelectMusic"
 	end
@@ -51,13 +51,6 @@ Branch = {
 		-- home mode is the most assumed use of sm-ssc.
 		if GAMESTATE:GetCoinMode() == "CoinMode_Home" then
 			return "ScreenTitleMenu"
-		end
-		-- arcade junk:
-		if GAMESTATE:GetCoinsNeededToJoin() > GAMESTATE:GetCoins() then
-			-- if no credits are inserted, don't show the Join screen. SM4 has
-			-- this as the initial screen, but that means we'd be stuck in a
-			-- loop with ScreenInit. No good.
-			return "ScreenTitleJoin"
 		else
 			return "ScreenTitleJoin"
 		end

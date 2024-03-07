@@ -2,9 +2,11 @@ local NumPlayers = GAMESTATE:GetNumPlayersEnabled()
 local game = GAMESTATE:GetCurrentGame():GetName()
 
 if game == "dance" then
-  PAD = "dance"
+	PAD = "dance"
 elseif game == "pump" then
-  PAD = "pump"
+	PAD = "pump"
+else
+	PAD = "dance"
 end;
 return Def.ActorFrame{
 	Def.ActorFrame{
