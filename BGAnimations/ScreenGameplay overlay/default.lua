@@ -439,7 +439,7 @@ t[#t+1] = Def.ActorFrame {
 				self:settext("BPM: N/A");
 			end;
 		end;
-		InitCommand=cmd(x,SCREEN_CENTER_X-213;y,SCREEN_CENTER_Y+130;zoom,0.7;halign,0;valign,0;horizalign,left;wrapwidthpixels,620;strokecolor,Color("Black");faderight,1;linear,0.3;faderight,0);
+		InitCommand=cmd(x,SCREEN_CENTER_X-213;y,SCREEN_CENTER_Y+130;zoom,0.7;halign,0;valign,0;horizalign,left;wrapwidthpixels,610;strokecolor,Color("Black");faderight,1;linear,1.2;faderight,0);
 	};
 	LoadFont("_aller thin 20px") .. {
 		Text="History         Skip        Auto        Save        Load        Settings";

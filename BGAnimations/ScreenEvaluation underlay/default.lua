@@ -108,53 +108,77 @@ t[#t+1] = Def.ActorFrame {
 	},
 };
 
-t[#t+1] = Def.ActorFrame {
-	Def.Sprite {
-		Name="Frame";
-		InitCommand=cmd(zoom,0.5;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y;MaskSource);
-		Texture=THEME:GetPathB("","ScreenSelectMusic decorations/banner glass.png"),
-	};
-	Def.Sprite {
-		InitCommand=cmd(rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y;MaskDest);
-		OnCommand=function(self)
-			if GAMESTATE:GetCurrentSong() then
-				local song = GAMESTATE:GetCurrentSong();
-				if song:HasJacket() then
-					self:LoadBackground(song:GetJacketPath());
-					self:scaletoclipped(137,137);
-				elseif song:HasBanner() then
-					self:LoadBackground(song:GetBannerPath());
-					self:scaletoclipped(253,88);
-					if IsGame("pump") then
-						self:visible(true);
-						self:Load(song:GetBannerPath());
-						self:scaletoclipped(189,137);
-					end
-				elseif song:HasBackground() then
-					self:LoadBackground(song:GetBackgroundPath());
-					self:scaletoclipped(253,137);
-				else
-					self:Load(THEME:GetPathG("","Common fallback banner"))
-					self:scaletoclipped(253,137);
-				end;
+--PHONE SCREEN
+if not GAMESTATE:IsCourseMode() then
+	local function CDTitleUpdate(self)
+		local song = GAMESTATE:GetCurrentSong();
+		local banner = self:GetChild("Banner");
+		
+		if song then
+			if song:HasJacket() then
+				banner:visible(true);
+				banner:Load(song:GetJacketPath());
+				banner:scaletoclipped(137,137);
+				banner:MaskDest();
+			elseif song:HasBanner() then
+				banner:visible(true);
+				banner:Load(song:GetBannerPath());
+				banner:scaletoclipped(253,105);
+				banner:MaskDest();
+				if IsGame("pump") then
+					banner:visible(true);
+					banner:Load(song:GetBannerPath());
+					banner:scaletoclipped(205,137);
+					banner:MaskDest();
+				end
+			elseif song:HasBackground() then
+				banner:visible(true);
+				banner:Load(song:GetBackgroundPath());
+				banner:scaletoclipped(253,137);
+				banner:MaskDest();
 			else
-				self:visible(false);
-			end
+				banner:visible(true);
+				banner:Load(THEME:GetPathG("","Common fallback banner"));
+				banner:scaletoclipped(253,137);
+				banner:MaskDest();
+			end;
 		end;
-	};
-	Def.Quad {
-		InitCommand=cmd(diffuseshift;effectcolor1,color("#808080");effectcolor2,color("#a8a8a8");MaskDest;blend,Blend.Multiply;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y);
-		OnCommand=function(self)
-				self:scaletoclipped(265,145);
+		
+		if not song then
+			banner:visible(false);
+			banner:zoom(1);
+			banner:MaskDest();
 		end;
+		banner:zoom(1)
+		banner:MaskDest();
+	end;
+	t[#t+1] = Def.ActorFrame {
+		OnCommand=cmd(x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y;rotationz,-6;SetUpdateFunction,CDTitleUpdate);
+		Def.Sprite {
+			Name="Frame";
+			InitCommand=cmd(zoom,0.525;MaskSource);
+			Texture=THEME:GetPathB("","ScreenSelectMusic decorations/banner glass.png"),
+		};	
+		Def.Sprite {
+			Name="Banner";
+			CurrentSongChangedMessageCommand=function(self)
+				(cmd(finishtweening;Load,nil;zoom,1.1;rotationz,0;decelerate,0.1;zoom,1))(self);
+			end;
+		};	
 	};
-};
+	--PHONE BURN
+	t[#t+1] = Def.Quad {
+		InitCommand=cmd(scaletoclipped,253,137;diffuseshift;effectcolor1,color("#525252");effectcolor2,color("#2e2e2e");effectperiod,1;
+		MaskDest;blend,Blend.Multiply;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y);
+	};
+	
+end;
 
 --Song Info Stuff
 t[#t+1] = Def.ActorFrame{
 
 	LoadActor(THEME:GetPathB("","ScreenSelectMusic decorations/banner shine.png"))..{
-		InitCommand=cmd(zoom,0.5;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y);
+		InitCommand=cmd(zoom,0.5;rotationz,-6;blend,Blend.Add;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y);
 	};
 
 	--STAGE DISPLAY

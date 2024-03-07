@@ -1,5 +1,5 @@
 return Def.ActorFrame {
-
+  OffCommand=function(s) SOUND:DimMusic(0,math.huge) end,
     Def.BitmapText{
         Name= "header",
         Font= "_riffic free medium 40px",

@@ -51,34 +51,6 @@ local t = Def.ActorFrame {
 		cf.ComboLabel:visible(false)
 		cf.MissLabel:visible(false)
 	end;
-	-- Milestones:
-	-- 25,50,100,250,600 Multiples;
---[[ 		if (iCombo % 100) == 0 then
-			c.OneHundredMilestone:playcommand("Milestone");
-		elseif (iCombo % 250) == 0 then
-			-- It should really be 1000 but thats slightly unattainable, since
-			-- combo doesnt save over now.
-			c.OneThousandMilestone:playcommand("Milestone");
-		else
-			return
-		end; --]]
- 	TwentyFiveMilestoneCommand=function(self,parent)
-		if ShowFlashyCombo then
-			(cmd(finishtweening;addy,-4;bounceend,0.125;addy,4))(self);
-		end;
-	end;
-	--]]
-	--[[
-	ToastyAchievedMessageCommand=function(self,params)
-		if params.PlayerNumber == player then
-			(cmd(thump,2;effectclock,'beat'))(c.ComboFrame);
-		end;
-	end;
-	ToastyDroppedMessageCommand=function(self,params)
-		if params.PlayerNumber == player then
-			(cmd(stopeffect))(c.ComboFrame);
-		end;
-	end; --]]
 	ComboCommand=function(self, param)
 		local iCombo = param.Misses or param.Combo;
 		if not iCombo or iCombo < ShowComboAt then

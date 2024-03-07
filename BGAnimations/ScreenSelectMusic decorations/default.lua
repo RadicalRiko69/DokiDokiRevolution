@@ -158,7 +158,7 @@ tps[#tps+1] = Def.Sprite{
 	Texture=THEME:GetPathG("","Book/page1");
 	InitCommand=cmd(zoom,.4495;horizalign,left;vertalign,bottom;xy,SCREEN_CENTER_X-0.25,SCREEN_BOTTOM+2.25;);
 	SongChosenMessageCommand=function(self)
-		self:zoomx(.4495):accelerate(.25):zoomx(0):queuecommand("page"):decelerate(.25):zoomx(-.4495)
+		self:zoomx(.4495):accelerate(.1):zoomx(0):queuecommand("page"):decelerate(.1):zoomx(-.4495)
 	end;
 	pageCommand=function(self)
 		self:Load(THEME:GetPathG("","Book/page2"));
@@ -181,6 +181,7 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 			SongUnchosenMessageCommand=cmd(finishtweening;decelerate,0.3;x,SCREEN_CENTER_X+800);
 			CurrentSongChangedMessageCommand=cmd(finishtweening;x,SCREEN_CENTER_X+800);
 			TwoPartConfirmCanceledMessageCommand=cmd(finishtweening;decelerate,0.3;x,SCREEN_CENTER_X+800);
+			OffCommand=cmd(decelerate,1;x,SCREEN_CENTER_X+800);
 			Texture=THEME:GetPathG("","Book/Selector_"..pname(pn));
 			["CurrentSteps"..pname(pn).."ChangedMessageCommand"]=function(self)
 				if not GAMESTATE:GetCurrentSteps(pn) then return end;
@@ -194,9 +195,10 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		t[#t+1] = Def.BitmapText{
 			Font="_halogen 20px";
 			InitCommand=cmd(zoom,0.7;diffusealpha,0;horizalign,right;xy,SCREEN_CENTER_X+800,SCREEN_CENTER_Y);
-			SongChosenMessageCommand=cmd(finishtweening;diffusealpha,1;x,SCREEN_CENTER_X+256);
+			SongChosenMessageCommand=cmd(finishtweening;x,SCREEN_CENTER_X+256;diffusealpha,1);
 			SongUnchosenMessageCommand=cmd(finishtweening;diffusealpha,0);
 			TwoPartConfirmCanceledMessageCommand=cmd(finishtweening;diffusealpha,0);
+			OffCommand=cmd(diffusealpha,0);
 			CurrentSongChangedMessageCommand=cmd(queuecommand,"Set");
 			['CurrentSteps'..ToEnumShortString(pn)..'ChangedMessageCommand']=cmd(playcommand,"Set");
 			PlayerJoinedMessageCommand=cmd(queuecommand,"Set");
@@ -204,9 +206,9 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 				self:stoptweening();
 				if not GAMESTATE:GetCurrentSteps(pn) then return end;
 				local diff = Difficulty:Reverse()[GAMESTATE:GetCurrentSteps(pn):GetDifficulty()];
-				self:decelerate(.12):y(80+diff*60);
+				self:finishtweening():y(80+diff*60);
 				if pn == PLAYER_2 then
-					self:finishtweening():decelerate(.12):y(93+diff*60);
+					self:finishtweening():y(93+diff*60);
 				end
 
 				local song = GAMESTATE:GetCurrentSong();
@@ -223,10 +225,10 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 							text = "I love you";
 						end;
 					else
-						text = "Play me";
+						text = "____";
 					end;
 					self:faderight(1);
-					self:linear(0.01);
+					self:linear(0.1);
 					self:faderight(0);
 					self:settext(text);
 				else
@@ -348,7 +350,7 @@ if not GAMESTATE:IsCourseMode() then
 			elseif song:HasBanner() then
 				banner:visible(true);
 				banner:Load(song:GetBannerPath());
-				banner:scaletoclipped(265,95);
+				banner:scaletoclipped(265,106);
 				banner:MaskDest();
 				if IsGame("pump") then
 					banner:visible(true);
@@ -393,7 +395,7 @@ if not GAMESTATE:IsCourseMode() then
 	};
 	--PHONE BURN
 	t[#t+1] = Def.Quad {
-		InitCommand=cmd(diffuseshift;effectcolor1,color("#808080");effectcolor2,color("#a8a8a8");MaskDest;blend,Blend.Multiply;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
+		InitCommand=cmd(diffuseshift;effectcolor1,color("#525252");effectcolor2,color("#2e2e2e");effectclock,'beatnooffset';MaskDest;blend,Blend.Multiply;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
 		CurrentSongChangedMessageCommand=function(self)
 					self:scaletoclipped(265,145);
 		end;
@@ -405,7 +407,7 @@ end;
 t[#t+1] = Def.ActorFrame{
 	--PHONE GLARE
 	LoadActor("banner shine.png")..{
-		InitCommand=cmd(zoom,0.525;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
+		InitCommand=cmd(zoom,0.525;rotationz,-6;blend,Blend.Add;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
 	};
 	--STAGE DISPLAY
 	LoadFont("_halogen 20px")..{
@@ -429,7 +431,7 @@ t[#t+1] = Def.ActorFrame{
 	};
 	--SONG GENRE
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-312;y,SCREEN_CENTER_Y+26;zoom,0.8;maxwidth,350);
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-312;y,SCREEN_CENTER_Y+26;zoom,0.8;maxwidth,350;diffuse,Color("Black"));
 		OffCommand=cmd(visible,false);
 		CurrentSongChangedMessageCommand=function(self)
 			if GAMESTATE:GetCurrentSong() then
@@ -511,13 +513,16 @@ t[#t+1] = Def.ActorFrame{
 };
 
 t[#t+1] = Def.ActorFrame {
+	OffCommand=function(s) SOUND:DimMusic(0,0.25) end,
 	LoadActor(THEME:GetPathS("Common","Page Flip")) .. {
 		CurrentSongChangedMessageCommand=cmd(stop;play);
 	};
 	--Lazy hack because I don't know how to make the bookmark stay behind the music wheel and the page when a song isn't picked...
 	LoadActor("lazy")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-0.45;y,SCREEN_CENTER_Y);
-		OnCommand=cmd(zoom,0.45);
+		InitCommand=cmd(x,SCREEN_CENTER_X-0.85;y,SCREEN_CENTER_Y-0.9);
+		OnCommand=cmd(zoom,0.448);
+		SongChosenMessageCommand=cmd(visible,false);
+		SongUnchosenMessageCommand=cmd(visible,true);
 	};
 		
 };
