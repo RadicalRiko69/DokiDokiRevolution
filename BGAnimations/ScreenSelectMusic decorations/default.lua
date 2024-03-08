@@ -259,7 +259,7 @@ t[#t+1] = Def.ActorFrame {
 		SongUnchosenMessageCommand=cmd(queuecommand,"WalkAround"),
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
-			if genre == "Pop" or genre == "Dance Pop" or genre == "Synthpop" or genre == "Pop Rock" or genre == "Pop-Rock" or genre == "Alternative Pop" or genre == "Country"
+			if genre == "Pop" or genre == "Dance Pop" or genre == "Synthpop" or genre == "Pop Rock" or genre == "Pop-Rock" or genre == "Alternative Pop" or genre == "Country" or genre == "Bubblegum Dance"
 			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop" or genre == "K-POP" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end

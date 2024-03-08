@@ -86,8 +86,8 @@ function LoadPlayerStuff(Player)
 			InitCommand=cmd(zoomto,146,1);
 			OnCommand=cmd(diffuse,Color('Black');y,4);
 		};
-		LoadActor( THEME:GetPathG("","_UI/arrow") ) .. {
-			InitCommand=cmd(zoom,0.2;x,90;rotationz,45;y,-13);
+		LoadActor( THEME:GetPathG("","_UI/pen") ) .. {
+			InitCommand=cmd(zoom,0.1;x,103;y,-40);
 		};
 	};
 	table.insert( ret, t );

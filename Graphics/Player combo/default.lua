@@ -20,12 +20,12 @@ local t = Def.ActorFrame {
 	-- flashy combo elements:
  	LoadActor(THEME:GetPathG("Combo","100Milestone")) .. {
 		Name="OneHundredMilestone";
-		InitCommand=cmd(visible,ShowFlashyCombo);
+		InitCommand=cmd(visible,true);
 		FiftyMilestoneCommand=cmd(playcommand,"Milestone");
 	};
 	LoadActor(THEME:GetPathG("Combo","1000Milestone")) .. {
 		Name="OneThousandMilestone";
-		InitCommand=cmd(visible,ShowFlashyCombo);
+		InitCommand=cmd(visible,true);
 		ToastyAchievedMessageCommand=cmd(playcommand,"Milestone");
 	};
 	-- normal combo elements:
