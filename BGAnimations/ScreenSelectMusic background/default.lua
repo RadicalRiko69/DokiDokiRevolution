@@ -3,8 +3,10 @@ return Def.ActorFrame{
         InitCommand=function(self)
             if GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
                 self:Load(THEME:GetPathG("","_BG/extra"));
+            elseif ThemePrefs.Get("Target") == "Caught" and ThemePrefs.Get("Severity") == "Intense" then
+                self:Load(THEME:GetPathG("","_BG/ghostbook"));
             else
-                self:Load(THEME:GetPathG("","_BG/notebook"));
+                self:Load(THEME:GetPathG("","_BG/notebook"));                
             end;
             self:xy(SCREEN_CENTER_X,SCREEN_CENTER_Y);
             self:zoom(.45);

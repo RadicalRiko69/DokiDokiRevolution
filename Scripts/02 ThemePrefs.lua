@@ -6,77 +6,35 @@ end
 -- Example usage of new system (not fully implemented yet)
 local Prefs =
 {
-	AutoSetStyle =
+	Waiver =
 	{
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
+		Default = "Disagree",
+		Choices = { "Disagree", "Agree" },
+		Values = { "Disagree", "Agree" }
 	},
-	GameplayShowStepsDisplay = 
+	Target =
 	{
-		Default = true,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
+		Default = "Safe",
+		Choices = { "Safe", "Caught" },
+		Values = { "Safe", "Caught" }
 	},
-	GameplayShowScore =
+	Severity =
 	{
-		Default = true,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
+		Default = "Normal",
+		Choices = { "On", "Off" },
+		Values = { "Normal", "Intense" }
 	},
-	ShowLotsaOptions =
+	UnlockSarena =
 	{
-		Default = true,
-		Choices = { OptionNameString('Many'), OptionNameString('Few') },
-		Values = { true, false }
+		Default = "false",
+		Choices = { "Off", "On" },
+		Values = { "false", "true" }
 	},
-	LongFail =
+	UnlockCynthia =
 	{
-		Default = false,
-		Choices = { OptionNameString('Short'), OptionNameString('Long') },
-		Values = { false, true }
-	},
-	NotePosition =
-	{
-		Default = true,
-		Choices = { OptionNameString('Normal'), OptionNameString('Lower') },
-		Values = { true, false }
-	},
-	ComboOnRolls =
-	{
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	FlashyCombo =
-	{
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	ComboUnderField =
-	{
-		Default = true,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	FancyUIBG =
-	{
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	TimingDisplay =
-	{
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
-	},
-	GameplayFooter =
-	{
-		Default = false,
-		Choices = { OptionNameString('Off'), OptionNameString('On') },
-		Values = { false, true }
+		Default = "false",
+		Choices = { "Off", "On" },
+		Values = { "false", "true" }
 	},
 }
 

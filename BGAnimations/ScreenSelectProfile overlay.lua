@@ -153,7 +153,7 @@ function UpdateInternal3(self, Player)
 			joinframe:visible(false);
 			smallframe:visible(true);
 			bigframe:visible(true);
-			seltext:visible(true);
+			seltext:visible(false);
 			scroller:visible(true);
 			local ind = SCREENMAN:GetTopScreen():GetProfileIndex(Player);
 			if ind > 0 then
@@ -164,22 +164,24 @@ function UpdateInternal3(self, Player)
 					scroller:SetDestinationItem(0);
 					self:queuecommand('UpdateInternal2');
 				else
-					joinframe:visible(true);
+					joinframe:visible(false);
 					smallframe:visible(false);
 					bigframe:visible(false);
 					scroller:visible(false);
-					seltext:settext('No profile');
+					seltext:visible(false);
+					SCREENMAN:SystemMessage("There is no save data detected.\nStarting a new game.");
+					SCREENMAN:SetNewScreen("ScreenSelectStyle");
 				end;
 			end;
 		else
 			--using card
 			smallframe:visible(false);
 			scroller:visible(false);
-			seltext:settext('CARD');
+			seltext:visible(false);
 			SCREENMAN:GetTopScreen():SetProfileIndex(Player, 0);
 		end;
 	else
-		joinframe:visible(true);
+		joinframe:visible(false);
 		scroller:visible(false);
 		seltext:visible(false);
 		smallframe:visible(false);
@@ -268,6 +270,7 @@ local t = Def.ActorFrame {
 	end;
 
 	children = {
+		SCREENMAN:SystemMessage("Select a profile using the arrow keys.\nPress Enter to confirm your user data.");
 		Def.ActorFrame {
 			Name = 'P1Frame';
 			InitCommand=cmd(x,SCREEN_CENTER_X-160;y,SCREEN_CENTER_Y);

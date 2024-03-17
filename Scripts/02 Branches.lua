@@ -35,12 +35,12 @@ function GameOverOrContinue()
 end
 
 Branch = {
-	Init = function() return "ScreenInit" end,
+	Init = function() return "ScreenTeamSushi" end,
 	AfterInit = function()
 		if GAMESTATE:GetCoinMode() == 'CoinMode_Home' then
 			return Branch.TitleMenu()
 		else
-			return "ScreenLogo"
+			return "ScreenTeamSushi"
 		end
 	end,
 	NoiseTrigger = function()
@@ -125,6 +125,9 @@ Branch = {
 			end
 		else
 			return SelectMusicOrCourse()
+		end
+		if math.random(1,100) == 100 then
+			return "ScreenPoem"
 		end
 	end,
 	GetGameInformationScreen = function()

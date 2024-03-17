@@ -2,11 +2,6 @@ local t = Def.ActorFrame{};
 
 -- Stuff on the left
 t[#t+1] = Def.ActorFrame {
-
-	LoadActor(THEME:GetPathB("","ScreenSelectMusic decorations/banner frame.png"))..{
-		InitCommand=cmd(zoom,0.5;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y);
-	};
-
 	Def.Sound{
 		File=GAMESTATE:GetCurrentSong():GetMusicPath();
 		OnCommand=function(self)
@@ -18,7 +13,19 @@ t[#t+1] = Def.ActorFrame {
 			self:stop()
 		end;
 	};
+};
 
+-- Chibis
+t[#t+1] = Def.ActorFrame {
+	OnCommand=function(self)
+		if ThemePrefs.Get("Target") == "Caught" then
+			self:visible(false);
+		else
+			self:visible(true);
+		end
+	end,
+	
+	--SAYORI
 	Def.Sprite{
 		Name= "Sayori",
 		Condition=(not GAMESTATE:IsExtraStage()),
@@ -38,9 +45,9 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
-		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/sayori 2x1.png"),
+		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/sayori 3x1.png"),
 	},
-
+	--NATSUKI
 	Def.Sprite{
 		Name= "Natsuki",
 		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
@@ -60,9 +67,9 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
-		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/natsuki 2x1.png"),
+		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/natsuki 3x1.png"),
 	},
-
+	--YURI
 	Def.Sprite{
 		Name= "Yuri",
 		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
@@ -82,9 +89,9 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
-		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/yuri 2x1.png"),
+		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/yuri 3x1.png"),
 	},
-
+	--MONIKA
 	Def.Sprite{
 		Name= "Monika",
 		Condition=(not GAMESTATE:IsExtraStage2()),
@@ -104,7 +111,47 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
-		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/monika 2x1.png"),
+		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/monika 3x1.png"),
+	},
+};
+
+-- Ghosts
+t[#t+1] = Def.ActorFrame {
+	OnCommand=function(self)
+		if ThemePrefs.Get("Target") == "Caught" then
+			self:visible(true);
+		else
+			self:visible(false);
+		end
+	end,
+	
+	--SAYORI
+	Def.Sprite{
+		Name= "Sayori",
+		Condition=(not GAMESTATE:IsExtraStage()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-60;animate,false;setstate,2),
+		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/sayori 3x1.png"),
+	},
+	--NATSUKI
+	Def.Sprite{
+		Name= "Natsuki",
+		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-215;y,SCREEN_BOTTOM-70;animate,false;setstate,2),
+		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/natsuki 3x1.png"),
+	},
+	--YURI
+	Def.Sprite{
+		Name= "Yuri",
+		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-147;y,SCREEN_BOTTOM-70;animate,false;setstate,2),
+		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/yuri 3x1.png"),
+	},
+	--MONIKA
+	Def.Sprite{
+		Name= "Monika",
+		Condition=(not GAMESTATE:IsExtraStage2()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_BOTTOM-72;animate,false;setstate,2),
+		Texture= THEME:GetPathB("","ScreenSelectMusic decorations/monika 3x1.png"),
 	},
 };
 
@@ -154,9 +201,12 @@ if not GAMESTATE:IsCourseMode() then
 	end;
 	t[#t+1] = Def.ActorFrame {
 		OnCommand=cmd(x,SCREEN_CENTER_X-175;y,SCREEN_CENTER_Y;rotationz,-6;SetUpdateFunction,CDTitleUpdate);
+		LoadActor(THEME:GetPathB("","ScreenSelectMusic decorations/banner frame.png"))..{
+			InitCommand=cmd(zoom,0.5);
+		};
 		Def.Sprite {
 			Name="Frame";
-			InitCommand=cmd(zoom,0.525;MaskSource);
+			InitCommand=cmd(zoom,0.5;MaskSource);
 			Texture=THEME:GetPathB("","ScreenSelectMusic decorations/banner glass.png"),
 		};	
 		Def.Sprite {
@@ -213,58 +263,58 @@ t[#t+1] = Def.ActorFrame{
 	};
 
 	--JUDGEMENT DISPLAY
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-124;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-124;zoom,0.6;diffuse,color("#000000"));
 		OnCommand=function(self)
 			self:settext("OUTSTANDING");
 		end;
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-92;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-92;zoom,0.6;diffuse,color("#000000"));
 		OnCommand=function(self)
 			self:settext("EXCELLENT");
 		end;
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-62;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-62;zoom,0.6;diffuse,color("#000000"));
 		OnCommand=function(self)
 			self:settext("IMPRESSIVE");
 		end;
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-32;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-32;zoom,0.6;diffuse,color("#000000"));
 		OnCommand=function(self)
 			self:settext("PASSABLE");
 		end;
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-2;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y-2;zoom,0.6;diffuse,color("#000000"));
 		OnCommand=function(self)
 			self:settext("CRUDE");
 		end;
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+28;zoom,0.7;diffuse,color("#FF0000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+28;zoom,0.6;diffuse,color("#FF0000"));
 		OnCommand=function(self)
 			self:settext("UNINTELLIGIBLE");
 		end;
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+58;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+58;zoom,0.6;diffuse,color("#000000"));
 		OnCommand=function(self)
 			self:settext("VERSE CHAIN");
 		end;
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+86;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+86;zoom,0.6;diffuse,color("#000000"));
 		Text="COMPLETION";
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+116;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+116;zoom,0.6;diffuse,color("#000000"));
 		Text="DIFFICULTY";
 	};
-	LoadFont("_as i lay dying 60px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+146;zoom,0.7;diffuse,color("#000000"));
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+170;y,SCREEN_CENTER_Y+146;zoom,0.6;diffuse,color("#000000"));
 		Text="WRITER";
 	};
 };

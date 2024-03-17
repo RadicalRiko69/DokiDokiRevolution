@@ -6,17 +6,22 @@ t[#t+1] = LoadActor(THEME:GetPathB("ScreenSystemLayer","aux"));
 
 	-- Text
 t[#t+1] = Def.ActorFrame {
+	InitCommand=cmd(Center;diffusealpha,0);
+	OnCommand=cmd(finishtweening;diffusealpha,1;);
+	OffCommand=cmd(sleep,3;diffusealpha,0;);
 	Def.Quad {
-		InitCommand=cmd(zoomtowidth,SCREEN_WIDTH;zoomtoheight,30;horizalign,left;vertalign,top;y,SCREEN_TOP;diffuse,color("0,0,0,0"));
-		OnCommand=cmd(finishtweening;diffusealpha,0.85;);
-		OffCommand=cmd(sleep,3;linear,0.5;diffusealpha,0;);
+		InitCommand=cmd(zoomx,445;zoomy,85;diffuse,color("#fe81ae"));
+	};
+	Def.Quad {
+		InitCommand=cmd(zoomx,440;zoomy,80;diffuse,color("#ffc8dc"));
 	};
 	Def.BitmapText{
 		Font="Common Normal";
 		Name="Text";
-		InitCommand=cmd(maxwidth,750;horizalign,left;vertalign,top;y,SCREEN_TOP+10;x,SCREEN_LEFT+10;shadowlength,1;diffusealpha,0;);
-		OnCommand=cmd(finishtweening;diffusealpha,1;zoom,0.5);
-		OffCommand=cmd(sleep,3;linear,0.5;diffusealpha,0;);
+		InitCommand=cmd(maxwidth,750;diffuse,Color("Black");zoom,0.75);
+	};
+	LoadActor(THEME:GetPathS("Common","value")) .. {
+		OnCommand=cmd(play);
 	};
 	SystemMessageMessageCommand = function(self, params)
 		self:GetChild("Text"):settext( params.Message );

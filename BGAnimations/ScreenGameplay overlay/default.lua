@@ -1,6 +1,27 @@
+local function input(event,param)
+    if not event.button then return false end
+	local song = GAMESTATE:GetCurrentSong();
+    if event.type ~= "InputEventType_Release" then
+        if event.GameButton == "Select" and song:GetDisplayArtist() == "Akira Complex" then
+            SCREENMAN:SystemMessage("In the next world, we'll meet again.\nI promise.");
+        elseif event.GameButton == "Select" then
+			SCREENMAN:SystemMessage("Who do you think you are running from?\nThere's no point in running away, you know.");
+        end
+    end
+    return false
+end
+
 local function PlayerInfo(pn)
 	local t = Def.ActorFrame {
-		
+		BeginCommand=function(s)
+			if (GAMESTATE:GetCoinMode() == "CoinMode_Pay") then
+				SCREENMAN:SetNewScreen("ScreenNoPay");
+			end
+		end,
+		InitCommand=function(s) s:queuecommand("Capture") end,
+		CaptureCommand=function(s) 
+			SCREENMAN:GetTopScreen():AddInputCallback(input);
+		end,
 	};
 	return t
 end;
@@ -256,11 +277,6 @@ local function customlifemeterD(pn)
 
 	t[#t+1] = LoadActor("failed")..{
 		InitCommand=cmd(zoom,0.8;diffusealpha,0;draworder,300);
-		OnCommand=function(self)
-			if pn == PLAYER_2 then
-				self:rotationy(-180);
-			end;
-		end;
 		["Kill"..pname(pn).."MessageCommand"]=cmd(linear,0.05;diffusealpha,1;bounce;effectmagnitude,30,0,0;effectperiod,0.05;sleep,0.25;queuecommand,"Slow");  
 		SlowCommand=cmd(bounce;effectmagnitude,10,0,0;effectperiod,0.05;sleep,0.25;queuecommand,"Slower");
 		SlowerCommand=cmd(bounce;effectmagnitude,5,0,0;effectperiod,0.05;sleep,0.25;queuecommand,"Stop");
@@ -396,13 +412,14 @@ t[#t+1] = LoadActor("bitch")..{
 	OnCommand=cmd(visible,GAMESTATE:GetCoinMode() == "CoinMode_Pay");
 };
 
--- if you use paymode
+
+--if you use paymode
 if (GAMESTATE:GetCoinMode() == "CoinMode_Pay") then
 	t[#t+1] = LoadActor("earrape (loop)")..{
 		OnCommand=cmd(queuecommand,"PlaySound");
 		PlaySoundCommand=cmd(play);
 		OffCommand=cmd(stop);
-	};	--Music
+	};	
 end
 
 end
@@ -424,7 +441,7 @@ t[#t+1] = Def.ActorFrame {
 			if song then
 				local speedvalue;
 				if song:IsDisplayBpmRandom() then
-					self:settext("Now playing ''"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle().."'' by "..GAMESTATE:GetCurrentSong():GetDisplayArtist()..".\nThe BPM information is classified!");
+					self:settext("Now playing ''"..GAMESTATE:GetCurrentSong():GetDisplayFullTitle().."'' by "..GAMESTATE:GetCurrentSong():GetDisplayArtist()..".\nThe song plays at Ÿ ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º.");
 				else
 					local rawbpm = GAMESTATE:GetCurrentSong():GetDisplayBpms();
 					local lobpm = math.ceil(rawbpm[1]);
@@ -442,7 +459,7 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=cmd(x,SCREEN_CENTER_X-213;y,SCREEN_CENTER_Y+130;zoom,0.7;halign,0;valign,0;horizalign,left;wrapwidthpixels,610;strokecolor,Color("Black");faderight,1;linear,1.2;faderight,0);
 	};
 	LoadFont("_aller thin 20px") .. {
-		Text="History         Skip        Auto        Save        Load        Settings";
+		Text="History         Skip         Auto         Save         Load         Settings";
 		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y+190;zoom,0.4;addy,20;diffuse,color("#1e1414"));
 	};
 	LoadActor(THEME:GetPathG("","_StepsDisplayListRow arrow"))..{
@@ -450,7 +467,47 @@ t[#t+1] = Def.ActorFrame {
 	};
 };
 
-
+local death = false
+	if math.random(1,30) == 15 and ThemePrefs.Get("Severity") == "Intense" then
+		death = true
+	end
+t[#t+1] = Def.ActorFrame {
+	OnCommand=function(s) SOUND:DimMusic(0.5,0) end,
+	Def.Quad{
+		OnCommand=function(self)
+			if death == true then
+			self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
+				:diffusecolor(Color("Red")):diffusealpha(0.8)
+				SCREENMAN:GetTopScreen():addx(-20):zoom(1.1):bob();
+				SCREENMAN:GetTopScreen():effectmagnitude(3,-1,3);
+			end
+		end,
+	};
+	LoadActor("blurry")..{
+		InitCommand=cmd(Center;zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;diffusealpha,0);
+		OnCommand=function(self)
+			if death == true then
+			self:diffusealpha(1):blend(Blend.Multuply)
+			end
+		end,
+	};
+	LoadActor("blood (loop)")..{
+		InitCommand=cmd(Center;stop);
+		OnCommand=function(self)
+			if death == true then
+				self:play(1);
+			end
+		end,
+	};
+	Def.Quad{
+		OnCommand=function(self)
+			if death == true then
+			self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
+				:diffusecolor(Color("Black")):diffuseshift():effectcolor1(color("#ad3636")):effectcolor1(color("#140303")):effectperiod(5):blend(Blend.Multiply)
+			end
+		end,
+	};
+};
 return t;
 
 

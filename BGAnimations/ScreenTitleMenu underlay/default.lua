@@ -141,14 +141,14 @@ return Def.ActorFrame{
 				:zoom(1.2)
 		end
 	},
-	LoadActor(THEME:GetPathG("","_BG/white"))..{
-		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y);
-		OnCommand=cmd(zoom,0.68;sleep,3;accelerate,0.5;diffusealpha,0);
-	};
-	LoadActor(THEME:GetPathG("","_BG/white"))..{ --lazy hack
-		InitCommand=cmd(x,SCREEN_CENTER_X;y,SCREEN_CENTER_Y;diffusealpha,0);
-		OnCommand=cmd(zoom,0.68;sleep,4.8;diffusealpha,1;sleep,0.05;linear,1;diffusealpha,0);
-	};
+	Def.Quad{
+		OnCommand=function(self)
+			self:stretchto(0,0,SCREEN_WIDTH,SCREEN_HEIGHT)
+				:diffuse(Color("Black"))
+				:sleep(0.1)
+				:diffusealpha(0)
+		end
+	},
 	LoadActor(THEME:GetPathG("","hub")) .. {
 		InitCommand=cmd(zoom,0.45;x,SCREEN_LEFT-110;y,SCREEN_CENTER_Y);
 		OnCommand=cmd(sleep,4;decelerate,0.8;x,SCREEN_LEFT+110;);
@@ -168,5 +168,9 @@ return Def.ActorFrame{
 				:y(500)
 				:diffusealpha(0)
 		end
+	},
+	Def.Quad{
+		InitCommand=cmd(zoomto,SCREEN_WIDTH,SCREEN_HEIGHT;Center;diffusealpha,0);
+		OnCommand=cmd(sleep,4.8;diffusealpha,0.25;diffuse,Color("White");linear,0.5;diffusealpha,0);
 	},
 }

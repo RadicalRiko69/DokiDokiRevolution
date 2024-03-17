@@ -104,7 +104,7 @@ local t = Def.ActorFrame {
 			cf.Number:strokecolor(Color("Stealth"));
 			cf.Number:stopeffect();
 		else
-			cf.Number:diffuse(color("#ff0000"));
+			cf.Number:diffuse(color("#e46060"));
 			cf.Number:stopeffect();
 		end
 		-- Pulse

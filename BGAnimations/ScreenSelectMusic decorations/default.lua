@@ -239,12 +239,58 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		};
 end;
 
--- Stuff on the left
+-- Chibis
 t[#t+1] = Def.ActorFrame {
-	
-	LoadActor("banner frame.png")..{
-		InitCommand=cmd(zoom,0.525;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
-	};
+	OnCommand=function(self)
+		if ThemePrefs.Get("Target") == "Caught" and ThemePrefs.Get("Severity") == "Intense" then
+			self:visible(false);
+		else
+			self:visible(true);
+		end
+	end,
+	--SARENA
+	Def.Sprite{
+		Name= "Sarena",
+		Condition=(not GAMESTATE:IsExtraStage() and ThemePrefs.Get("UnlockSarena") == "true"),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_CENTER_Y+80;animate,false),
+		WalkAroundCommand=function(self)
+			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
+			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(0.5):queuecommand("WalkAround");
+		end,
+		OnCommand=cmd(stoptweening;setstate,0;sleep,3;queuecommand,"WalkAround"),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-70;y,SCREEN_CENTER_Y+72),
+		SongUnchosenMessageCommand=cmd(sleep,5;queuecommand,"WalkAround"),
+		OffCommand=function(self)
+			local genre = GAMESTATE:GetCurrentSong():GetGenre()
+			if genre == "Dance Speed" or genre == "Artcore" or genre == "Drumstep" or genre == "Epic Trance"
+			or genre == "Astral Hardcore" or genre == "Hard Renaissance" or genre == "Renaissance" then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
+			end
+		end,
+		ResetAnimCommand=cmd(setstate,0);
+		Texture= "sarena 2x1.png",
+	},
+	--CYNTHIA
+	Def.Sprite{
+		Name= "Cynthia",
+		Condition=(ThemePrefs.Get("UnlockCynthia") == "true"),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+80;animate,false),
+		WalkAroundCommand=function(self)
+			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
+			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(0.5):queuecommand("WalkAround");
+		end,
+		OnCommand=cmd(stoptweening;setstate,0;sleep,8;queuecommand,"WalkAround"),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+72),
+		SongUnchosenMessageCommand=cmd(sleep,4;queuecommand,"WalkAround"),
+		OffCommand=function(self)
+			local genre = GAMESTATE:GetCurrentSong():GetDisplaySubtitle()
+			if genre == "Sushi Violation" then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
+			end
+		end,
+		ResetAnimCommand=cmd(setstate,0);
+		Texture= "cynthia 2x1.png",
+	},
 	--SAYORI
 	Def.Sprite{
 		Name= "Sayori",
@@ -265,7 +311,7 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
-		Texture= "sayori 2x1.png",
+		Texture= "sayori 3x1.png",
 	},
 	--NATSUKI
 	Def.Sprite{
@@ -287,7 +333,7 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
-		Texture= "natsuki 2x1.png",
+		Texture= "natsuki 3x1.png",
 	},
 	--YURI
 	Def.Sprite{
@@ -309,7 +355,7 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
-		Texture= "yuri 2x1.png",
+		Texture= "yuri 3x1.png",
 	},
 	--MONIKA
 	Def.Sprite{
@@ -331,7 +377,67 @@ t[#t+1] = Def.ActorFrame {
 			end
 		end,
 		ResetAnimCommand=cmd(setstate,0);
-		Texture= "monika 2x1.png",
+		Texture= "monika 3x1.png",
+	},
+};
+
+-- Ghosts
+t[#t+1] = Def.ActorFrame {
+	OnCommand=function(self)
+		if ThemePrefs.Get("Target") == "Caught" and ThemePrefs.Get("Severity") == "Intense" then
+			self:visible(true);
+		else
+			self:visible(false);
+		end
+	end,
+	--CYNTHIA
+	Def.Sprite{
+		Name= "Cynthia",
+		Condition=(ThemePrefs.Get("UnlockCynthia") == "true"),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+80;animate,false),
+		WalkAroundCommand=function(self)
+			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
+			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(0.5):queuecommand("WalkAround");
+		end,
+		OnCommand=cmd(stoptweening;setstate,0;sleep,8;queuecommand,"WalkAround"),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+72),
+		SongUnchosenMessageCommand=cmd(sleep,4;queuecommand,"WalkAround"),
+		OffCommand=function(self)
+			local genre = GAMESTATE:GetCurrentSong():GetDisplaySubtitle()
+			if genre == "Sushi Violation" then
+				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
+			end
+		end,
+		ResetAnimCommand=cmd(setstate,0);
+		Texture= "cynthia 2x1.png",
+	},
+	--SAYORI
+	Def.Sprite{
+		Name= "Sayori",
+		Condition=(not GAMESTATE:IsExtraStage()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-60;animate,false;setstate,2),
+		Texture= "sayori 3x1.png",
+	},
+	--NATSUKI
+	Def.Sprite{
+		Name= "Natsuki",
+		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-215;y,SCREEN_BOTTOM-70;animate,false;setstate,2),
+		Texture= "natsuki 3x1.png",
+	},
+	--YURI
+	Def.Sprite{
+		Name= "Yuri",
+		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-147;y,SCREEN_BOTTOM-70;animate,false;setstate,2),
+		Texture= "yuri 3x1.png",
+	},
+	--MONIKA
+	Def.Sprite{
+		Name= "Monika",
+		Condition=(not GAMESTATE:IsExtraStage2()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_BOTTOM-72;animate,false;setstate,2),
+		Texture= "monika 3x1.png",
 	},
 };
 
@@ -373,12 +479,17 @@ if not GAMESTATE:IsCourseMode() then
 		
 		if not song then
 			banner:visible(false);
+			banner:Load(nil);
 			banner:zoom(1);
 			banner:MaskDest();
 		end;
 		banner:zoom(1)
 		banner:MaskDest();
 	end;
+	t[#t+1] = LoadActor("banner frame.png")..{
+		InitCommand=cmd(zoom,0.525;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
+	};
+
 	t[#t+1] = Def.ActorFrame {
 		OnCommand=cmd(x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122;rotationz,-6;SetUpdateFunction,CDTitleUpdate);
 		Def.Sprite {
@@ -470,7 +581,7 @@ t[#t+1] = Def.ActorFrame{
 			if song then
 				local speedvalue;
 				if song:IsDisplayBpmRandom() then
-					speedvalue = "unknown";
+					speedvalue = "Ÿ ¡¢£¤¥¦§¨µ¶";
 				else
 					local rawbpm = GAMESTATE:GetCurrentSong():GetDisplayBpms();
 					local lobpm = math.ceil(rawbpm[1]);
@@ -516,6 +627,12 @@ t[#t+1] = Def.ActorFrame {
 	OffCommand=function(s) SOUND:DimMusic(0,0.25) end,
 	LoadActor(THEME:GetPathS("Common","Page Flip")) .. {
 		CurrentSongChangedMessageCommand=cmd(stop;play);
+	};
+	LoadActor(THEME:GetPathS("Common","value")) .. {
+		SongChosenMessageCommand=cmd(stop;play);
+	};
+	LoadActor(THEME:GetPathS("","Sparkle")) .. {
+		OffCommand=cmd(stop;play);
 	};
 	--Lazy hack because I don't know how to make the bookmark stay behind the music wheel and the page when a song isn't picked...
 	LoadActor("lazy")..{
