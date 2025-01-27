@@ -3,7 +3,7 @@ Doki Doki Revolution
 </h1>
 
 <h1 align="center">
-<img src="https://github.com/RadicalRiko69/DokiDokiRevolution/assets/36906816/0be9a245-7c0f-4ee8-860d-2a0ddd402f93">
+<img src="https://github.com/user-attachments/assets/18631f28-7977-4549-a83a-4b909696c1b3">
 </h1>
 
 <h1 align="center">
@@ -19,22 +19,32 @@ DO NOT INSERT OFFICIAL DDLC ASSETS INTO THIS THEME! THAT IS NOT ALLOWED, PERIOD.
 # Copyright Info
 *Doki Doki Literature Club* is copyrighted to Team Salvato. This is merely a fan project made by Sushiverse Entertainment, no money will be made off of this.
 
-Character redesigns by Giovanni Shawn.
+DDLC Character redesigns by Giovanni Shawn.
 
-Chibi Character Art by [UsagiSii](https://usagisii.carrd.co/).
+Original characters Shivo Kyoufu (from *Sushi Violation 2018 Final*) and Sarena Jade (pending project) copyrighted to Sushiverse Entertainment, designed by Giovanni Shawn.
 
-<h1 align="center">
-<img src="https://github.com/RadicalRiko69/DokiDokiRevolution/assets/36906816/c9fe36bc-b949-4871-ab7d-ac403c9d1e8b">
-</h1>
-
-# 2024 Update
-WE'RE BACK, BACK AGAIN!!! LFG!!!!
-Tons of new updates coming to this theme, including more QoL changes for competitive play. Hopefully new character art assets will come into play as well as backgrounds. This theme is constantly updated so be wary that new features and bugs will be added as the updates go by.
-
+All Chibi Character Art by [UsagiSii](https://usagisii.carrd.co/).
 
 <h1 align="center">
-<img src="https://github.com/RadicalRiko69/DokiDokiRevolution/assets/36906816/9db65001-405f-4705-99d3-9ad05a4111cc">
+<img src="https://github.com/user-attachments/assets/a98515eb-f6ca-4bed-91d3-173a58593554">
+
 </h1>
+
+# 2025 Update
+<h1 align="center">
+  <img src="https://github.com/user-attachments/assets/0d3ddee3-3e33-464f-a437-6ab27889e3ce">
+</h1>
+<h1 align="center">
+  New Gameplay Background toggle!
+  <img src="https://github.com/user-attachments/assets/6a7b0dd2-26bc-49f4-b0d1-de75e3e87a0a">
+</h1>
+
+
+<h1 align="center">
+$${\color{red}This \space theme \space has \space content \space that \space may \space not \space be \space suitable \space for}$$
+$${\color{red}children \space or \space those \space who \space are \space easily \space disturbed.}$$
+</h1>
+
 
 <details>
   <summary>This tab contains spoilers from the theme and original game. These will only show up when Safe Mode is turned off.</summary>
@@ -63,7 +73,18 @@ Tons of new updates coming to this theme, including more QoL changes for competi
 </details>
 
 
-
 # WARNING: This theme may have problems outside of dance and pump mode.
 
 You can join the [Sushiverse Entertainment Discord](https://discord.gg/Sa7XMWp) if you want to contact me regarding the theme in #dokidokirevolution, I'm also on r/DDLC and Doki Doki Modding Club if you want to reach out to me there instead.
+
+# Special Thanks
+
+Inorizushi for the DDR WORLD gameplay background code.
+Jose_Varela for helping me with the interactive hearts background for gameplay.
+Rhythm Lunatic for the Difficulty Select code.
+Everyone who enjoyed this project.
+
+# Next Plan?
+
+Maybe push a new fork that removes the DDLC characters, this theme has potential to be something without the *Doki Doki Literature Club* cast.
+Whether or not I keep this DDLC version up forever is a mystery...
