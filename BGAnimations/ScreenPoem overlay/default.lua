@@ -10,7 +10,7 @@ end
 
 if math.random(1,10) == 8 and ThemePrefs.Get("Severity") == "Intense" then
 	note = "threat"
-elseif math.random(1,10) == 3 and ThemePrefs.Get("Severity") == "Intense" then
+elseif math.random(1,6) == 3 and ThemePrefs.Get("Severity") == "Intense" then
 	note = "hxppy"
 elseif math.random(1,100) == 69 and ThemePrefs.Get("Severity") == "Intense" then
 	note = "found you"

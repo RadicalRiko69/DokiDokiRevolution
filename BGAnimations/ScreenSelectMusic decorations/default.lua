@@ -53,7 +53,7 @@ local function drawDiffListItem(difficulty, pn)
 					self:GetChild("DifficultyAndMeter"):settext(THEME:GetString("CustomDifficulty",ToEnumShortString(difficulty)).." (Lv."..steps:GetMeter()..")");
 				end;
 				if steps:GetAuthorCredit() ~= "" then
-					self:GetChild("StepsBy"):settext("Steps By "..steps:GetAuthorCredit()):visible(true);
+					self:GetChild("StepsBy"):settext("Written by "..steps:GetAuthorCredit()):visible(true);
 				else
 					self:GetChild("StepsBy"):visible(false);
 				end
@@ -110,7 +110,7 @@ local function drawDiffListItem(difficulty, pn)
 			Name="StepsBy";
 			Font="_halogen outline 20px";
 			InitCommand=cmd(y,15;zoom,.5;horizalign,left;diffuse,Color("Black"));
-			Text="Steps by a good writer";
+			Text="Written by a good writer";
 		};
 	};
 end;
@@ -239,6 +239,121 @@ for pn in ivalues(GAMESTATE:GetEnabledPlayers()) do
 		};
 end;
 
+--Song Info Stuff
+t[#t+1] = Def.ActorFrame{
+	LoadActor(THEME:GetPathG("","_BG/sticky.png"))..{
+		InitCommand=cmd(zoom,0.445;Center;shadowlength,1);
+	};
+	Def.Actor { 
+		SongChosenMessageCommand=function() SCREENMAN:GetTopScreen():lockinput(0.25); end;
+	};
+	--STAGE DISPLAY
+	LoadFont("_journal 40px")..{
+		InitCommand=cmd(uppercase,true;diffuse,Color("Black");x,SCREEN_CENTER_X-284;y,SCREEN_CENTER_Y-196;zoom,0.5;rotationz,-8);
+		OnCommand=function(self)
+			local stage = GAMESTATE:GetCurrentStage()
+			self:settext(THEME:GetString("Stage",ToEnumShortString(stage)).." Poem"):faderight(1):sleep(0.02):decelerate(0.5):faderight(0);
+		end;
+	};
+	--SORT DISPLAY
+	LoadFont("_aller thin 20px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X+140;y,SCREEN_BOTTOM-25;zoom,0.5;horizalign,left;diffuse,color("#552222"));
+		SongChosenMessageCommand=cmd(visible,false);
+		SongUnchosenMessageCommand=cmd(visible,true);
+		OffCommand=cmd(visible,false);
+		CurrentSongChangedMessageCommand=function(self)
+			local sort = GAMESTATE:GetSortOrder()
+			self:settext("Sort: "..ToEnumShortString(sort));
+		end;
+	};
+	LoadActor("genre")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X-100;y,SCREEN_CENTER_Y;rotationz,-5);
+		OnCommand=cmd(zoom,0.2);
+	};
+	--SONG GENRE
+	LoadFont("_hashtag 40px")..{
+		InitCommand=cmd(wrapwidthpixels,250;vertspacing,-20;x,SCREEN_CENTER_X-106;y,SCREEN_CENTER_Y-20;zoom,0.425;maxwidth,250;maxheight,80;rotationz,-5;diffuse,Color("Black"));
+		CurrentSongChangedMessageCommand=function(self)
+			if GAMESTATE:GetCurrentSong() then
+			local genre = GAMESTATE:GetCurrentSong():GetGenre()
+			if genre == "" then
+				genre = "(not applicable)"
+			end
+			self:stoptweening():settext("GENRE:\n"..genre):faderight(1):sleep(0.02):decelerate(0.5):faderight(0);
+		else
+			self:settext("GENRE: ------");
+		end;
+	end;
+	};	
+	LoadActor("bpm")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X-256;y,SCREEN_CENTER_Y;shadowlength,2;rotationz,3);
+		OnCommand=cmd(zoom,0.3);
+	};
+	--SONG BPM
+	LoadFont("_alarm clock 80px")..{
+		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-286;y,SCREEN_CENTER_Y-9;diffuse,color("#FF0000");zoom,0.2;maxwidth,350;rotationz,3);
+		CurrentSongChangedMessageCommand=function(self)
+
+			local song = GAMESTATE:GetCurrentSong();
+			-- ROAD24: more checks,
+			-- TODO: decide what to do if no song is chosen, ignore or hide ??
+			if song then
+				local speedvalue;
+				if song:IsDisplayBpmRandom() then
+					speedvalue = "---";
+				else
+					local rawbpm = GAMESTATE:GetCurrentSong():GetDisplayBpms();
+					local lobpm = math.ceil(rawbpm[1]);
+					local hibpm = math.ceil(rawbpm[2]);
+					if lobpm == hibpm then
+						speedvalue = hibpm
+					else
+						speedvalue = lobpm.."-"..hibpm
+					end;
+				end;
+				self:stoptweening():settext(speedvalue):faderight(1):sleep(0.02):decelerate(0.5):faderight(0);
+			else
+				self:settext("---");
+			end;
+		end;
+	};
+	--SONG LENGTH
+	LoadFont("_alarm clock 80px")..{
+		InitCommand=cmd(horizalign,left;x,SCREEN_CENTER_X-286;y,SCREEN_CENTER_Y+4;diffuse,color("#FF0000");zoom,0.2;maxwidth,350;rotationz,3);
+		CurrentSongChangedMessageCommand=function(self)
+		if GAMESTATE:GetCurrentSong() then
+			local length = GAMESTATE:GetCurrentSong():MusicLengthSeconds()
+			self:stoptweening():settext(SecondsToMMSS(length)):faderight(1):sleep(0.02):decelerate(0.5):faderight(0);
+		else
+			self:settext("---");
+		end;
+	end;
+	};	
+	-- HELP TEXT
+	LoadFont("_halogen 20px")..{	
+		InitCommand=cmd(faderight,1;x,SCREEN_CENTER_X+32;y,SCREEN_BOTTOM-50;zoom,0.5;horizalign,left;linear,0.5;faderight,0);
+		SongChosenMessageCommand=cmd(visible,false);
+		SongUnchosenMessageCommand=cmd(finishtweening;linear,0.5;visible,true;faderight,0);
+		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
+		Text="LEFT/RIGHT = Select Song     SHIFT = Access Options\nPress ENTER to choose a song.",
+	};	
+	LoadFont("_halogen 20px")..{	
+		InitCommand=cmd(faderight,1;x,SCREEN_CENTER_X+32;y,SCREEN_BOTTOM-20;zoom,0.5;horizalign,left);
+		SongChosenMessageCommand=cmd(finishtweening;sleep,0.45;linear,0.5;faderight,0);
+		SongUnchosenMessageCommand=cmd(finishtweening;linear,0.0;faderight,1);
+		OffCommand=cmd(diffusealpha,0);
+		Text="LEFT/RIGHT = Select Level     UP/DOWN = Cancel\nPress ENTER to confirm.",
+	};
+	-- HEADER TEXT
+	LoadFont("_halogen 20px")..{	
+		InitCommand=cmd(x,SCREEN_CENTER_X+40;y,SCREEN_TOP+60;zoom,1;horizalign,left);
+		SongChosenMessageCommand=cmd(visible,false);
+		SongUnchosenMessageCommand=cmd(visible,true);
+		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
+		Text="Select Music",
+	};
+};
+
 -- Chibis
 t[#t+1] = Def.ActorFrame {
 	OnCommand=function(self)
@@ -251,19 +366,19 @@ t[#t+1] = Def.ActorFrame {
 	--SARENA
 	Def.Sprite{
 		Name= "Sarena",
-		Condition=(not GAMESTATE:IsExtraStage() and ThemePrefs.Get("UnlockSarena") == "true"),
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_CENTER_Y+80;animate,false),
+		Condition=(not GAMESTATE:IsExtraStage()),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-120;y,SCREEN_CENTER_Y+80;animate,false;shadowlength,2),
 		WalkAroundCommand=function(self)
 			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
 			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(0.5):queuecommand("WalkAround");
 		end,
 		OnCommand=cmd(stoptweening;setstate,0;sleep,3;queuecommand,"WalkAround"),
-		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-70;y,SCREEN_CENTER_Y+72),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-120;y,SCREEN_CENTER_Y+80),
 		SongUnchosenMessageCommand=cmd(sleep,5;queuecommand,"WalkAround"),
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
-			if genre == "Dance Speed" or genre == "Artcore" or genre == "Drumstep" or genre == "Epic Trance"
-			or genre == "Astral Hardcore" or genre == "Hard Renaissance" or genre == "Renaissance" then
+			if genre == "Dance Speed" or genre == "Artcore" or genre == "Drumstep" or genre == "Epic Trance" or genre == "UK Hardcore"
+			or genre == "Astral Hardcore" or genre == "Hard Renaissance" or genre == "Renaissance" or genre == "Crossover" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
@@ -273,18 +388,17 @@ t[#t+1] = Def.ActorFrame {
 	--CYNTHIA
 	Def.Sprite{
 		Name= "Cynthia",
-		Condition=(ThemePrefs.Get("UnlockCynthia") == "true"),
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+80;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-225;y,SCREEN_CENTER_Y+80;animate,false;shadowlength,2),
 		WalkAroundCommand=function(self)
 			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
 			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(0.5):queuecommand("WalkAround");
 		end,
 		OnCommand=cmd(stoptweening;setstate,0;sleep,8;queuecommand,"WalkAround"),
-		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-150;y,SCREEN_CENTER_Y+72),
+		SongChosenMessageCommand=cmd(stoptweening;decelerate,0.1;x,SCREEN_CENTER_X-225;y,SCREEN_CENTER_Y+80;),
 		SongUnchosenMessageCommand=cmd(sleep,4;queuecommand,"WalkAround"),
 		OffCommand=function(self)
-			local genre = GAMESTATE:GetCurrentSong():GetDisplaySubtitle()
-			if genre == "Sushi Violation" then
+			local step = GAMESTATE:GetCurrentSong():GetOneSteps():GetAuthorCredit()
+			if step == "Sushi" or step == "G.Shawn" or step == "S.Kyoufu" or step == "Saki" or step == "Miso" or step == "The Doctor" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
@@ -295,7 +409,7 @@ t[#t+1] = Def.ActorFrame {
 	Def.Sprite{
 		Name= "Sayori",
 		Condition=(not GAMESTATE:IsExtraStage()),
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-72;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-285;y,SCREEN_BOTTOM-72;animate,false;shadowlength,2),
 		WalkAroundCommand=function(self)
 			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
 			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(0.5):queuecommand("WalkAround");
@@ -306,7 +420,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			local genre = GAMESTATE:GetCurrentSong():GetGenre()
 			if genre == "Pop" or genre == "Dance Pop" or genre == "Synthpop" or genre == "Pop Rock" or genre == "Pop-Rock" or genre == "Alternative Pop" or genre == "Country" or genre == "Bubblegum Dance"
-			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop" or genre == "K-POP" then
+			or genre == "Alternative Rock" or genre == "Teen Pop" or genre == "Electropop" or genre == "Electro-Pop" or genre == "Eurodance" or genre == "K-Pop" or genre == "K-POP" or genre == "Happy Hardcore" then
 				self:finishtweening():setstate(1):decelerate(.145):addy(-50):accelerate(.145):addy(50):decelerate(.145):addy(-50):accelerate(.145):addy(50):queuecommand("ResetAnim")
 			end
 		end,
@@ -317,7 +431,7 @@ t[#t+1] = Def.ActorFrame {
 	Def.Sprite{
 		Name= "Natsuki",
 		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-215;y,SCREEN_BOTTOM-70;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-215;y,SCREEN_BOTTOM-70;animate,false;shadowlength,2),
 		WalkAroundCommand=function(self)
 			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(3):decelerate(0.1):
 			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(2):queuecommand("WalkAround");
@@ -339,7 +453,7 @@ t[#t+1] = Def.ActorFrame {
 	Def.Sprite{
 		Name= "Yuri",
 		Condition=(not GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2()),
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-147;y,SCREEN_BOTTOM-70;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-147;y,SCREEN_BOTTOM-70;animate,false;shadowlength,2),
 		WalkAroundCommand=function(self)
 			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(4):decelerate(0.1):
 			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(1):queuecommand("WalkAround");
@@ -361,7 +475,7 @@ t[#t+1] = Def.ActorFrame {
 	Def.Sprite{
 		Name= "Monika",
 		Condition=(not GAMESTATE:IsExtraStage2()),
-		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_BOTTOM-72;animate,false),
+		InitCommand= cmd(zoom,0.35;x,SCREEN_CENTER_X-70;y,SCREEN_BOTTOM-72;animate,false;shadowlength,2),
 		WalkAroundCommand=function(self)
 			self:decelerate(0.1):addx(4):addy(-10):decelerate(0.1):addy(10):sleep(1):decelerate(0.1):
 			addx(-4):addy(-10):decelerate(0.1):addy(10):sleep(2):queuecommand("WalkAround");
@@ -500,138 +614,36 @@ if not GAMESTATE:IsCourseMode() then
 		Def.Sprite {
 			Name="Banner";
 			CurrentSongChangedMessageCommand=function(self)
-				(cmd(finishtweening;Load,nil;zoom,1.1;rotationz,0;decelerate,0.1;zoom,1))(self);
+				(cmd(finishtweening;Load,nil;zoom,1;cropleft,1;cropright,1;decelerate,0.5;cropleft,0;cropright,0))(self);
 			end;
 		};	
 	};
 	--PHONE BURN
 	t[#t+1] = Def.Quad {
-		InitCommand=cmd(diffuseshift;effectcolor1,color("#525252");effectcolor2,color("#2e2e2e");effectclock,'beatnooffset';MaskDest;blend,Blend.Multiply;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
+		InitCommand=cmd(diffuseshift;effectcolor1,color("#525252");effectcolor2,color("#666666");effectclock,'beatnooffset';MaskDest;blend,Blend.Multiply;rotationz,-6;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
 		CurrentSongChangedMessageCommand=function(self)
 					self:scaletoclipped(265,145);
 		end;
 	};
+	--PHONE GLARE
+	t[#t+1] = LoadActor("banner shine.png")..{
+		InitCommand=cmd(zoom,0.525;rotationz,-6;blend,Blend.Add;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
+	};
 	
 end;
 
---Song Info Stuff
-t[#t+1] = Def.ActorFrame{
-	--PHONE GLARE
-	LoadActor("banner shine.png")..{
-		InitCommand=cmd(zoom,0.525;rotationz,-6;blend,Blend.Add;x,SCREEN_CENTER_X-175;y,SCREEN_TOP+122);
-	};
-	--STAGE DISPLAY
-	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,right;x,SCREEN_CENTER_X-36;y,SCREEN_CENTER_Y-4;zoom,0.8);
-		OffCommand=cmd(visible,false);
-		OnCommand=function(self)
-			local stage = GAMESTATE:GetCurrentStage()
-			self:settext(THEME:GetString("Stage",ToEnumShortString(stage)).." Poem");
-		end;
-	};
-	--SORT DISPLAY
-	LoadFont("_aller thin 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X+140;y,SCREEN_BOTTOM-25;zoom,0.5;horizalign,left;diffuse,color("#552222"));
-		SongChosenMessageCommand=cmd(visible,false);
-		SongUnchosenMessageCommand=cmd(visible,true);
-		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			local sort = GAMESTATE:GetSortOrder()
-			self:settext("Sort: "..ToEnumShortString(sort));
-		end;
-	};
-	--SONG GENRE
-	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-312;y,SCREEN_CENTER_Y+26;zoom,0.8;maxwidth,350;diffuse,Color("Black"));
-		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-			if GAMESTATE:GetCurrentSong() then
-			local genre = GAMESTATE:GetCurrentSong():GetGenre()
-			if genre == "" then
-				genre = "N/A"
-			end
-			self:settext("GENRE: "..genre);
-		else
-			self:settext("GENRE: N/A");
-		end;
-	end;
-	};	
-	--SONG LENGTH
-	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(horizalign,left;x,SCREEN_CENTER_X-312;y,SCREEN_CENTER_Y+56;zoom,0.8;maxwidth,620);
-		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-		if GAMESTATE:GetCurrentSong() then
-			local length = GAMESTATE:GetCurrentSong():MusicLengthSeconds()
-			self:settext("LENGTH: "..SecondsToMMSS(length));
-		else
-			self:settext("LENGTH: N/A");
-		end;
-	end;
-	};	
-	--SONG BPM
-	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(uppercase,true;horizalign,left;x,SCREEN_CENTER_X-312;y,SCREEN_CENTER_Y-4;zoom,0.8;maxwidth,2900);
-		OffCommand=cmd(visible,false);
-		CurrentSongChangedMessageCommand=function(self)
-
-			local song = GAMESTATE:GetCurrentSong();
-			-- ROAD24: more checks,
-			-- TODO: decide what to do if no song is chosen, ignore or hide ??
-			if song then
-				local speedvalue;
-				if song:IsDisplayBpmRandom() then
-					speedvalue = "Ÿ ¡¢£¤¥¦§¨µ¶";
-				else
-					local rawbpm = GAMESTATE:GetCurrentSong():GetDisplayBpms();
-					local lobpm = math.ceil(rawbpm[1]);
-					local hibpm = math.ceil(rawbpm[2]);
-					if lobpm == hibpm then
-						speedvalue = hibpm
-					else
-						speedvalue = lobpm.."-"..hibpm
-					end;
-				end;
-				self:settext("BPM: "..speedvalue);
-			else
-				self:settext("BPM: N/A");
-			end;
-		end;
-	};
-	-- HELP TEXT
-	LoadFont("_halogen 20px")..{	
-		InitCommand=cmd(faderight,1;x,SCREEN_CENTER_X+32;y,SCREEN_BOTTOM-50;zoom,0.5;horizalign,left;linear,0.5;faderight,0);
-		SongChosenMessageCommand=cmd(finishtweening;linear,0.1;faderight,1);
-		SongUnchosenMessageCommand=cmd(finishtweening;linear,0.5;faderight,0);
-		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
-		Text="LEFT/RIGHT = Select Song     SHIFT+ENTER = Change Sort\nPress ENTER to choose a song.",
-	};	
-	LoadFont("_halogen 20px")..{	
-		InitCommand=cmd(x,SCREEN_CENTER_X-290;y,SCREEN_BOTTOM-140;zoom,0.5;horizalign,left;faderight,1);
-		SongChosenMessageCommand=cmd(finishtweening;sleep,0.45;linear,0.5;faderight,0);
-		SongUnchosenMessageCommand=cmd(finishtweening;linear,0.25;faderight,1);
-		OffCommand=cmd(diffusealpha,0);
-		Text="LEFT/RIGHT = Select Level     UP/DOWN = Cancel\nPress ENTER to confirm.",
-	};
-	-- HEADER TEXT
-	LoadFont("_halogen 20px")..{	
-		InitCommand=cmd(x,SCREEN_CENTER_X+40;y,SCREEN_TOP+60;zoom,1;horizalign,left);
-		SongChosenMessageCommand=cmd(visible,false);
-		SongUnchosenMessageCommand=cmd(visible,true);
-		OffCommand=cmd(decelerate,0.05;diffusealpha,0);
-		Text="Select Music",
-	};
-};
-
 t[#t+1] = Def.ActorFrame {
-	OffCommand=function(s) SOUND:DimMusic(0,0.25) end,
+	OffCommand=function(s) SOUND:StopMusic() end,
 	LoadActor(THEME:GetPathS("Common","Page Flip")) .. {
 		CurrentSongChangedMessageCommand=cmd(stop;play);
 	};
-	LoadActor(THEME:GetPathS("Common","value")) .. {
+	LoadActor(THEME:GetPathS("","_confirm")) .. {
 		SongChosenMessageCommand=cmd(stop;play);
 	};
-	LoadActor(THEME:GetPathS("","Sparkle")) .. {
+	LoadActor(THEME:GetPathS("","_decline")) .. {
+		SongUnchosenMessageCommand=cmd(stop;play);
+	};
+	LoadActor(THEME:GetPathS("","_launch")) .. {
 		OffCommand=cmd(stop;play);
 	};
 	--Lazy hack because I don't know how to make the bookmark stay behind the music wheel and the page when a song isn't picked...

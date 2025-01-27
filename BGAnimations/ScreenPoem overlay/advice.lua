@@ -6,6 +6,8 @@ local poems = {
 	"Here's Monika's Gaming Tip of the Day!\n\nIf you stay playing one song over and over, you'll barely improve your skills. Muscle memory is important but you have to consider other songs that may have more difficult patterns than your intended goal.\nBut always remember this; I believe in you!\n\nThanks for listening~!",
 	"I wouldn't look there if I were you.\n\nBut I'm not your mom, do whatever you want but don't say I didn't warn you.",
 	"Rhythm games are fun",
+	"Hey, it's Sarena.\n\nWhy am I here? lmao",
+	"Greetings, call me Cynthia if you want.\nI'm not entirely sure where I am right now.\nEveryone seems a bit off, except for that Sarena girl.\n\nAm I crazy or do these girls seem....unrealistic?",
 	"Turn off Safe Mode, you won't.",
 	"Play Sushi Violation, you won't regret it lol",
 	"When I'm falling down\nWill you pick me up again?\nWhen I'm too far gone\nDead in the eyes of my friends\n\nTake me out of here\nTAKE ME OUT OF HERE\nT A K E\nM E\nO U T\nO F\nH E R E",

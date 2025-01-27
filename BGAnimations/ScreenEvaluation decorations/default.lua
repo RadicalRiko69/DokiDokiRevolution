@@ -59,17 +59,27 @@ local song = GAMESTATE:GetCurrentSong();
 t[#t+1] = Def.ActorFrame{
 
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-176;y,SCREEN_CENTER_Y-120;maxwidth,250;zoom,1;diffuse,color("#000000"));
+		InitCommand=cmd(x,SCREEN_CENTER_X-316;y,SCREEN_CENTER_Y-176;maxwidth,356;horizalign,left;zoom,0.8;diffuse,color("#000000"));
 		OnCommand=function(self)
 			if song:GetDisplaySubTitle() == "" then
 				self:settext(song:GetDisplayMainTitle());
 			else
-				self:settext(song:GetDisplayMainTitle().." "..song:GetDisplaySubTitle());
+				self:settext(song:GetDisplayMainTitle()):addy(-8);
 			end
 		end
 	};
 	LoadFont("_halogen 20px")..{
-		InitCommand=cmd(x,SCREEN_CENTER_X-176;y,SCREEN_CENTER_Y-100;maxwidth,360;zoom,0.6;diffuse,color("#000000"));
+		InitCommand=cmd(x,SCREEN_CENTER_X-316;y,SCREEN_CENTER_Y-174;maxwidth,560;horizalign,left;zoom,0.5;diffuse,color("#000000"));
+		OnCommand=function(self)
+			if song:GetDisplaySubTitle() == "" then
+				self:settext("");
+			else
+				self:settext(song:GetDisplaySubTitle());
+			end
+		end
+	};
+	LoadFont("_halogen 20px")..{
+		InitCommand=cmd(x,SCREEN_CENTER_X-316;y,SCREEN_CENTER_Y-160;maxwidth,356;horizalign,left;zoom,0.6;diffuse,color("#000000"));
 		Text=song:GetDisplayArtist()
 	};
 };

@@ -154,7 +154,7 @@ return Def.ActorFrame{
 		OnCommand=cmd(sleep,4;decelerate,0.8;x,SCREEN_LEFT+110;);
 	};
 	LoadActor(THEME:GetPathG("","logo")) .. {
-		InitCommand=cmd(zoom,0.2;x,SCREEN_LEFT+160;y,SCREEN_TOP-200);
+		InitCommand=cmd(zoom,0.36;x,SCREEN_LEFT+160;y,SCREEN_TOP-200);
 		OnCommand=cmd(sleep,4.5;linear,0.25;y,SCREEN_TOP+100;decelerate,0.25;addy,-50;accelerate,0.25;addy,50;
 		decelerate,0.1;addy,-5;accelerate,0.1;addy,5);
 	};

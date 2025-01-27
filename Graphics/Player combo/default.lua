@@ -17,17 +17,6 @@ local ShowFlashyCombo = ThemePrefs.Get("FlashyCombo")
 
 local t = Def.ActorFrame {
 	InitCommand=cmd(vertalign,bottom);
-	-- flashy combo elements:
- 	LoadActor(THEME:GetPathG("Combo","100Milestone")) .. {
-		Name="OneHundredMilestone";
-		InitCommand=cmd(visible,true);
-		FiftyMilestoneCommand=cmd(playcommand,"Milestone");
-	};
-	LoadActor(THEME:GetPathG("Combo","1000Milestone")) .. {
-		Name="OneThousandMilestone";
-		InitCommand=cmd(visible,true);
-		ToastyAchievedMessageCommand=cmd(playcommand,"Milestone");
-	};
 	-- normal combo elements:
 	Def.ActorFrame {
 		Name="ComboFrame";

@@ -10,6 +10,9 @@ t[#t+1] = Def.ActorFrame {
 	OnCommand=cmd(finishtweening;diffusealpha,1;);
 	OffCommand=cmd(sleep,3;diffusealpha,0;);
 	Def.Quad {
+		InitCommand=cmd(zoomx,8500;zoomy,8500;diffuse,color("#ffffff");diffusealpha,0.5);
+	};
+	Def.Quad {
 		InitCommand=cmd(zoomx,445;zoomy,85;diffuse,color("#fe81ae"));
 	};
 	Def.Quad {
@@ -20,7 +23,7 @@ t[#t+1] = Def.ActorFrame {
 		Name="Text";
 		InitCommand=cmd(maxwidth,750;diffuse,Color("Black");zoom,0.75);
 	};
-	LoadActor(THEME:GetPathS("Common","value")) .. {
+	LoadActor(THEME:GetPathS("","_ding")) .. {
 		OnCommand=cmd(play);
 	};
 	SystemMessageMessageCommand = function(self, params)

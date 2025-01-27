@@ -24,17 +24,11 @@ local Prefs =
 		Choices = { "On", "Off" },
 		Values = { "Normal", "Intense" }
 	},
-	UnlockSarena =
+	Background =
 	{
-		Default = "false",
-		Choices = { "Off", "On" },
-		Values = { "false", "true" }
-	},
-	UnlockCynthia =
-	{
-		Default = "false",
-		Choices = { "Off", "On" },
-		Values = { "false", "true" }
+		Default = "World",
+		Choices = { "World", "Traditional" },
+		Values = { "World", "Traditional" }
 	},
 }
 
